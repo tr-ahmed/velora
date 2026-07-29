@@ -60,28 +60,7 @@ export default function Header({
   };
 
   return (
-    <>
-      {/* Top Announcement Bar */}
-      <div className="bg-[#143529] text-[#EAD096] border-b border-[#C5A059]/20 text-[11px] font-medium py-1 px-4 flex items-center justify-between shadow-inner print:hidden">
-        <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="bg-[#C5A059]/20 text-[#C5A059] px-2 py-0.5 rounded-full text-[10px] font-extrabold border border-[#C5A059]/30">
-              توصيل مجاني 🚚
-            </span>
-            <span className="hidden sm:inline text-gray-300">لجميع الطلبات التي تتجاوز 1,000 ج.م في كافة محافظات مصر</span>
-          </div>
-
-          <div className="flex items-center gap-4 text-xs font-bold">
-            <a href="tel:+201008829444" className="hover:text-white transition-colors flex items-center gap-1">
-              <Phone className="w-3 h-3 text-[#C5A059]" />
-              <span dir="ltr">+20 100 8829 444</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Luxury Header */}
-      <header className="sticky top-0 z-40 w-full bg-[#0D221A]/95 backdrop-blur-xl border-b border-[#C5A059]/30 shadow-xl print:hidden">
+    <header className="sticky top-0 z-40 w-full bg-[#0D221A]/95 backdrop-blur-xl border-b border-[#C5A059]/30 shadow-xl print:hidden">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
           <div className="flex items-center justify-between gap-4">
             
@@ -299,6 +278,5 @@ export default function Header({
           )}
         </nav>
       </header>
-    </>
   );
 }
