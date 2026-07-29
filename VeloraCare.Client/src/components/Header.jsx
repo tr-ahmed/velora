@@ -235,27 +235,45 @@ export default function Header({
             {/* Desktop Action Icons */}
             <div className="hidden sm:flex items-center gap-1.5 whitespace-nowrap flex-shrink-0">
               {currentUser ? (
-                <div className="flex items-center gap-1 whitespace-nowrap flex-shrink-0">
-                  {currentUser.role === 'Admin' && (
+                <div className="flex items-center gap-1.5 whitespace-nowrap flex-shrink-0">
+                  {/* Strict Admin Guard: ONLY visible when logged in AS Admin */}
+                  {currentUser?.role === 'Admin' && (
                     <button
                       onClick={onOpenAdminDashboard}
                       className="px-2.5 py-1 rounded-full bg-[#C5A059] text-[#0D221A] font-bold text-xs flex items-center gap-1 shadow-md hover:bg-[#EAD096] transition-all whitespace-nowrap flex-shrink-0"
+                      title="لوحة الإدارة"
                     >
                       <ShieldCheck className="w-3.5 h-3.5" />
                       <span className="whitespace-nowrap">الأدمن 👑</span>
                     </button>
                   )}
 
+                  {/* Customer Profile Button */}
+                  <button
+                    onClick={() => setActiveTab('profile')}
+                    className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-bold transition-all whitespace-nowrap flex-shrink-0 ${
+                      activeTab === 'profile'
+                        ? 'bg-[#C5A059] text-[#0D221A] border-[#C5A059]'
+                        : 'bg-[#143529] text-[#EAD096] border-[#C5A059]/40 hover:border-[#C5A059]'
+                    }`}
+                    title="حسابي وصورتي الشخصية"
+                  >
+                    <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#EAD096] to-[#C5A059] text-[#0D221A] overflow-hidden flex items-center justify-center font-bold flex-shrink-0 border border-[#C5A059]">
+                      {currentUser.avatar ? (
+                        <img src={currentUser.avatar} alt={currentUser.fullName} className="w-full h-full object-cover" />
+                      ) : (
+                        <User className="w-3 h-3 stroke-[2.5]" />
+                      )}
+                    </div>
+                    <span className="whitespace-nowrap">{currentUser.fullName?.split(' ')[0] || 'حسابي'}</span>
+                  </button>
+
                   <button
                     onClick={onLogout}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#143529] border border-[#C5A059]/40 text-[#EAD096] font-bold text-xs shadow-sm hover:border-[#C5A059] active:scale-95 transition-all group whitespace-nowrap flex-shrink-0"
+                    className="p-1.5 rounded-full bg-[#143529] border border-rose-500/40 text-rose-300 hover:bg-rose-950 transition-all flex-shrink-0"
                     title="تسجيل الخروج"
                   >
-                    <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#EAD096] to-[#C5A059] text-[#0D221A] flex items-center justify-center font-bold flex-shrink-0">
-                      <User className="w-3 h-3 stroke-[2.5]" />
-                    </div>
-                    <span className="text-white group-hover:text-[#EAD096] whitespace-nowrap">خروج</span>
-                    <LogOut className="w-3.5 h-3.5 text-rose-400 flex-shrink-0" />
+                    <LogOut className="w-3.5 h-3.5" />
                   </button>
                 </div>
               ) : (

@@ -166,7 +166,19 @@ export default function MobileBottomNav({
             </div>
 
             <div className="space-y-2 pt-1">
-              {currentUser.role === 'Admin' && (
+              <button
+                onClick={() => {
+                  setIsProfileMenuOpen(false);
+                  setActiveTab('profile');
+                }}
+                className="w-full py-3 px-4 rounded-2xl bg-[#143529] text-[#EAD096] border border-[#C5A059]/50 font-bold text-xs flex items-center justify-center gap-2 shadow-sm"
+              >
+                <User className="w-4 h-4 text-[#C5A059]" />
+                <span>تعديل بياناتي وصورتي الشخصية 👤</span>
+              </button>
+
+              {/* Strict Admin Role Guard */}
+              {currentUser?.role === 'Admin' && (
                 <button
                   onClick={() => {
                     setIsProfileMenuOpen(false);
@@ -178,17 +190,6 @@ export default function MobileBottomNav({
                   <span>دخول لوحة تحكم الأدمن 👑</span>
                 </button>
               )}
-
-              <button
-                onClick={() => {
-                  setIsProfileMenuOpen(false);
-                  setActiveTab('home');
-                }}
-                className="w-full py-3 px-4 rounded-2xl bg-[#143529] text-white border border-[#C5A059]/40 font-bold text-xs flex items-center justify-center gap-2"
-              >
-                <Store className="w-4 h-4 text-[#C5A059]" />
-                <span>تصفح المتجر والمنتجات 🛍️</span>
-              </button>
 
               <button
                 onClick={() => {

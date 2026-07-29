@@ -13,6 +13,7 @@ import ContactWidget from './components/ContactWidget';
 import AuthModal from './components/AuthModal';
 import AdminDashboard from './components/admin/AdminDashboard';
 import WishlistPage from './components/WishlistPage';
+import UserProfilePage from './components/UserProfilePage';
 import MobileBottomNav from './components/MobileBottomNav';
 import InfoModal from './components/InfoModal';
 import { 
@@ -354,6 +355,18 @@ export default function App() {
             wishlist={wishlist}
             onToggleWishlist={handleToggleWishlist}
             onAddToCart={handleAddToCart}
+            onExploreClick={handleExploreClick}
+          />
+        )}
+
+        {activeTab === 'profile' && (
+          <UserProfilePage
+            currentUser={currentUser}
+            onUpdateUser={(updated) => setCurrentUser(updated)}
+            onLogout={() => {
+              setCurrentUser(null);
+              setActiveTab('home');
+            }}
             onExploreClick={handleExploreClick}
           />
         )}
