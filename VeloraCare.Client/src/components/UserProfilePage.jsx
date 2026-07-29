@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-import { User, Phone, MapPin, Mail, Lock, Camera, CheckCircle, ShoppingBag, Clock, ShieldCheck, LogOut, ArrowLeft, Store } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { User, Phone, MapPin, Mail, Lock, Camera, CheckCircle, ShoppingBag, Clock, ShieldCheck, LogOut, ArrowLeft, Store, Eye, ChevronDown, ChevronUp } from 'lucide-react';
 import { EGYPT_GOVERNORATES } from '../data/governorates';
+import { fetchMyOrdersApi } from '../services/api';
 
-export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, onExploreClick, orders = [] }) {
-  const [activeSubTab, setActiveSubTab] = useState('info'); // 'info' | 'orders' | 'security'
+export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, onExploreClick, initialTab = 'info' }) {
+  const [activeSubTab, setActiveSubTab] = useState(initialTab);
+  const [myOrders, setMyOrders] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
   
   // Form State
   const [fullName, setFullName] = useState(currentUser?.fullName || '');
@@ -19,8 +22,14 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // User's own orders
-  const myOrders = orders.filter(o => o.phone === currentUser?.phone || o.fullName === currentUser?.fullName);
+  useEffect(() => {
+    if (currentUser?.phone || currentUser?.fullName) {
+      setOrdersLoading(true);
+      fetchMyOrdersApi(currentUser.phone, currentUser.fullName)
+        .then(setMyOrders)
+        .finally(() => setOrdersLoading(false));
+    }
+  }, [currentUser?.phone, currentUser?.fullName]);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -281,8 +290,14 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
               <span className="text-xs text-gray-500 font-normal">{myOrders.length} طلبات مسجلة</span>
             </h3>
 
-            {myOrders.length === 0 ? (
+            {ordersLoading ? (
+              <div className="p-12 text-center">
+                <div className="animate-spin w-8 h-8 border-2 border-[#C5A059] border-t-transparent rounded-full mx-auto"></div>
+                <p className="text-xs text-gray-500 mt-2">جاري تحميل طلباتك...</p>
+              </div>
+            ) : myOrders.length === 0 ? (
               <div className="p-12 text-center space-y-3">
+                <ShoppingBag className="w-10 h-10 text-gray-300 mx-auto" />
                 <p className="text-sm font-bold text-gray-500">لم تقومي بإجراء أية طلبات بعد!</p>
                 <button onClick={onExploreClick} className="btn-primary text-xs py-2.5 px-6">
                   استكشاف المنتجات والتسوق الآن 🛍️
@@ -291,28 +306,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
             ) : (
               <div className="space-y-4">
                 {myOrders.map((order) => (
-                  <div key={order.id} className="p-5 rounded-2xl border border-gray-200 bg-[#FAF8F5] space-y-3">
-                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 pb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono font-bold text-xs bg-white px-2.5 py-1 rounded-lg border border-gray-300">
-                          {order.orderNumber}
-                        </span>
-                        <span className="text-xs text-gray-500 flex items-center gap-1">
-                          <Clock className="w-3.5 h-3.5 text-[#C5A059]" />
-                          <span>{new Date(order.createdAt || Date.now()).toLocaleDateString('ar-EG')}</span>
-                        </span>
-                      </div>
-
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#143529] text-[#EAD096] border border-[#C5A059]/40">
-                        {order.status || 'قيد الانتظار'}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs font-bold pt-1">
-                      <span className="text-gray-600">عنوان الشحن: <strong className="text-[#0D221A]">{order.city} - {order.address}</strong></span>
-                      <span className="text-[#987834] font-serif text-sm">المجموع: {order.total} ج.م</span>
-                    </div>
-                  </div>
+                  <OrderCard key={order.id} order={order} />
                 ))}
               </div>
             )}
@@ -372,6 +366,80 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
         )}
 
       </div>
+    </div>
+  );
+}
+
+function OrderCard({ order }) {
+  const [expanded, setExpanded] = useState(false);
+
+  const statusColors = {
+    'قيد الانتظار': 'bg-amber-100 text-amber-800 border-amber-300',
+    'جاري التجهيز': 'bg-blue-100 text-blue-800 border-blue-300',
+    'تم الشحن': 'bg-purple-100 text-purple-800 border-purple-300',
+    'تم التوصيل': 'bg-emerald-100 text-emerald-800 border-emerald-300',
+    'ملغي': 'bg-rose-100 text-rose-800 border-rose-300',
+  };
+
+  const statusColor = statusColors[order.status] || 'bg-gray-100 text-gray-800 border-gray-300';
+
+  return (
+    <div className="p-5 rounded-2xl border border-gray-200 bg-[#FAF8F5] space-y-3 hover:shadow-md transition-shadow">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className="font-mono font-bold text-xs bg-white px-2.5 py-1 rounded-lg border border-gray-300">
+            {order.orderNumber}
+          </span>
+          <span className="text-xs text-gray-500 flex items-center gap-1">
+            <Clock className="w-3.5 h-3.5 text-[#C5A059]" />
+            <span>{new Date(order.createdAt || Date.now()).toLocaleDateString('ar-EG')}</span>
+          </span>
+        </div>
+
+        <span className={`px-3 py-1 rounded-full text-xs font-bold border ${statusColor}`}>
+          {order.status || 'قيد الانتظار'}
+        </span>
+      </div>
+
+      <div className="flex items-center justify-between text-xs pt-1">
+        <span className="text-gray-500">
+          <span className="text-gray-400">الشحن: </span>
+          <strong className="text-[#0D221A]">{order.city}</strong>
+        </span>
+        <span className="text-[#987834] font-serif text-sm font-bold">{order.total} ج.م</span>
+      </div>
+
+      {order.items && order.items.length > 0 && (
+        <>
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="flex items-center gap-1 text-[#C5A059] text-xs font-bold hover:underline mt-1"
+          >
+            {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            <span>{expanded ? 'إخفاء المنتجات' : `عرض المنتجات (${order.items.length})`}</span>
+          </button>
+
+          {expanded && (
+            <div className="space-y-2 pt-1 border-t border-gray-200">
+              {order.items.map((item, i) => (
+                <div key={i} className="flex items-center justify-between text-xs bg-white p-2.5 rounded-xl border border-gray-100">
+                  <div className="flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-full bg-[#143529] text-[#EAD096] text-[10px] flex items-center justify-center font-bold">
+                      {item.quantity}
+                    </span>
+                    <span className="font-bold text-gray-700">{item.productName}</span>
+                  </div>
+                  <span className="text-gray-500">{item.unitPrice} ج.م</span>
+                </div>
+              ))}
+              <div className="flex justify-between text-xs font-bold bg-[#143529]/10 p-2.5 rounded-xl">
+                <span className="text-gray-600">المجموع الكلي</span>
+                <span className="text-[#987834]">{order.total} ج.م</span>
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

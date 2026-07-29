@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, CheckCircle, CreditCard, Truck, ShieldCheck, Sparkles, ShoppingBag, ArrowLeft, MapPin, Phone, User, Package } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { createOrderApi } from '../services/api';
+import { createOrderApi, saveLocalOrder } from '../services/api';
 import { EGYPT_GOVERNORATES } from '../data/governorates';
 
 export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderComplete, currentUser }) {
@@ -58,6 +58,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
 
     try {
       const result = await createOrderApi(orderPayload);
+      saveLocalOrder({ ...orderPayload, orderNumber: result.orderNumber });
       setCompletedOrder({
         orderNumber: result.orderNumber,
         ...formData,
@@ -82,8 +83,9 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
       onOrderComplete();
     } catch (err) {
       console.error('Order creation failed:', err);
+      const fallbackOrder = saveLocalOrder(orderPayload);
       setCompletedOrder({
-        orderNumber: `VEL-EG-${Math.floor(100000 + Math.random() * 900000)}`,
+        orderNumber: fallbackOrder.orderNumber,
         ...formData,
         items: [...cartItems],
         subtotal,

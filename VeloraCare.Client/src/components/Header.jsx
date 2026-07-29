@@ -60,7 +60,7 @@ export default function Header({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#0D221A]/95 backdrop-blur-xl border-b border-[#C5A059]/30 shadow-xl print:hidden">
+    <header className="hidden sm:flex sticky top-0 z-40 w-full bg-[#0D221A]/95 backdrop-blur-xl border-b border-[#C5A059]/30 shadow-xl print:hidden">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
           <div className="flex items-center justify-between gap-4">
             

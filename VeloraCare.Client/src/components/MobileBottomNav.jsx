@@ -130,7 +130,9 @@ export default function MobileBottomNav({
           }`}
         >
           <div className="p-1.5 rounded-2xl">
-            {currentUser?.role === 'Admin' ? (
+            {currentUser?.avatar ? (
+              <img src={currentUser.avatar} alt={currentUser.fullName} className="w-5 h-5 rounded-full object-cover border border-[#C5A059]" />
+            ) : currentUser?.role === 'Admin' ? (
               <ShieldCheck className="w-5 h-5 text-[#EAD096]" />
             ) : (
               <User className="w-5 h-5" />
@@ -149,8 +151,14 @@ export default function MobileBottomNav({
           <div className="bg-[#0D221A] text-white rounded-t-3xl sm:rounded-3xl p-6 max-w-sm w-full border-t-2 sm:border-2 border-[#C5A059] shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-[#C5A059]/30 pb-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#143529] border border-[#C5A059] flex items-center justify-center text-[#EAD096] font-bold">
-                  {currentUser.role === 'Admin' ? <ShieldCheck className="w-5 h-5" /> : <User className="w-5 h-5" />}
+                <div className="w-10 h-10 rounded-full bg-[#143529] border border-[#C5A059] flex items-center justify-center text-[#EAD096] font-bold overflow-hidden">
+                  {currentUser.avatar ? (
+                    <img src={currentUser.avatar} alt={currentUser.fullName} className="w-full h-full object-cover" />
+                  ) : currentUser.role === 'Admin' ? (
+                    <ShieldCheck className="w-5 h-5" />
+                  ) : (
+                    <User className="w-5 h-5" />
+                  )}
                 </div>
                 <div>
                   <h4 className="font-bold text-sm text-[#EAD096]">{currentUser.fullName}</h4>
@@ -170,11 +178,23 @@ export default function MobileBottomNav({
                 onClick={() => {
                   setIsProfileMenuOpen(false);
                   setActiveTab('profile');
+                  // will default to info tab in UserProfilePage
                 }}
                 className="w-full py-3 px-4 rounded-2xl bg-[#143529] text-[#EAD096] border border-[#C5A059]/50 font-bold text-xs flex items-center justify-center gap-2 shadow-sm"
               >
                 <User className="w-4 h-4 text-[#C5A059]" />
-                <span>تعديل بياناتي وصورتي الشخصية 👤</span>
+                <span>البيانات الشخصية والتعديل 👤</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setIsProfileMenuOpen(false);
+                  setActiveTab('orders');
+                }}
+                className="w-full py-3 px-4 rounded-2xl bg-gradient-to-l from-[#143529] to-[#1a3f2f] text-[#EAD096] border border-[#C5A059]/50 font-bold text-xs flex items-center justify-center gap-2 shadow-sm"
+              >
+                <ShoppingBag className="w-4 h-4 text-[#C5A059]" />
+                <span>سجل طلباتي وتتبع الشحن 🛍️</span>
               </button>
 
               {/* Strict Admin Role Guard */}

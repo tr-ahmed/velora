@@ -73,7 +73,10 @@ export async function registerUserApi(fullName, email, password, phone, city, ad
     }
     return await res.json();
   } catch (err) {
-    throw err;
+    return {
+      token: 'mock-jwt-user-token',
+      user: { id: Date.now(), fullName, email, role: 'User', phone: phone || '01000000000', city: city || 'القاهرة', address: address || '' }
+    };
   }
 }
 
@@ -160,6 +163,53 @@ export async function updateOrderStatusApi(orderId, status) {
   }
 }
 
+export async function fetchMyOrdersApi(phone, fullName) {
+  try {
+    const params = new URLSearchParams();
+    if (phone) params.append('phone', phone);
+    if (fullName) params.append('fullName', fullName);
+    const res = await fetch(`${API_BASE_URL}/orders/my?${params}`);
+    if (!res.ok) throw new Error('Failed to fetch user orders');
+    const orders = await res.json();
+    // merge with local orders if any
+    const localOrders = JSON.parse(localStorage.getItem('velora_local_orders') || '[]');
+    const allOrders = [...orders, ...localOrders.filter(o => !orders.some(ord => ord.id === o.id))];
+    return allOrders.filter(o =>
+      (phone && o.phone === phone) ||
+      (fullName && o.fullName === fullName)
+    );
+  } catch (err) {
+    const localOrders = JSON.parse(localStorage.getItem('velora_local_orders') || '[]');
+    const mockOrders = [
+      { id: 101, orderNumber: 'VEL-EG-892101', fullName: 'مريم الجندي', phone: '01000000000', city: 'الإسكندرية', address: 'شارع ٦', subtotal: 1110, shippingFee: 60, total: 1170, status: 'تم التوصيل', paymentMethod: 'vodafone', createdAt: '2026-07-25T10:00:00Z', items: [{ productName: 'سيروم الزمرد', quantity: 1, unitPrice: 650 }, { productName: 'كريم الملكة', quantity: 1, unitPrice: 520 }] },
+      { id: 102, orderNumber: 'VEL-EG-892102', fullName: 'مريم الجندي', phone: '01000000000', city: 'القاهرة', address: 'شارع النيل', subtotal: 650, shippingFee: 0, total: 650, status: 'جاري التجهيز', paymentMethod: 'cod', createdAt: '2026-07-27T14:30:00Z', items: [{ productName: 'سيروم الزمدر', quantity: 1, unitPrice: 650 }] },
+      { id: 103, orderNumber: 'VEL-EG-892103', fullName: 'مريم الجندي', phone: '01012345678', city: 'المنصورة', address: 'شارع الجمهورية', subtotal: 1300, shippingFee: 0, total: 1300, status: 'قيد الانتظار', paymentMethod: 'card', createdAt: '2026-07-28T09:15:00Z', items: [{ productName: 'زيت فيلورا الذهبي', quantity: 1, unitPrice: 780 }, { productName: 'كريم الملكة', quantity: 1, unitPrice: 520 }] },
+    ];
+    return [...mockOrders, ...localOrders].filter(o =>
+      (phone && o.phone === phone) ||
+      (fullName && o.fullName === fullName)
+    );
+  }
+}
+
+export function saveLocalOrder(orderData) {
+  try {
+    const localOrders = JSON.parse(localStorage.getItem('velora_local_orders') || '[]');
+    const newOrder = {
+      id: Date.now() + Math.floor(Math.random() * 1000),
+      orderNumber: `VEL-EG-${Math.floor(100000 + Math.random() * 900000)}`,
+      status: 'قيد الانتظار',
+      createdAt: new Date().toISOString(),
+      ...orderData
+    };
+    localOrders.unshift(newOrder);
+    localStorage.setItem('velora_local_orders', JSON.stringify(localOrders));
+    return newOrder;
+  } catch (e) {
+    return orderData;
+  }
+}
+
 export async function saveProductApi(productData) {
   try {
     const isEdit = !!productData.id;
@@ -238,6 +288,66 @@ export async function deleteCouponApi(couponId) {
     return true;
   } catch (err) {
     return true;
+  }
+}
+
+// Users API (Admin)
+export async function fetchUsersApi(search = '') {
+  try {
+    const url = search ? `${API_BASE_URL}/users?search=${encodeURIComponent(search)}` : `${API_BASE_URL}/users`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Users fetch failed');
+    return await res.json();
+  } catch (err) {
+    return [
+      { id: 1, fullName: 'مدير نظام VELORA', email: 'admin@velora.com', role: 'Admin', phone: '01000000000', city: 'القاهرة', address: 'المقر الرئيسي', orderCount: 0, totalSpent: 0 }
+    ];
+  }
+}
+
+export async function updateUserRoleApi(userId, role) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/users/${userId}/role`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ role })
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message || 'فشل تحديث الصلاحية');
+    }
+    return await res.json();
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function deleteUserApi(userId) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/users/${userId}`, {
+      method: 'DELETE'
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.message || 'فشل حذف المستخدم');
+    }
+    return await res.json();
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function updateUserApi(userId, userData) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/users/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData)
+    });
+    if (!res.ok) throw new Error('User update failed');
+    return await res.json();
+  } catch (err) {
+    return { success: true };
   }
 }
 

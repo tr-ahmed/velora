@@ -14,7 +14,8 @@ import {
   fetchDashboardStatsApi, fetchAnalyticsReportsApi, fetchAllOrdersApi, updateOrderStatusApi, 
   fetchProductsFromApi, saveProductApi, deleteProductApi,
   fetchCouponsApi, createCouponApi, toggleCouponApi, deleteCouponApi,
-  saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi
+  saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi,
+  fetchUsersApi, updateUserRoleApi, deleteUserApi, updateUserApi
 } from '../../services/api';
 import { EGYPT_GOVERNORATES } from '../../data/governorates';
 
@@ -88,10 +89,17 @@ export default function AdminDashboard({
   const [customersPage, setCustomersPage] = useState(1);
   const customersPerPage = 8;
 
+  // Users Management State
+  const [users, setUsers] = useState([]);
+  const [usersSearchQuery, setUsersSearchQuery] = useState('');
+  const [usersPage, setUsersPage] = useState(1);
+  const usersPerPage = 10;
+
   // Reset pagination on filter changes
   useEffect(() => { setOrdersPage(1); }, [orderSearchQuery, orderStatusFilter, orderPaymentFilter, orderCityFilter]);
   useEffect(() => { setProductsPage(1); }, [productSearchQuery, productCategoryFilter, productStockFilter]);
   useEffect(() => { setCustomersPage(1); }, [customerSearchQuery]);
+  useEffect(() => { setUsersPage(1); }, [usersSearchQuery]);
 
   // Modal States
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -159,18 +167,20 @@ export default function AdminDashboard({
   const loadData = async () => {
     setLoading(true);
     try {
-      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes] = await Promise.all([
+      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, usersRes] = await Promise.all([
         fetchDashboardStatsApi(),
         fetchAnalyticsReportsApi(),
         fetchProductsFromApi('all'),
         fetchAllOrdersApi(),
-        fetchCouponsApi()
+        fetchCouponsApi(),
+        fetchUsersApi()
       ]);
       setStats(statsRes || { totalRevenue: 0, totalOrders: 0, totalProducts: 0, totalCustomers: 0, activeCoupons: 0, recentOrders: [] });
       setAnalytics(analyticsRes || { generatedAt: new Date().toISOString(), totalRevenue: 0, totalOrders: 0, averageOrderValue: 0, customerSatisfactionRate: '0%', conversionRate: '0%', salesByCity: [], salesByCategory: [], ordersByStatus: [], topProducts: [] });
       setProducts(Array.isArray(productsRes) ? productsRes : []);
       setOrders(Array.isArray(ordersRes) ? ordersRes : []);
       setCoupons(Array.isArray(couponsRes) ? couponsRes : []);
+      setUsers(Array.isArray(usersRes) ? usersRes : []);
     } catch (err) {
       console.error('Error loading admin data:', err);
     } finally {
@@ -333,6 +343,22 @@ export default function AdminDashboard({
     return filteredCustomers.slice((customersPage - 1) * customersPerPage, customersPage * customersPerPage);
   }, [filteredCustomers, customersPage, customersPerPage]);
 
+  // Users Management computed data
+  const filteredUsers = useMemo(() => {
+    return users.filter(u =>
+      !usersSearchQuery ||
+      u.fullName?.toLowerCase().includes(usersSearchQuery.toLowerCase()) ||
+      u.email?.toLowerCase().includes(usersSearchQuery.toLowerCase()) ||
+      u.phone?.includes(usersSearchQuery) ||
+      u.city?.toLowerCase().includes(usersSearchQuery.toLowerCase())
+    );
+  }, [users, usersSearchQuery]);
+
+  const usersTotalPages = Math.ceil(filteredUsers.length / usersPerPage);
+  const paginatedUsers = useMemo(() => {
+    return filteredUsers.slice((usersPage - 1) * usersPerPage, usersPage * usersPerPage);
+  }, [filteredUsers, usersPage, usersPerPage]);
+
   // Unique Cities list for dropdowns (All 27 Egyptian Governorates)
   const uniqueCities = useMemo(() => {
     const citiesSet = new Set([...EGYPT_GOVERNORATES, ...orders.map(o => o.city).filter(Boolean)]);
@@ -457,6 +483,21 @@ export default function AdminDashboard({
     exportToExcel('تقرير_المالية_فيـلورا_كير', headers, rows);
   };
 
+  // Export Customers to Excel Function
+  const handleExportCustomersExcel = () => {
+    const headers = ['اسم العميلة', 'رقم الهاتف', 'المحافظة', 'العنوان', 'عدد الطلبات', 'إجمالي المشتريات (ج.م)', 'آخر طلب'];
+    const rows = customerDatabase.map(c => [
+      c.name,
+      c.phone,
+      c.city,
+      c.address,
+      c.ordersCount,
+      c.totalSpent,
+      new Date(c.lastOrderDate).toLocaleDateString('ar-EG')
+    ]);
+    exportToExcel('سجل_العملاء_فيلورا', headers, rows);
+  };
+
   // Merged Nav Items (Combined Overview, Hero Manager & Full Reports)
   const navItems = [
     { id: 'overview', label: 'الرئيسية والتقارير الشاملة 📊', icon: <BarChart3 className="w-4 h-4 text-[#C5A059]" /> },
@@ -464,6 +505,7 @@ export default function AdminDashboard({
     { id: 'orders', label: `إدارة الطلبات (${orders.length})`, icon: <ShoppingBag className="w-4 h-4" /> },
     { id: 'products', label: `المنتجات والمخزون (${products.length})`, icon: <Package className="w-4 h-4" /> },
     { id: 'customers', label: `سجل العملاء (${customerDatabase.length})`, icon: <Users className="w-4 h-4" /> },
+    { id: 'users', label: `إدارة المستخدمين (${users.length})`, icon: <User className="w-4 h-4" /> },
     { id: 'coupons', label: `الأكواد والعروض (${coupons.length})`, icon: <Tag className="w-4 h-4" /> }
   ];
 
@@ -604,25 +646,49 @@ export default function AdminDashboard({
       )}
 
       {/* Main Container */}
-      <div className="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 space-y-6 pb-20 sm:pb-8">
+      <div className="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 pb-20 sm:pb-8">
         
-        {/* Navigation Tabs - Desktop */}
-        <div className="hidden lg:flex items-center gap-2 overflow-x-auto pb-2 border-b border-gray-200 scrollbar-none print:hidden">
-          {navItems.map((item) => (
+        {/* Desktop Layout: Sidebar + Content */}
+        <div className="flex gap-6">
+
+        {/* Sidebar - Large Screens */}
+        <div className="hidden lg:flex flex-col w-64 flex-shrink-0 bg-white rounded-3xl border border-[#C5A059]/30 shadow-sm p-4 sticky top-24 self-start max-h-[calc(100vh-8rem)] print:hidden">
+          <div className="flex-1 space-y-1 overflow-y-auto">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition-all text-right ${
+                  activeTab === item.id
+                    ? 'bg-[#0D221A] text-[#EAD096] border border-[#C5A059] shadow-md'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <span className="flex-shrink-0">{item.icon}</span>
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </div>
+          <div className="pt-4 mt-4 border-t border-gray-200 space-y-2 flex-shrink-0">
             <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`whitespace-nowrap px-4 sm:px-5 py-2.5 rounded-full text-xs font-bold transition-all flex items-center gap-2 ${
-                activeTab === item.id
-                  ? 'bg-[#0D221A] text-[#EAD096] border border-[#C5A059] shadow-md'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
-              }`}
+              onClick={onGoToStore}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold text-[#0D221A] bg-[#F7F5F0] hover:bg-gray-200 transition-all"
             >
-              {item.icon}
-              <span>{item.label}</span>
+              <Store className="w-4 h-4 text-[#C5A059]" />
+              <span>عودة للمتجر</span>
             </button>
-          ))}
+            <button
+              onClick={onLogout}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition-all"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>تسجيل الخروج</span>
+            </button>
+          </div>
         </div>
+
+        {/* Content Area */}
+        <div className="flex-1 min-w-0 space-y-6">
 
         {/* TAB 1: MERGED OVERVIEW & FULL REPORTS */}
         {activeTab === 'overview' && (
@@ -1739,6 +1805,16 @@ export default function AdminDashboard({
               </div>
             </div>
 
+            {/* Empty State when no customers */}
+            {paginatedCustomers.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 text-center space-y-4">
+                <Users className="w-16 h-16 text-gray-300" />
+                <p className="text-sm font-bold text-gray-500">لا يوجد عملاء مسجلين حتى الآن</p>
+                <p className="text-xs text-gray-400">عندما يتم تقديم الطلبات الأولى، ستظهر بيانات العملاء هنا تلقائياً</p>
+              </div>
+            ) : (
+              <>
+
             {/* Customers Mobile Cards */}
             <div className="grid grid-cols-1 gap-3 md:hidden">
               {paginatedCustomers.map((cust, idx) => (
@@ -1815,6 +1891,9 @@ export default function AdminDashboard({
               itemsPerPage={customersPerPage}
             />
 
+              </>
+            )}
+
           </div>
         )}
 
@@ -1888,6 +1967,178 @@ export default function AdminDashboard({
                 </div>
               ))}
             </div>
+
+          </div>
+        )}
+
+        {/* TAB 6: USERS MANAGEMENT */}
+        {activeTab === 'users' && (
+          <div className="bg-white rounded-3xl border border-[#C5A059]/30 p-4 sm:p-6 shadow-sm space-y-6 animate-fadeIn">
+
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-100 pb-4">
+              <div>
+                <h3 className="text-lg sm:text-xl font-bold font-serif text-[#0D221A]">إدارة المستخدمين والصلاحيات</h3>
+                <p className="text-xs text-gray-500">عرض، تعديل صلاحيات، وحذف المستخدمين المسجلين في المنصة</p>
+              </div>
+            </div>
+
+            {/* Search */}
+            <div className="bg-[#F7F5F0] p-4 rounded-2xl border border-gray-200">
+              <div className="relative max-w-md">
+                <Search className="w-4 h-4 text-gray-400 absolute right-3 top-3" />
+                <input
+                  type="text"
+                  placeholder="بحث باسم المستخدم، البريد الإلكتروني، أو رقم الهاتف..."
+                  value={usersSearchQuery}
+                  onChange={(e) => setUsersSearchQuery(e.target.value)}
+                  className="w-full pr-9 pl-3 py-2 text-xs rounded-xl border border-gray-300 focus:outline-none focus:border-[#C5A059] bg-white"
+                />
+              </div>
+            </div>
+
+            {/* Empty State */}
+            {paginatedUsers.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 text-center space-y-4">
+                <User className="w-16 h-16 text-gray-300" />
+                <p className="text-sm font-bold text-gray-500">لا يوجد مستخدمين مسجلين</p>
+              </div>
+            ) : (
+              <>
+
+            {/* Users Mobile Cards */}
+            <div className="grid grid-cols-1 gap-3 md:hidden">
+              {paginatedUsers.map((u, idx) => (
+                <div key={u.id || idx} className="p-4 rounded-2xl border border-gray-200 bg-[#F7F5F0] space-y-3 shadow-xs">
+                  <div className="flex items-center justify-between border-b border-gray-200/60 pb-2">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded-full bg-[#143529] text-[#EAD096] border border-[#C5A059]/40 flex items-center justify-center font-bold text-xs shadow-xs">
+                        {u.fullName?.charAt(0) || 'م'}
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-xs text-[#0D221A]">{u.fullName}</h4>
+                        <p className="text-[10px] text-gray-500" dir="ltr">{u.email}</p>
+                      </div>
+                    </div>
+                    <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border ${
+                      u.role === 'Admin' 
+                        ? 'bg-[#C5A059]/15 text-[#987834] border-[#C5A059]/30' 
+                        : 'bg-[#143529]/10 text-gray-600 border-gray-200'
+                    }`}>
+                      {u.role === 'Admin' ? 'أدمن' : 'عميل'}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs">
+                    <div className="space-y-0.5">
+                      <p className="text-[10px] text-gray-400">{u.phone || 'بدون هاتف'}</p>
+                      <p className="text-[10px] text-gray-400">{u.city || 'بدون مدينة'}</p>
+                    </div>
+                    {u.role !== 'Admin' && (
+                      <button
+                        onClick={async () => {
+                          if (!confirm('هل أنت متأكد من حذف هذا المستخدم؟')) return;
+                          try {
+                            await deleteUserApi(u.id);
+                            setUsers(prev => prev.filter(us => us.id !== u.id));
+                          } catch (e) {
+                            alert(e.message);
+                          }
+                        }}
+                        className="p-1.5 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                        title="حذف المستخدم"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Users Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-right text-xs">
+                <thead>
+                  <tr className="border-b border-gray-200 text-gray-500">
+                    <th className="py-3 px-2">اسم المستخدم</th>
+                    <th className="py-3 px-2">البريد الإلكتروني</th>
+                    <th className="py-3 px-2">رقم الهاتف</th>
+                    <th className="py-3 px-2">المحافظة</th>
+                    <th className="py-3 px-2">الصلاحية</th>
+                    <th className="py-3 px-2">الطلبات</th>
+                    <th className="py-3 px-2">المشتريات</th>
+                    <th className="py-3 px-2">تحكم</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {paginatedUsers.map((u, idx) => (
+                    <tr key={u.id || idx} className="hover:bg-gray-50">
+                      <td className="py-3 px-2 font-bold text-[#0D221A]">{u.fullName}</td>
+                      <td className="py-3 px-2 text-gray-600" dir="ltr">{u.email}</td>
+                      <td className="py-3 px-2 text-gray-600" dir="ltr">{u.phone || '-'}</td>
+                      <td className="py-3 px-2 text-gray-600">{u.city || '-'}</td>
+                      <td className="py-3 px-2">
+                        <select
+                          value={u.role}
+                          onChange={async (e) => {
+                            const newRole = e.target.value;
+                            try {
+                              await updateUserRoleApi(u.id, newRole);
+                              setUsers(prev => prev.map(us => us.id === u.id ? { ...us, role: newRole } : us));
+                            } catch (err) {
+                              alert(err.message);
+                            }
+                          }}
+                          className={`text-[11px] font-bold px-2 py-1 rounded-lg border ${
+                            u.role === 'Admin'
+                              ? 'bg-[#C5A059]/15 text-[#987834] border-[#C5A059]/30'
+                              : 'bg-gray-50 text-gray-600 border-gray-200'
+                          }`}
+                        >
+                          <option value="Customer">عميل</option>
+                          <option value="Admin">أدمن</option>
+                        </select>
+                      </td>
+                      <td className="py-3 px-2 font-bold">{u.orderCount || 0}</td>
+                      <td className="py-3 px-2 font-extrabold text-[#987834]">{(u.totalSpent || 0).toLocaleString()} ج.م</td>
+                      <td className="py-3 px-2">
+                        {u.role !== 'Admin' ? (
+                          <button
+                            onClick={async () => {
+                              if (!confirm('هل أنت متأكد من حذف هذا المستخدم؟')) return;
+                              try {
+                                await deleteUserApi(u.id);
+                                setUsers(prev => prev.filter(us => us.id !== u.id));
+                              } catch (e) {
+                                alert(e.message);
+                              }
+                            }}
+                            className="p-1.5 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                            title="حذف المستخدم"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        ) : (
+                          <span className="text-[10px] text-gray-400">-</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Users Pagination */}
+            <Pagination
+              currentPage={usersPage}
+              totalPages={usersTotalPages}
+              onPageChange={setUsersPage}
+              totalItems={filteredUsers.length}
+              itemsPerPage={usersPerPage}
+            />
+
+              </>
+            )}
 
           </div>
         )}
@@ -2061,6 +2312,20 @@ export default function AdminDashboard({
         </button>
 
         <button
+          onClick={() => setActiveTab('users')}
+          className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 active:scale-90 ${
+            activeTab === 'users' ? 'text-[#EAD096]' : 'text-gray-400'
+          }`}
+        >
+          <div className={`p-1.5 rounded-2xl relative transition-all ${
+            activeTab === 'users' ? 'bg-[#C5A059]/20 text-[#EAD096] border border-[#C5A059]/40' : ''
+          }`}>
+            <User className="w-5 h-5" />
+          </div>
+          <span className="text-[10px] font-bold">المستخدمين</span>
+        </button>
+
+        <button
           onClick={() => setActiveTab('coupons')}
           className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 active:scale-90 ${
             activeTab === 'coupons' ? 'text-[#EAD096]' : 'text-gray-400'
@@ -2073,6 +2338,9 @@ export default function AdminDashboard({
           </div>
           <span className="text-[10px] font-bold">الأكواد</span>
         </button>
+      </div>
+
+        </div>
       </div>
 
     </div>

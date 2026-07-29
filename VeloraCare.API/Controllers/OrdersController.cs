@@ -26,6 +26,21 @@ public class OrdersController : ControllerBase
         return Ok(orders);
     }
 
+    [HttpGet("my")]
+    public async Task<IActionResult> GetMyOrders([FromQuery] string phone, [FromQuery] string? fullName)
+    {
+        var query = _db.Orders.Include(o => o.Items).AsQueryable();
+
+        if (!string.IsNullOrEmpty(phone))
+            query = query.Where(o => o.Phone == phone);
+
+        if (!string.IsNullOrEmpty(fullName))
+            query = query.Where(o => o.FullName == fullName);
+
+        var orders = await query.OrderByDescending(o => o.CreatedAt).ToListAsync();
+        return Ok(orders);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {

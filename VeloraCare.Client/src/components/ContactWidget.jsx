@@ -48,9 +48,9 @@ export default function ContactWidget() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-6 left-6 z-50 flex flex-col items-start gap-3">
+    <div className="fixed bottom-24 sm:bottom-6 left-3 sm:left-6 z-50 flex flex-col items-start gap-2 sm:gap-3">
       {isOpen && (
-        <div className="flex flex-col gap-2.5 animate-slideUp">
+        <div className="flex flex-col gap-2 sm:gap-2.5 animate-slideUp">
           {channels.map((ch) => (
             <a
               key={ch.name}
@@ -58,12 +58,12 @@ export default function ContactWidget() {
               target="_blank"
               rel="noopener noreferrer"
               dir="ltr"
-              className={`group flex items-center gap-3 ${ch.color} text-white pl-4 pr-3 py-2.5 rounded-full shadow-lg hover:scale-105 transition-all duration-300`}
+              className={`group flex items-center gap-2 sm:gap-3 ${ch.color} text-white pl-3 sm:pl-4 pr-2.5 sm:pr-3 py-2 sm:py-2.5 rounded-full shadow-lg hover:scale-105 transition-all duration-300`}
             >
-              <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
                 {ch.icon}
               </div>
-              <span className="text-[13px] font-bold whitespace-nowrap">{ch.name}</span>
+              <span className="text-[11px] sm:text-[13px] font-bold whitespace-nowrap">{ch.name}</span>
             </a>
           ))}
         </div>
@@ -71,12 +71,12 @@ export default function ContactWidget() {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 rounded-full bg-gradient-to-br from-[#C5A059] to-[#0D221A] text-white shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300"
+        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#C5A059] to-[#0D221A] text-white shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 shadow-[#C5A059]/20"
       >
         {isOpen ? (
-          <X className="w-6 h-6" />
+          <X className="w-5 h-5 sm:w-6 sm:h-6" />
         ) : (
-          <MessageCircle className="w-6 h-6" />
+          <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
         )}
       </button>
     </div>

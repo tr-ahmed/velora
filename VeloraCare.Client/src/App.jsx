@@ -17,7 +17,7 @@ import UserProfilePage from './components/UserProfilePage';
 import MobileBottomNav from './components/MobileBottomNav';
 import InfoModal from './components/InfoModal';
 import { 
-  fetchProductsFromApi, createOrderApi, 
+  fetchProductsFromApi,
   fetchHeroSlidesApi, fetchHeroSettingsApi, saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi 
 } from './services/api';
 
@@ -54,12 +54,7 @@ export default function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isAdminView, setIsAdminView] = useState(false);
 
-  const [currentUser, setCurrentUser] = useState({
-    id: 1,
-    fullName: 'مدير نظام VELORA',
-    email: 'admin@velora.com',
-    role: 'Admin'
-  });
+  const [currentUser, setCurrentUser] = useState(null);
 
   // Dynamic Hero Slides & Settings State
   const [heroSlides, setHeroSlides] = useState(() => {
@@ -238,21 +233,7 @@ export default function App() {
     }
   };
 
-  const handleOrderComplete = async () => {
-    const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const shippingFee = subtotal >= 1000 ? 0 : 60;
-    
-    await createOrderApi({
-      fullName: currentUser?.fullName || 'عميلة VELORA',
-      phone: '01000000000',
-      city: 'القاهرة',
-      address: 'العنوان الرئيسي',
-      subtotal,
-      shippingFee,
-      total: subtotal + shippingFee,
-      items: cartItems.map(i => ({ productId: i.id, productName: i.name, quantity: i.quantity, unitPrice: i.price, totalPrice: i.price * i.quantity }))
-    });
-
+  const handleOrderComplete = () => {
     setCartItems([]);
   };
 
@@ -359,9 +340,11 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'profile' && (
+        {(activeTab === 'profile' || activeTab === 'orders') && (
           <UserProfilePage
+            key={activeTab}
             currentUser={currentUser}
+            initialTab={activeTab === 'orders' ? 'orders' : 'info'}
             onUpdateUser={(updated) => setCurrentUser(updated)}
             onLogout={() => {
               setCurrentUser(null);

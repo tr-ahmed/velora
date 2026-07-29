@@ -85,15 +85,27 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
   return (
     <section className="relative flex flex-col justify-between overflow-hidden bg-[#0D221A] pt-5 pb-8 sm:min-h-[88vh] lg:min-h-[92vh] sm:pt-14 lg:pt-16 px-4 sm:px-6 sm:pb-32">
       
-      {/* Original High-Res Hero Background Image */}
-      <div 
-        className="absolute inset-0 opacity-20 sm:opacity-25 bg-cover bg-center pointer-events-none mix-blend-luminosity scale-105"
-        style={{ backgroundImage: "url('/images/hero.png')" }}
-      />
+      {/* Elegant Layered Background Image with Multiple Blend Effects */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center scale-110 opacity-30 sm:opacity-40"
+          style={{ backgroundImage: "url('/images/hero.png')" }}
+        />
+        <div 
+          className="absolute inset-0 bg-cover bg-center scale-110 opacity-10 sm:opacity-15 mix-blend-overlay"
+          style={{ backgroundImage: "url('/images/hero.png')" }}
+        />
+      </div>
 
-      {/* Glow Orbs */}
-      <div className="absolute top-1/4 -right-20 w-72 sm:w-96 h-72 sm:h-96 bg-[#C5A059]/20 rounded-full blur-[110px] pointer-events-none" />
-      <div className="absolute bottom-20 left-10 w-72 sm:w-96 h-72 sm:h-96 bg-[#1E4D3C]/50 rounded-full blur-[100px] pointer-events-none" />
+      {/* Elegant Gradient Overlay Layers */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0D221A]/80 via-[#0D221A]/60 to-[#0D221A]/90 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#C5A059]/10 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#0D221A] via-[#0D221A]/80 to-transparent pointer-events-none" />
+
+      {/* Refined Glow Orbs with Gold Tones */}
+      <div className="absolute top-1/3 -right-32 w-96 sm:w-[500px] h-96 sm:h-[500px] bg-gradient-to-br from-[#C5A059]/15 via-[#C5A059]/5 to-transparent rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute -bottom-20 -left-20 w-80 sm:w-[450px] h-80 sm:h-[450px] bg-gradient-to-tr from-[#C5A059]/10 via-[#1E4D3C]/30 to-transparent rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-gradient-to-r from-[#EAD096]/5 to-transparent rounded-full blur-[100px] pointer-events-none" />
 
       {/* Deep Decorative Wavy Lines Background SVG */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 1440 800">
