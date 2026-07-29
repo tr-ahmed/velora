@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Production build output
+dist/
+build/
+bin/
+obj/
+publish_api/
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Environment & Local settings
+.env
+.env.local
+.env.development.local
+.env.production.local
+appsettings.Development.json
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+.gemini/
+*.log

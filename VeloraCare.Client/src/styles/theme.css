@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* VELORA CARE - Luxury Botanical Design System */
+:root {
+  /* Color Palette inspired by Emerald & Gold Botanicals */
+  --bg-primary: #FAF8F5;
+  --bg-secondary: #F2EFE9;
+  --bg-card: #FFFFFF;
+  --bg-emerald-dark: #0D221A;
+  --bg-emerald-mid: #143529;
+  --bg-emerald-light: #1E4D3C;
+
+  --color-gold-light: #EAD096;
+  --color-gold: #C5A059;
+  --color-gold-hover: #D4AF37;
+  --color-gold-dark: #987834;
+  --color-gold-glow: rgba(197, 160, 89, 0.25);
+
+  --text-dark: #0A1913;
+  --text-muted: #52635B;
+  --text-light: #FAF8F5;
+  --text-gold: #C5A059;
+
+  --border-gold: rgba(197, 160, 89, 0.35);
+  --border-gold-strong: rgba(197, 160, 89, 0.7);
+  --border-light: rgba(13, 34, 26, 0.08);
+
+  --shadow-sm: 0 4px 12px rgba(13, 34, 26, 0.04);
+  --shadow-md: 0 8px 24px rgba(13, 34, 26, 0.08);
+  --shadow-lg: 0 16px 40px rgba(13, 34, 26, 0.12);
+  --shadow-gold: 0 8px 30px rgba(197, 160, 89, 0.25);
+
+  --font-arabic: 'Cairo', 'Readex Pro', sans-serif;
+  --font-heading: 'Cairo', 'Playfair Display', serif;
+  
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  
+  --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-arabic);
+  background-color: var(--bg-primary);
+  color: var(--text-dark);
+  line-height: 1.6;
+  overflow-x: hidden;
+  direction: rtl;
+}
+
+/* Typography Helpers */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  line-height: 1.25;
+}
+
+.text-gold {
+  color: var(--color-gold);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, #EAD096 0%, #C5A059 50%, #987834 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-emerald {
+  background-color: var(--bg-emerald-dark);
+  color: var(--text-light);
+}
+
+/* Glassmorphism Elements */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-gold);
+}
+
+.glass-panel-dark {
+  background: rgba(13, 34, 26, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(197, 160, 89, 0.3);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: #143529;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold);
+}
+
+/* Luxury Button Styles */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #D4AF37 0%, #C5A059 50%, #A37F35 100%);
+  color: #0D221A;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: var(--radius-full);
+  border: 1px solid #F3E5AB;
+  cursor: pointer;
+  box-shadow: var(--shadow-gold);
+  transition: var(--transition-normal);
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(197, 160, 89, 0.45);
+  background: linear-gradient(135deg, #EAD096 0%, #D4AF37 50%, #C5A059 100%);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--text-light);
+  font-weight: 600;
+  padding: 14px 28px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-gold);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background: rgba(197, 160, 89, 0.15);
+  color: #FFFFFF;
+  border-color: var(--color-gold-hover);
+}
+
+/* Keyframe Animations */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+.animate-float {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+/* Print Optimization for Reports */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    direction: rtl;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  header, nav, .print\:hidden {
+    display: none !important;
+  }
+  .shadow-sm, .shadow-md, .shadow-lg, .shadow-xl {
+    box-shadow: none !important;
+  }
+  .border {
+    border-color: #e5e7eb !important;
+  }
+}
