@@ -107,12 +107,12 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn print:hidden"
-         style={{ paddingBottom: '64px' }}
+         style={{ paddingBottom: '56px' }}
          onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       
       {/* Modal Card Box */}
       <div className="relative w-full max-w-3xl bg-white rounded-t-[28px] sm:rounded-3xl overflow-hidden border-t-2 sm:border-2 border-[#C5A059] shadow-2xl flex flex-col sm:pb-0"
-           style={{ maxHeight: 'calc(92svh - 64px)', paddingBottom: '0' }}>
+           style={{ maxHeight: 'calc(92svh - 56px)', paddingBottom: '0' }}>
         
         {/* Mobile Grab Handle */}
         <div className="w-10 h-1.5 bg-gray-200 rounded-full mx-auto mt-3 mb-0 sm:hidden flex-shrink-0" />

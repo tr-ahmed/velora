@@ -51,9 +51,9 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
           ============================================================ */}
       <div className="sm:hidden absolute left-0 right-0 bg-white animate-slideFromBottom flex flex-col"
            style={{
-             bottom: '64px',
+             bottom: '56px',
              borderRadius: '28px 28px 0 0',
-             maxHeight: 'calc(88svh - 64px)',
+             maxHeight: 'calc(88svh - 56px)',
              paddingBottom: '0'
            }}>
 

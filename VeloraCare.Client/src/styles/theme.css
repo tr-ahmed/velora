@@ -59,7 +59,7 @@
   --safe-area-right: env(safe-area-inset-right, 0px);
 
   /* Bottom nav height */
-  --bottom-nav-height: 64px;
+  --bottom-nav-height: 56px;
 }
 
 * {

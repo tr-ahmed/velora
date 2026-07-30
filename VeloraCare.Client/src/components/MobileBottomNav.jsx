@@ -43,11 +43,11 @@ export default function MobileBottomNav({
     <>
       {/* ==================== BOTTOM NAV BAR ==================== */}
       <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-50 print:hidden"
-           style={{ paddingBottom: 'env(safe-area-inset-bottom, 8px)' }}>
+           style={{ paddingBottom: 'env(safe-area-inset-bottom, 4px)' }}>
         
         {/* Glass background */}
         <div className="bg-[#0D221A]/96 backdrop-blur-2xl border-t border-[#C5A059]/25 shadow-[0_-8px_32px_rgba(0,0,0,0.3)]">
-          <div className="flex justify-around items-end px-2 pt-2 pb-2">
+          <div className="flex justify-around items-end px-2 pt-1.5 pb-1">
             
             {tabs.map((tab) => {
               const Icon = tab.icon;
@@ -59,13 +59,13 @@ export default function MobileBottomNav({
                   <button
                     key={tab.id}
                     onClick={() => handleTabClick(tab.id)}
-                    className="flex flex-col items-center gap-1 relative -mt-6"
+                    className="flex flex-col items-center gap-0.5 relative -mt-5"
                     aria-label={tab.label}
                   >
-                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] flex items-center justify-center shadow-[0_6px_24px_rgba(197,160,89,0.5)] border-4 border-[#0D221A] active:scale-90 transition-transform">
-                      <Icon className="w-6 h-6" strokeWidth={2.5} />
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] flex items-center justify-center shadow-[0_6px_24px_rgba(197,160,89,0.5)] border-4 border-[#0D221A] active:scale-90 transition-transform">
+                      <Icon className="w-5 h-5" strokeWidth={2.5} />
                     </div>
-                    <span className="text-[10px] font-extrabold text-[#EAD096] tracking-wide">
+                    <span className="text-[9px] font-extrabold text-[#EAD096] tracking-wide">
                       {tab.label}
                     </span>
                   </button>
@@ -77,7 +77,7 @@ export default function MobileBottomNav({
                 <button
                   key={tab.id}
                   onClick={() => handleTabClick(tab.id)}
-                  className="flex flex-col items-center gap-1 min-w-[52px] py-1 relative group active:scale-90 transition-transform"
+                  className="flex flex-col items-center gap-0.5 min-w-[48px] py-0.5 relative group active:scale-90 transition-transform"
                   aria-label={tab.label}
                 >
                   {/* Active indicator pip */}
@@ -86,13 +86,13 @@ export default function MobileBottomNav({
                   }`} />
 
                   {/* Icon Container */}
-                  <div className={`relative w-11 h-9 flex items-center justify-center rounded-2xl transition-all duration-200 ${
+                  <div className={`relative w-10 h-8 flex items-center justify-center rounded-xl transition-all duration-200 ${
                     isActive
                       ? 'bg-[#C5A059]/20 text-[#EAD096]'
                       : 'text-gray-400 group-active:bg-white/5'
                   }`}>
                     <Icon
-                      className={`w-5 h-5 transition-all duration-200 ${isActive ? 'text-[#EAD096]' : 'text-gray-500'}`}
+                      className={`w-[18px] h-[18px] transition-all duration-200 ${isActive ? 'text-[#EAD096]' : 'text-gray-500'}`}
                       strokeWidth={isActive ? 2.5 : 1.8}
                     />
 

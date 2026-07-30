@@ -58,13 +58,13 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn"
-         style={{ paddingBottom: '64px' }}>
+         style={{ paddingBottom: '56px' }}>
       
       <div
         className="relative w-full max-w-md bg-[#0D221A] text-white border-t-2 sm:border-2 border-[#C5A059] shadow-2xl overflow-hidden overflow-y-auto"
         style={{
           borderRadius: '28px 28px 0 0',
-          maxHeight: 'calc(94svh - 64px)',
+          maxHeight: 'calc(94svh - 56px)',
           paddingBottom: '0'
         }}
       >
