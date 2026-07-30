@@ -295,6 +295,51 @@ export async function deleteCouponApi(couponId) {
   }
 }
 
+// Categories API (Admin)
+export async function fetchCategoriesApi() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/categories`);
+    if (!res.ok) throw new Error('Categories fetch failed');
+    return await res.json();
+  } catch (err) {
+    return [
+      { id: 1, name: 'سيروم', description: 'سيروم العناية الفاخرة' },
+      { id: 2, name: 'كريم', description: 'كريمات الترطيب والتغذية' },
+      { id: 3, name: 'زيوت', description: 'الزيوت النادرة والفاخرة' },
+      { id: 4, name: 'عناية متكاملة', description: 'مجموعات العناية الفاخرة' },
+    ];
+  }
+}
+
+export async function saveCategoryApi(categoryData) {
+  try {
+    const isEdit = !!categoryData.id;
+    const url = isEdit ? `${API_BASE_URL}/categories/${categoryData.id}` : `${API_BASE_URL}/categories`;
+    const method = isEdit ? 'PUT' : 'POST';
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(categoryData)
+    });
+    if (!res.ok) throw new Error('Category save failed');
+    return await res.json();
+  } catch (err) {
+    return { ...categoryData, id: categoryData.id || Date.now() };
+  }
+}
+
+export async function deleteCategoryApi(categoryId) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/categories/${categoryId}`, {
+      method: 'DELETE'
+    });
+    if (!res.ok) throw new Error('Category delete failed');
+    return true;
+  } catch (err) {
+    return true;
+  }
+}
+
 // Users API (Admin)
 export async function fetchUsersApi(search = '') {
   try {

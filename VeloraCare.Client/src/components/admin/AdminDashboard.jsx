@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import ProductFormModal from './ProductFormModal';
 import CouponFormModal from './CouponFormModal';
+import CategoryFormModal from './CategoryFormModal';
 import HeroSlideFormModal from './HeroSlideFormModal';
 import OfferFormModal from './OfferFormModal';
 import VeloraLogo from '../VeloraLogo';
@@ -15,6 +16,7 @@ import {
   fetchDashboardStatsApi, fetchAnalyticsReportsApi, fetchAllOrdersApi, updateOrderStatusApi, 
   fetchProductsFromApi, saveProductApi, deleteProductApi,
   fetchCouponsApi, createCouponApi, toggleCouponApi, deleteCouponApi,
+  fetchCategoriesApi, saveCategoryApi, deleteCategoryApi,
   saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi,
   fetchUsersApi, updateUserRoleApi, deleteUserApi, updateUserApi,
   fetchAdminOffersApi, saveOfferApi, toggleOfferApi, deleteOfferApi
@@ -68,6 +70,7 @@ export default function AdminDashboard({
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [coupons, setCoupons] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Filters state
@@ -108,6 +111,8 @@ export default function AdminDashboard({
   const [editingProduct, setEditingProduct] = useState(null);
   const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
   const [isHeroSlideModalOpen, setIsHeroSlideModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState(null);
   
   // Offers State
   const [offers, setOffers] = useState([]);
@@ -195,14 +200,15 @@ export default function AdminDashboard({
   const loadData = async () => {
     setLoading(true);
     try {
-      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, usersRes, offersRes] = await Promise.all([
+      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, usersRes, offersRes, categoriesRes] = await Promise.all([
         fetchDashboardStatsApi(),
         fetchAnalyticsReportsApi(),
         fetchProductsFromApi('all'),
         fetchAllOrdersApi(),
         fetchCouponsApi(),
         fetchUsersApi(),
-        fetchAdminOffersApi()
+        fetchAdminOffersApi(),
+        fetchCategoriesApi()
       ]);
       setStats(statsRes || { totalRevenue: 0, totalOrders: 0, totalProducts: 0, totalCustomers: 0, activeCoupons: 0, recentOrders: [] });
       setAnalytics(analyticsRes || { generatedAt: new Date().toISOString(), totalRevenue: 0, totalOrders: 0, averageOrderValue: 0, customerSatisfactionRate: '0%', conversionRate: '0%', salesByCity: [], salesByCategory: [], ordersByStatus: [], topProducts: [] });
@@ -211,6 +217,7 @@ export default function AdminDashboard({
       setCoupons(Array.isArray(couponsRes) ? couponsRes : []);
       setUsers(Array.isArray(usersRes) ? usersRes : []);
       setOffers(Array.isArray(offersRes) ? offersRes : []);
+      setCategories(Array.isArray(categoriesRes) ? categoriesRes : []);
     } catch (err) {
       console.error('Error loading admin data:', err);
     } finally {
@@ -262,6 +269,22 @@ export default function AdminDashboard({
     if (window.confirm('هل أنتِ متأكدة من حذف هذا الكود؟')) {
       await deleteCouponApi(couponId);
       setCoupons(prev => prev.filter(c => c.id !== couponId));
+    }
+  };
+
+  const handleSaveCategory = async (categoryData) => {
+    const saved = await saveCategoryApi(categoryData);
+    setCategories(prev => {
+      const exists = prev.find(c => c.id === saved.id);
+      if (exists) return prev.map(c => c.id === saved.id ? saved : c);
+      return [saved, ...prev];
+    });
+  };
+
+  const handleDeleteCategory = async (categoryId) => {
+    if (window.confirm('هل أنتِ متأكدة من حذف هذا التصنيف؟')) {
+      await deleteCategoryApi(categoryId);
+      setCategories(prev => prev.filter(c => c.id !== categoryId));
     }
   };
 
@@ -550,6 +573,7 @@ export default function AdminDashboard({
     { id: 'hero', label: `إدارة الهيرو والسلايدر 🌟 (${heroSlides.length})`, icon: <Sparkles className="w-4 h-4 text-[#C5A059]" /> },
     { id: 'orders', label: `إدارة الطلبات (${orders.length})`, icon: <ShoppingBag className="w-4 h-4" /> },
     { id: 'products', label: `المنتجات والمخزون (${products.length})`, icon: <Package className="w-4 h-4" /> },
+    { id: 'categories', label: `التصنيفات (${categories.length})`, icon: <Layers className="w-4 h-4 text-[#C5A059]" /> },
     { id: 'customers', label: `سجل العملاء (${customerDatabase.length})`, icon: <Users className="w-4 h-4" /> },
     { id: 'users', label: `إدارة المستخدمين (${users.length})`, icon: <User className="w-4 h-4" /> },
     { id: 'coupons', label: `الأكواد والعروض (${coupons.length})`, icon: <Tag className="w-4 h-4" /> }
@@ -2017,6 +2041,77 @@ export default function AdminDashboard({
           </div>
         )}
 
+        {/* TAB: CATEGORIES */}
+        {activeTab === 'categories' && (
+          <div className="bg-white rounded-3xl border border-[#C5A059]/30 p-5 sm:p-6 shadow-sm space-y-6 animate-fadeIn">
+            
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-100 pb-4">
+              <div>
+                <h3 className="text-lg sm:text-xl font-bold font-serif text-[#0D221A]">إدارة التصنيفات</h3>
+                <p className="text-xs text-gray-500">إضافة وتعديل وحذف تصنيفات المنتجات في المتجر</p>
+              </div>
+
+              <button
+                onClick={() => { setEditingCategory(null); setIsCategoryModalOpen(true); }}
+                className="btn-primary text-xs py-2.5 px-5 w-full sm:w-auto flex items-center justify-center gap-2 shadow-md"
+              >
+                <Plus className="w-4 h-4" />
+                <span>إضافة تصنيف</span>
+              </button>
+            </div>
+
+            {categories.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 text-center space-y-4">
+                <Layers className="w-16 h-16 text-gray-300" />
+                <p className="text-sm font-bold text-gray-500">لا توجد تصنيفات بعد</p>
+                <button
+                  onClick={() => { setEditingCategory(null); setIsCategoryModalOpen(true); }}
+                  className="btn-primary text-xs py-2.5 px-5"
+                >
+                  إضافة التصنيف الأول
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {categories.map((cat) => (
+                  <div key={cat.id} className="p-4 bg-[#FAF8F5] rounded-2xl border border-gray-200 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-10 h-10 rounded-xl bg-[#143529] text-[#EAD096] border border-[#C5A059]/40 flex items-center justify-center">
+                          <Layers className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-sm text-[#0D221A]">{cat.name}</h4>
+                          {cat.description && (
+                            <p className="text-[10px] text-gray-500 line-clamp-1">{cat.description}</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-end gap-2 pt-2 border-t border-gray-200">
+                      <button
+                        onClick={() => { setEditingCategory(cat); setIsCategoryModalOpen(true); }}
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold bg-[#143529] text-[#EAD096] hover:bg-[#C5A059] hover:text-[#0D221A] transition-colors flex items-center gap-1"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                        <span>تعديل</span>
+                      </button>
+                      <button
+                        onClick={() => handleDeleteCategory(cat.id)}
+                        className="px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-50 text-rose-600 hover:bg-rose-100 transition-colors flex items-center gap-1"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        <span>حذف</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+          </div>
+        )}
+
         {/* TAB 6: USERS MANAGEMENT */}
         {activeTab === 'users' && (
           <div className="bg-white rounded-3xl border border-[#C5A059]/30 p-4 sm:p-6 shadow-sm space-y-6 animate-fadeIn">
@@ -2365,6 +2460,13 @@ export default function AdminDashboard({
         isOpen={isCouponModalOpen}
         onClose={() => setIsCouponModalOpen(false)}
         onSave={handleSaveCoupon}
+      />
+
+      <CategoryFormModal
+        isOpen={isCategoryModalOpen}
+        onClose={() => { setIsCategoryModalOpen(false); setEditingCategory(null); }}
+        onSave={handleSaveCategory}
+        editingCategory={editingCategory}
       />
 
       <HeroSlideFormModal

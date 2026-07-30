@@ -128,7 +128,7 @@ export default function ProductGrid({
               >
                 {/* ---- IMAGE ---- */}
                 <div className="relative bg-[#0D221A] overflow-hidden"
-                     style={{ aspectRatio: '3/4' }}>
+                     style={{ aspectRatio: '1/1' }}>
                   <img
                     src={product.image}
                     alt={product.name}
@@ -258,7 +258,7 @@ export default function ProductGrid({
                         aria-label={isInCart ? "إزالة من السلة" : "أضيفي للسلة"}
                       >
                         {isInCart ? (
-                          <X className="w-4 h-4 stroke-[3]" />
+                          <ShoppingBag className="w-4 h-4 text-emerald-200 fill-emerald-200" />
                         ) : isJustAdded ? (
                           <Check className="w-4 h-4 text-emerald-200 stroke-[3]" />
                         ) : (
