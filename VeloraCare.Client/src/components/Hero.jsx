@@ -112,21 +112,6 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
           <div className="flex items-center gap-2">
             <VeloraLogo size="sm" glow={true} />
           </div>
-
-          {/* Slide counter */}
-          <div className="flex items-center gap-1.5 bg-[#0D221A]/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#C5A059]/30">
-            {slides.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentSlide(idx)}
-                className={`transition-all duration-300 rounded-full ${
-                  currentSlide === idx
-                    ? 'w-5 h-1.5 bg-[#C5A059]'
-                    : 'w-1.5 h-1.5 bg-white/30'
-                }`}
-              />
-            ))}
-          </div>
         </div>
 
         {/* Middle floating — Rating badge */}
@@ -181,6 +166,41 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
         <div className="relative z-20 px-5 pb-4"
              style={{ paddingBottom: 'max(16px, env(safe-area-inset-bottom, 16px))' }}>
           
+          {/* Mobile Slider Controller Bar (Thumb Friendly) */}
+          {slides.length > 1 && (
+            <div className="flex items-center justify-between gap-3 mb-3 px-1">
+              <button
+                onClick={handlePrev}
+                className="w-9 h-9 rounded-full bg-[#143529]/90 text-[#C5A059] border border-[#C5A059]/40 flex items-center justify-center active:scale-90 transition-transform shadow-md"
+                aria-label="السلايد السابق"
+              >
+                <ChevronRight className="w-4.5 h-4.5" />
+              </button>
+
+              <div className="flex items-center gap-1.5 bg-[#0D221A]/85 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#C5A059]/30 shadow-inner">
+                {slides.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentSlide(idx)}
+                    className={`transition-all duration-300 rounded-full ${
+                      currentSlide === idx
+                        ? 'w-6 h-1.5 bg-[#C5A059]'
+                        : 'w-1.5 h-1.5 bg-white/30 hover:bg-white/60'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={handleNext}
+                className="w-9 h-9 rounded-full bg-[#143529]/90 text-[#C5A059] border border-[#C5A059]/40 flex items-center justify-center active:scale-90 transition-transform shadow-md"
+                aria-label="السلايد التالي"
+              >
+                <ChevronLeft className="w-4.5 h-4.5" />
+              </button>
+            </div>
+          )}
+
           {/* Product mini info bar */}
           <div
             key={`info-${slide.id}`}
@@ -221,24 +241,6 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
           {/* Safe area spacer for bottom nav */}
           <div className="h-16" />
         </div>
-
-        {/* Side navigation arrows (desktop-like, small on mobile) */}
-        {slides.length > 1 && (
-          <>
-            <button
-              onClick={handlePrev}
-              className="absolute top-1/2 right-3 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-[#0D221A]/70 text-[#C5A059] border border-[#C5A059]/40 flex items-center justify-center active:scale-90 transition-all"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-            <button
-              onClick={handleNext}
-              className="absolute top-1/2 left-3 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-[#0D221A]/70 text-[#C5A059] border border-[#C5A059]/40 flex items-center justify-center active:scale-90 transition-all"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-          </>
-        )}
       </div>
 
       {/* ============================================================
