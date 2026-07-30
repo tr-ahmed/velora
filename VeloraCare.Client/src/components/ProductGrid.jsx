@@ -245,8 +245,7 @@ export default function ProductGrid({
         totalPages={totalPages}
         onPageChange={(page) => {
           setCurrentPage(page);
-          const el = document.getElementById('products-section');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
+          window.scrollTo(0, 0);
         }}
         totalItems={filteredProducts.length}
         itemsPerPage={itemsPerPage}

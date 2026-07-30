@@ -183,6 +183,11 @@ export default function App() {
     loadProducts();
   }, [selectedCategory]);
 
+  // Always scroll to top when changing tabs or views
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeTab, isAdminView]);
+
   // Cart Management
   const handleAddToCart = (product, quantity = 1) => {
     setCartItems(prev => {
@@ -227,10 +232,7 @@ export default function App() {
 
   const handleExploreClick = () => {
     setActiveTab('products');
-    const element = document.getElementById('products-section');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    window.scrollTo(0, 0);
   };
 
   const handleOrderComplete = () => {

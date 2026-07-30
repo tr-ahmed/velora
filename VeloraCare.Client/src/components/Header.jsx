@@ -54,8 +54,7 @@ export default function Header({
       setActiveTab('products');
       setIsSearchFocused(false);
       setMobileSearchOpen(false);
-      const el = document.getElementById('products-section');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      window.scrollTo(0, 0);
     }
   };
 
