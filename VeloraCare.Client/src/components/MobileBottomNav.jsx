@@ -34,6 +34,7 @@ export default function MobileBottomNav({
   const tabs = [
     { id: 'home', icon: Home, label: 'الرئيسية' },
     { id: 'products', icon: ShoppingBag, label: 'المتجر' },
+    { id: 'cart', icon: ShoppingCart, label: 'سلّتي', badge: cartCount },
     { id: 'quiz', isFAB: true, icon: Sparkles, label: 'الروتين' },
     { id: 'wishlist', icon: Heart, label: 'مفضلتي', badge: wishlistCount },
     { id: 'profile', icon: User, label: currentUser ? (currentUser.fullName?.split(' ')[0] || 'حسابي') : 'حسابي' },
@@ -100,13 +101,6 @@ export default function MobileBottomNav({
                     {tab.badge > 0 && (
                       <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-0.5 bg-[#C5A059] text-[#0D221A] text-[9px] font-extrabold rounded-full flex items-center justify-center border border-[#0D221A]">
                         {tab.badge > 9 ? '9+' : tab.badge}
-                      </span>
-                    )}
-
-                    {/* Cart badge special */}
-                    {tab.id === 'cart' && cartCount > 0 && (
-                      <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-0.5 bg-[#C5A059] text-[#0D221A] text-[9px] font-extrabold rounded-full flex items-center justify-center border border-[#0D221A]">
-                        {cartCount > 9 ? '9+' : cartCount}
                       </span>
                     )}
                   </div>
