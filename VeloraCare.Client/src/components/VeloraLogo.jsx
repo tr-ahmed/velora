@@ -40,8 +40,8 @@ export default function VeloraLogo({ size = 'md', showText = true, className = '
           <span className={`${textSizeClasses[size]} font-black tracking-widest text-[#EAD096] font-serif leading-none drop-shadow-[0_2px_8px_rgba(197,160,89,0.3)] whitespace-nowrap`}>
             VELORA
           </span>
-          <span className={`${subTextSizeClasses[size]} tracking-[0.3em] text-[#C5A059] uppercase font-bold mt-1 whitespace-nowrap`}>
-            CARE • BOTANICS
+          <span className={`${subTextSizeClasses[size]} tracking-[0.35em] text-[#C5A059] uppercase font-bold mt-1 whitespace-nowrap`}>
+            CARE
           </span>
         </div>
       )}
