@@ -107,16 +107,18 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
       
-      <div className="relative w-full max-w-4xl bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden border-t-2 sm:border-2 border-[#C5A059] shadow-2xl max-h-[92vh] sm:max-h-[90vh] flex flex-col">
+      <div className="relative w-full max-w-4xl bg-white border-t-2 sm:border-2 sm:rounded-3xl border-[#C5A059] shadow-2xl flex flex-col"
+           style={{ borderRadius: '28px 28px 0 0', maxHeight: '92svh' }}>
         
         {/* Mobile Grab Handle */}
-        <div className="w-12 h-1.5 bg-[#C5A059]/40 rounded-full mx-auto my-2.5 sm:hidden flex-shrink-0" />
+        <div className="w-10 h-1.5 bg-gray-200 rounded-full mx-auto mt-3 mb-0 sm:hidden flex-shrink-0" />
 
         <button
           onClick={onClose}
-          className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#0D221A] text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0D221A] flex items-center justify-center transition-colors shadow-lg"
+          className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 w-10 h-10 rounded-full bg-[#0D221A] text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0D221A] flex items-center justify-center transition-colors shadow-lg active:scale-90"
+          aria-label="إغلاق"
         >
-          <X className="w-4 h-4 sm:w-5 sm:h-5" />
+          <X className="w-5 h-5" />
         </button>
 
         {step === 'form' ? (
@@ -132,39 +134,40 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
               </div>
 
               <form onSubmit={handleSubmitOrder} className="space-y-4">
-                
+
+                {/* Name field */}
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">الاسم الكامل *</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5">الاسم الكامل *</label>
                   <input
                     type="text"
                     required
                     placeholder="أدخلي اسمك الكريم"
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] bg-[#F7F5F0]"
+                    className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#F7F5F0] transition-all"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1">رقم الموبايل *</label>
+                    <label className="block text-xs font-bold text-gray-700 mb-1.5">رقم الموبايل *</label>
                     <input
                       type="tel"
                       required
                       placeholder="01XXXXXXXXX"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] bg-[#F7F5F0]"
+                      className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#F7F5F0] transition-all"
                       dir="ltr"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1">المحافظة *</label>
+                    <label className="block text-xs font-bold text-gray-700 mb-1.5">المحافظة *</label>
                     <select
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] bg-[#F7F5F0]"
+                      className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] bg-[#F7F5F0] transition-all"
                     >
                       {EGYPT_GOVERNORATES.map(c => (
                         <option key={c} value={c}>{c}</option>
@@ -173,15 +176,16 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                   </div>
                 </div>
 
+                {/* Address */}
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">العنوان التفصيلي *</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5">العنوان التفصيلي *</label>
                   <input
                     type="text"
                     required
                     placeholder="المنطقة، الشارع، رقم العمارة أو الشقة"
                     value={formData.address}
                     onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] bg-[#F7F5F0]"
+                    className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#F7F5F0] transition-all"
                   />
                 </div>
 

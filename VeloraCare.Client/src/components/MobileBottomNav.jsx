@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, ShoppingBag, Sparkles, Heart, ShoppingCart, User, ShieldCheck, LogOut, X, Store } from 'lucide-react';
+import { Home, ShoppingBag, Sparkles, Heart, ShoppingCart, User, ShieldCheck, LogOut, X, Store, ChevronRight } from 'lucide-react';
 
 export default function MobileBottomNav({
   activeTab,
@@ -31,196 +31,177 @@ export default function MobileBottomNav({
     }
   };
 
-  const isProfileActive = activeTab === 'profile';
+  const tabs = [
+    { id: 'home', icon: Home, label: 'الرئيسية' },
+    { id: 'products', icon: ShoppingBag, label: 'المتجر' },
+    { id: 'quiz', isFAB: true, icon: Sparkles, label: 'الروتين' },
+    { id: 'wishlist', icon: Heart, label: 'مفضلتي', badge: wishlistCount },
+    { id: 'profile', icon: User, label: currentUser ? (currentUser.fullName?.split(' ')[0] || 'حسابي') : 'حسابي' },
+  ];
 
   return (
     <>
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0D221A]/95 backdrop-blur-xl border-t border-[#C5A059]/40 shadow-2xl px-1.5 py-2 flex justify-around items-center print:hidden">
+      {/* ==================== BOTTOM NAV BAR ==================== */}
+      <nav className="sm:hidden fixed bottom-0 left-0 right-0 z-50 print:hidden"
+           style={{ paddingBottom: 'env(safe-area-inset-bottom, 8px)' }}>
         
-        {/* 1. Home Tab */}
-        <button
-          onClick={() => handleTabClick('home')}
-          className={`flex flex-col items-center justify-center gap-1 transition-all duration-200 active:scale-90 ${
-            activeTab === 'home'
-              ? 'text-[#EAD096]'
-              : 'text-gray-400 hover:text-gray-200'
-          }`}
-        >
-          <div className={`p-1.5 rounded-2xl transition-all ${
-            activeTab === 'home' ? 'bg-[#C5A059]/20 text-[#EAD096] border border-[#C5A059]/40' : ''
-          }`}>
-            <Home className="w-5 h-5" />
+        {/* Glass background */}
+        <div className="bg-[#0D221A]/96 backdrop-blur-2xl border-t border-[#C5A059]/25 shadow-[0_-8px_32px_rgba(0,0,0,0.3)]">
+          <div className="flex justify-around items-end px-2 pt-2 pb-2">
+            
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+
+              /* ---- FAB Center Button ---- */
+              if (tab.isFAB) {
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => handleTabClick(tab.id)}
+                    className="flex flex-col items-center gap-1 relative -mt-6"
+                    aria-label={tab.label}
+                  >
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] flex items-center justify-center shadow-[0_6px_24px_rgba(197,160,89,0.5)] border-4 border-[#0D221A] active:scale-90 transition-transform">
+                      <Icon className="w-6 h-6" strokeWidth={2.5} />
+                    </div>
+                    <span className="text-[10px] font-extrabold text-[#EAD096] tracking-wide">
+                      {tab.label}
+                    </span>
+                  </button>
+                );
+              }
+
+              /* ---- Regular Tab ---- */
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabClick(tab.id)}
+                  className="flex flex-col items-center gap-1 min-w-[52px] py-1 relative group active:scale-90 transition-transform"
+                  aria-label={tab.label}
+                >
+                  {/* Active indicator pip */}
+                  <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full transition-all duration-300 ${
+                    isActive ? 'bg-[#C5A059] opacity-100 scale-100' : 'opacity-0 scale-0'
+                  }`} />
+
+                  {/* Icon Container */}
+                  <div className={`relative w-11 h-9 flex items-center justify-center rounded-2xl transition-all duration-200 ${
+                    isActive
+                      ? 'bg-[#C5A059]/20 text-[#EAD096]'
+                      : 'text-gray-400 group-active:bg-white/5'
+                  }`}>
+                    <Icon
+                      className={`w-5 h-5 transition-all duration-200 ${isActive ? 'text-[#EAD096]' : 'text-gray-500'}`}
+                      strokeWidth={isActive ? 2.5 : 1.8}
+                    />
+
+                    {/* Badge */}
+                    {tab.badge > 0 && (
+                      <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-0.5 bg-[#C5A059] text-[#0D221A] text-[9px] font-extrabold rounded-full flex items-center justify-center border border-[#0D221A]">
+                        {tab.badge > 9 ? '9+' : tab.badge}
+                      </span>
+                    )}
+
+                    {/* Cart badge special */}
+                    {tab.id === 'cart' && cartCount > 0 && (
+                      <span className="absolute -top-1 -right-1 min-w-[16px] h-4 px-0.5 bg-[#C5A059] text-[#0D221A] text-[9px] font-extrabold rounded-full flex items-center justify-center border border-[#0D221A]">
+                        {cartCount > 9 ? '9+' : cartCount}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Label */}
+                  <span className={`text-[10px] font-bold transition-all duration-200 max-w-[56px] truncate ${
+                    isActive ? 'text-[#EAD096]' : 'text-gray-500'
+                  }`}>
+                    {tab.label}
+                  </span>
+                </button>
+              );
+            })}
           </div>
-          <span className="text-[10px] font-bold">الرئيسية</span>
-        </button>
+        </div>
+      </nav>
 
-        {/* 2. Store Products Catalog Tab */}
-        <button
-          onClick={() => handleTabClick('products')}
-          className={`flex flex-col items-center justify-center gap-1 transition-all duration-200 active:scale-90 ${
-            activeTab === 'products'
-              ? 'text-[#EAD096]'
-              : 'text-gray-400 hover:text-gray-200'
-          }`}
-        >
-          <div className={`p-1.5 rounded-2xl transition-all ${
-            activeTab === 'products' ? 'bg-[#C5A059]/20 text-[#EAD096] border border-[#C5A059]/40' : ''
-          }`}>
-            <ShoppingBag className="w-5 h-5" />
-          </div>
-          <span className="text-[10px] font-bold">المتجر</span>
-        </button>
-
-        {/* 3. Skin Quiz Tab (Highlighted Hero FAB) */}
-        <button
-          onClick={() => handleTabClick('quiz')}
-          className="flex flex-col items-center justify-center gap-1 relative -top-3 transition-all duration-200 active:scale-95"
-        >
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#D4AF37] via-[#C5A059] to-[#987834] text-[#0D221A] flex items-center justify-center shadow-lg shadow-[#C5A059]/40 border-2 border-[#F3E5AB]">
-            <Sparkles className="w-6 h-6 animate-pulse" />
-          </div>
-          <span className="text-[10px] font-bold text-[#EAD096]">الروتين</span>
-        </button>
-
-        {/* 4. Wishlist Tab */}
-        <button
-          onClick={() => handleTabClick('wishlist')}
-          className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 active:scale-90 ${
-            activeTab === 'wishlist'
-              ? 'text-[#EAD096]'
-              : 'text-gray-400 hover:text-gray-200'
-          }`}
-        >
-          <div className={`p-1.5 rounded-2xl transition-all relative ${
-            activeTab === 'wishlist' ? 'bg-[#C5A059]/20 text-[#EAD096] border border-[#C5A059]/40' : ''
-          }`}>
-            <Heart className="w-5 h-5" />
-            {wishlistCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#C5A059] text-[#0D221A] text-[9px] font-extrabold rounded-full flex items-center justify-center border border-[#0D221A]">
-                {wishlistCount}
-              </span>
-            )}
-          </div>
-          <span className="text-[10px] font-bold">المفضلة</span>
-        </button>
-
-        {/* 5. Cart Drawer Trigger Tab */}
-        <button
-          onClick={() => handleTabClick('cart')}
-          className="flex flex-col items-center justify-center gap-1 relative transition-all duration-200 active:scale-90 text-gray-400 hover:text-gray-200"
-        >
-          <div className="p-1.5 rounded-2xl relative">
-            <ShoppingCart className="w-5 h-5 text-[#EAD096]" />
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-rose-600 text-white text-[9px] font-extrabold rounded-full flex items-center justify-center border border-[#0D221A]">
-                {cartCount}
-              </span>
-            )}
-          </div>
-          <span className="text-[10px] font-bold">السلة</span>
-        </button>
-
-        {/* 6. Profile / Admin Tab */}
-        <button
-          onClick={() => handleTabClick('profile')}
-          className={`flex flex-col items-center justify-center gap-1 transition-all duration-200 active:scale-90 ${
-            isProfileActive
-              ? 'text-[#EAD096]'
-              : 'text-gray-400 hover:text-gray-200'
-          }`}
-        >
-          <div className="p-1.5 rounded-2xl">
-            {currentUser?.avatar ? (
-              <img src={currentUser.avatar} alt={currentUser.fullName} className="w-5 h-5 rounded-full object-cover border border-[#C5A059]" />
-            ) : currentUser?.role === 'Admin' ? (
-              <ShieldCheck className="w-5 h-5 text-[#EAD096]" />
-            ) : (
-              <User className="w-5 h-5" />
-            )}
-          </div>
-          <span className="text-[10px] font-bold">
-            {currentUser ? (currentUser.role === 'Admin' ? 'الأدمن' : 'حسابي') : 'دخول'}
-          </span>
-        </button>
-
-      </div>
-
-      {/* Mobile Logged-in User Profile Modal Sheet */}
+      {/* ==================== PROFILE BOTTOM SHEET ==================== */}
       {isProfileMenuOpen && currentUser && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
-          <div className="bg-[#0D221A] text-white rounded-t-3xl sm:rounded-3xl p-6 max-w-sm w-full border-t-2 sm:border-2 border-[#C5A059] shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-[#C5A059]/30 pb-3">
+        <div
+          className="sm:hidden fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm animate-fadeIn"
+          onClick={() => setIsProfileMenuOpen(false)}
+        >
+          <div
+            className="absolute bottom-0 left-0 right-0 bg-[#0D221A] animate-slideFromBottom"
+            style={{
+              borderRadius: '28px 28px 0 0',
+              paddingBottom: 'max(24px, env(safe-area-inset-bottom, 16px))'
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Grab bar */}
+            <div className="w-10 h-1 bg-[#C5A059]/40 rounded-full mx-auto mt-3 mb-4" />
+
+            {/* User Card */}
+            <div className="mx-4 mb-4 p-4 rounded-2xl bg-[#143529] border border-[#C5A059]/30">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#143529] border border-[#C5A059] flex items-center justify-center text-[#EAD096] font-bold overflow-hidden">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EAD096] to-[#C5A059] border-2 border-[#C5A059] overflow-hidden flex items-center justify-center text-[#0D221A]">
                   {currentUser.avatar ? (
                     <img src={currentUser.avatar} alt={currentUser.fullName} className="w-full h-full object-cover" />
-                  ) : currentUser.role === 'Admin' ? (
-                    <ShieldCheck className="w-5 h-5" />
                   ) : (
-                    <User className="w-5 h-5" />
+                    <User className="w-6 h-6 stroke-[2]" />
                   )}
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-[#EAD096]">{currentUser.fullName}</h4>
-                  <p className="text-[11px] text-gray-400">{currentUser.email}</p>
+                  <p className="font-extrabold text-[#EAD096] text-sm">{currentUser.fullName}</p>
+                  <p className="text-xs text-gray-400">{currentUser.email}</p>
                 </div>
               </div>
-              <button
-                onClick={() => setIsProfileMenuOpen(false)}
-                className="p-1.5 text-gray-400 hover:text-white rounded-full bg-[#143529]"
-              >
-                <X className="w-5 h-5" />
-              </button>
             </div>
 
-            <div className="space-y-2 pt-1">
+            {/* Menu Items */}
+            <div className="px-4 space-y-2 mb-2">
+              
               <button
-                onClick={() => {
-                  setIsProfileMenuOpen(false);
-                  setActiveTab('profile');
-                  // will default to info tab in UserProfilePage
-                }}
-                className="w-full py-3 px-4 rounded-2xl bg-[#143529] text-[#EAD096] border border-[#C5A059]/50 font-bold text-xs flex items-center justify-center gap-2 shadow-sm"
+                onClick={() => { setActiveTab('profile'); setIsProfileMenuOpen(false); }}
+                className="w-full flex items-center justify-between p-4 rounded-2xl bg-[#143529]/80 border border-[#C5A059]/20 text-right active:bg-[#C5A059]/10 transition-colors"
               >
-                <User className="w-4 h-4 text-[#C5A059]" />
-                <span>البيانات الشخصية والتعديل 👤</span>
+                <ChevronRight className="w-4 h-4 text-gray-500" />
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-bold text-white">تعديل بياناتي وصورتي 👤</span>
+                  <div className="w-9 h-9 rounded-xl bg-[#0D221A] flex items-center justify-center">
+                    <User className="w-5 h-5 text-[#C5A059]" />
+                  </div>
+                </div>
               </button>
 
-              <button
-                onClick={() => {
-                  setIsProfileMenuOpen(false);
-                  setActiveTab('orders');
-                }}
-                className="w-full py-3 px-4 rounded-2xl bg-gradient-to-l from-[#143529] to-[#1a3f2f] text-[#EAD096] border border-[#C5A059]/50 font-bold text-xs flex items-center justify-center gap-2 shadow-sm"
-              >
-                <ShoppingBag className="w-4 h-4 text-[#C5A059]" />
-                <span>سجل طلباتي وتتبع الشحن 🛍️</span>
-              </button>
-
-              {/* Strict Admin Role Guard */}
               {currentUser?.role === 'Admin' && (
                 <button
-                  onClick={() => {
-                    setIsProfileMenuOpen(false);
-                    onOpenAdminDashboard();
-                  }}
-                  className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#C5A059] to-[#987834] text-[#0D221A] font-bold text-xs flex items-center justify-center gap-2 shadow-lg"
+                  onClick={() => { onOpenAdminDashboard(); setIsProfileMenuOpen(false); }}
+                  className="w-full flex items-center justify-between p-4 rounded-2xl bg-[#C5A059]/10 border border-[#C5A059]/40 text-right active:bg-[#C5A059]/20 transition-colors"
                 >
-                  <ShieldCheck className="w-4 h-4" />
-                  <span>دخول لوحة تحكم الأدمن 👑</span>
+                  <ChevronRight className="w-4 h-4 text-gray-500" />
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-bold text-[#EAD096]">لوحة تحكم الأدمن 👑</span>
+                    <div className="w-9 h-9 rounded-xl bg-[#C5A059]/20 flex items-center justify-center">
+                      <ShieldCheck className="w-5 h-5 text-[#C5A059]" />
+                    </div>
+                  </div>
                 </button>
               )}
 
               <button
-                onClick={() => {
-                  setIsProfileMenuOpen(false);
-                  onLogout && onLogout();
-                }}
-                className="w-full py-3 px-4 rounded-2xl bg-rose-950/80 text-rose-200 border border-rose-500/40 font-bold text-xs flex items-center justify-center gap-2"
+                onClick={() => { onLogout(); setIsProfileMenuOpen(false); }}
+                className="w-full flex items-center justify-between p-4 rounded-2xl bg-rose-950/50 border border-rose-500/30 text-right active:bg-rose-900/40 transition-colors"
               >
-                <LogOut className="w-4 h-4 text-rose-400" />
-                <span>تسجيل الخروج 🚪</span>
+                <ChevronRight className="w-4 h-4 text-gray-500" />
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-bold text-rose-300">تسجيل الخروج</span>
+                  <div className="w-9 h-9 rounded-xl bg-rose-950 flex items-center justify-center">
+                    <LogOut className="w-5 h-5 text-rose-400" />
+                  </div>
+                </div>
               </button>
+
             </div>
           </div>
         </div>

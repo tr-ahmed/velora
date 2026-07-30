@@ -59,16 +59,24 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
       
-      <div className="relative w-full max-w-md bg-[#0D221A] text-white rounded-t-3xl sm:rounded-3xl p-5 sm:p-8 border-t-2 sm:border-2 border-[#C5A059] shadow-2xl overflow-hidden max-h-[92vh] sm:max-h-[90vh] overflow-y-auto">
-        
+      <div
+        className="relative w-full max-w-md bg-[#0D221A] text-white border-t-2 sm:border-2 border-[#C5A059] shadow-2xl overflow-hidden overflow-y-auto"
+        style={{
+          borderRadius: '28px 28px 0 0',
+          maxHeight: '94svh',
+          paddingBottom: 'env(safe-area-inset-bottom, 16px)'
+        }}
+      >
         {/* Mobile Grab Handle */}
-        <div className="w-12 h-1.5 bg-[#C5A059]/40 rounded-full mx-auto mb-3 sm:hidden" />
+        <div className="w-10 h-1.5 bg-[#C5A059]/30 rounded-full mx-auto mt-3 mb-0 sm:hidden" />
 
+        <div className="px-5 sm:px-8 pt-4 sm:pt-0">
         <button
           onClick={() => { resetForm(); onClose(); }}
-          className="absolute top-3 left-3 sm:top-4 sm:left-4 p-2 text-[#C5A059] hover:text-white rounded-full bg-[#143529]"
+          className="absolute top-3 left-3 sm:top-4 sm:left-4 w-10 h-10 text-[#C5A059] hover:text-white rounded-full bg-[#143529] flex items-center justify-center active:scale-90 transition-transform"
+          aria-label="إغلاق"
         >
-          <X className="w-4 h-4 sm:w-5 sm:h-5" />
+          <X className="w-5 h-5" />
         </button>
 
         <div className="text-center space-y-2 mb-6">
@@ -90,51 +98,53 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-3">
-          
+        <form onSubmit={handleSubmit} className="space-y-3 mt-4">
+
+          {/* Field helper function pattern */}
           {isRegister && (
             <div>
-              <label className="block text-xs font-bold text-[#EAD096] mb-1">الاسم الكامل *</label>
+              <label className="block text-xs font-bold text-[#EAD096] mb-1.5">الاسم الكامل *</label>
               <div className="relative">
-                <User className="w-4 h-4 text-[#C5A059] absolute right-3.5 top-3" />
+                <User className="w-4 h-4 text-[#C5A059] absolute right-4 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   required
                   placeholder="أدخلي اسمك الكريم"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full pr-10 pl-4 py-2.5 bg-[#143529] border border-[#C5A059]/40 rounded-xl text-xs text-white focus:outline-none focus:border-[#C5A059]"
+                  className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-bold text-[#EAD096] mb-1">البريد الإلكتروني *</label>
+            <label className="block text-xs font-bold text-[#EAD096] mb-1.5">البريد الإلكتروني *</label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-[#C5A059] absolute right-3.5 top-3" />
+              <Mail className="w-4 h-4 text-[#C5A059] absolute right-4 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
                 required
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pr-10 pl-4 py-2.5 bg-[#143529] border border-[#C5A059]/40 rounded-xl text-xs text-white focus:outline-none focus:border-[#C5A059]"
+                className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all"
+                dir="ltr"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#EAD096] mb-1">كلمة المرور *</label>
+            <label className="block text-xs font-bold text-[#EAD096] mb-1.5">كلمة المرور *</label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-[#C5A059] absolute right-3.5 top-3" />
+              <Lock className="w-4 h-4 text-[#C5A059] absolute right-4 top-1/2 -translate-y-1/2" />
               <input
                 type="password"
                 required
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pr-10 pl-4 py-2.5 bg-[#143529] border border-[#C5A059]/40 rounded-xl text-xs text-white focus:outline-none focus:border-[#C5A059]"
+                className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all"
               />
             </div>
           </div>
@@ -142,29 +152,29 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
           {isRegister && (
             <>
               <div>
-                <label className="block text-xs font-bold text-[#EAD096] mb-1">رقم الموبايل *</label>
+                <label className="block text-xs font-bold text-[#EAD096] mb-1.5">رقم الموبايل *</label>
                 <div className="relative">
-                  <Phone className="w-4 h-4 text-[#C5A059] absolute right-3.5 top-3" />
+                  <Phone className="w-4 h-4 text-[#C5A059] absolute right-4 top-1/2 -translate-y-1/2" />
                   <input
                     type="tel"
                     required
                     placeholder="01XXXXXXXXX"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full pr-10 pl-4 py-2.5 bg-[#143529] border border-[#C5A059]/40 rounded-xl text-xs text-white focus:outline-none focus:border-[#C5A059]"
+                    className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all"
                     dir="ltr"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#EAD096] mb-1">المحافظة *</label>
+                <label className="block text-xs font-bold text-[#EAD096] mb-1.5">المحافظة *</label>
                 <div className="relative">
-                  <Building2 className="w-4 h-4 text-[#C5A059] absolute right-3.5 top-3" />
+                  <Building2 className="w-4 h-4 text-[#C5A059] absolute right-4 top-1/2 -translate-y-1/2" />
                   <select
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className="w-full pr-10 pl-4 py-2.5 bg-[#143529] border border-[#C5A059]/40 rounded-xl text-xs text-white focus:outline-none focus:border-[#C5A059] appearance-none"
+                    className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] appearance-none"
                   >
                     {EGYPT_GOVERNORATES.map(c => (
                       <option key={c} value={c}>{c}</option>
@@ -174,16 +184,16 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#EAD096] mb-1">العنوان التفصيلي *</label>
+                <label className="block text-xs font-bold text-[#EAD096] mb-1.5">العنوان التفصيلي *</label>
                 <div className="relative">
-                  <MapPin className="w-4 h-4 text-[#C5A059] absolute right-3.5 top-3" />
+                  <MapPin className="w-4 h-4 text-[#C5A059] absolute right-4 top-3.5" />
                   <input
                     type="text"
                     required
                     placeholder="المنطقة، الشارع، رقم العمارة أو الشقة"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    className="w-full pr-10 pl-4 py-2.5 bg-[#143529] border border-[#C5A059]/40 rounded-xl text-xs text-white focus:outline-none focus:border-[#C5A059]"
+                    className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all"
                   />
                 </div>
               </div>
@@ -193,14 +203,16 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary w-full py-3 text-sm mt-2 font-bold shadow-lg"
+            className="btn-primary w-full py-4 text-base mt-3 font-bold shadow-lg"
           >
             {loading ? 'جاري التحقق...' : isRegister ? 'إنشاء حساب جديد' : 'تسجيل الدخول'}
           </button>
 
         </form>
+        </div>{/* end px-5 wrapper */}
 
-        <div className="mt-6 pt-4 border-t border-[#C5A059]/20 text-center">
+        {/* Footer Links */}
+        <div className="px-5 sm:px-8 mt-5 pb-4 pt-4 border-t border-[#C5A059]/20 text-center">
           <button
             type="button"
             onClick={handleFillAdminDemo}
@@ -213,7 +225,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
             <button
               type="button"
               onClick={() => { resetForm(); setIsRegister(!isRegister); }}
-              className="text-xs text-gray-300 hover:text-white"
+              className="text-sm text-gray-300 hover:text-white font-medium"
             >
               {isRegister ? 'لديكِ حساب بالفعل؟ تسجيل الدخول' : 'ليس لديكِ حساب؟ انشئي حساباً جديداً'}
             </button>
