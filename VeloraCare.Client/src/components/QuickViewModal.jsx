@@ -106,36 +106,42 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
   if (!product) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn print:hidden">
       
-      <div className="relative w-full max-w-3xl bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden border-t-2 sm:border-2 border-[#C5A059] shadow-2xl max-h-[92vh] sm:max-h-[90vh] flex flex-col md:flex-row">
+      {/* Modal Card Box */}
+      <div className="relative w-full max-w-3xl bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden border-t-2 sm:border-2 border-[#C5A059] shadow-2xl max-h-[88vh] sm:max-h-[90vh] flex flex-col">
         
         {/* Mobile Grab Handle */}
         <div className="w-12 h-1.5 bg-[#C5A059]/40 rounded-full mx-auto my-2 sm:hidden flex-shrink-0" />
 
+        {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#0D221A]/80 text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0D221A] flex items-center justify-center transition-colors shadow-lg"
+          className="absolute top-3 left-3 sm:top-4 sm:left-4 z-30 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#0D221A] text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0D221A] flex items-center justify-center transition-colors shadow-lg"
+          title="إغلاق"
         >
           <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
-        <div className="md:w-1/2 relative bg-[#0D221A] flex items-center justify-center p-4 sm:p-6 min-h-[220px] sm:min-h-[300px] flex-shrink-0">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full max-h-[280px] sm:max-h-[380px] object-cover rounded-2xl shadow-xl border border-[#C5A059]/40"
-          />
-          {product.badge && (
-            <span className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-gradient-to-r from-[#C5A059] via-[#D4AF37] to-[#987834] text-[#0D221A] font-extrabold text-[10px] sm:text-xs px-3 py-1 rounded-full shadow-md">
-              {product.badge}
-            </span>
-          )}
-        </div>
-
-        <div className="md:w-1/2 p-4 sm:p-6 overflow-y-auto flex flex-col justify-between space-y-4">
+        {/* Scrollable Content Body */}
+        <div className="flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-4 pb-4">
           
-          <div className="space-y-3 text-right">
+          {/* Product Image Section */}
+          <div className="md:col-span-6 relative bg-[#0D221A] flex items-center justify-center p-4 sm:p-6 min-h-[180px] sm:min-h-[300px]">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-44 sm:h-auto max-h-[240px] sm:max-h-[360px] object-cover rounded-2xl shadow-xl border border-[#C5A059]/40"
+            />
+            {product.badge && (
+              <span className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-gradient-to-r from-[#C5A059] via-[#D4AF37] to-[#987834] text-[#0D221A] font-extrabold text-[10px] sm:text-xs px-3 py-1 rounded-full shadow-md">
+                {product.badge}
+              </span>
+            )}
+          </div>
+
+          {/* Product Details Section */}
+          <div className="md:col-span-6 p-4 sm:p-6 text-right space-y-3">
             
             <div>
               <div className="flex items-center justify-between gap-2 mb-1">
@@ -150,18 +156,18 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
                 </div>
               </div>
 
-              <h2 className="text-xl sm:text-2xl font-bold font-serif text-[#0D221A] leading-snug">
+              <h2 className="text-lg sm:text-2xl font-bold font-serif text-[#0D221A] leading-snug">
                 {product.name}
               </h2>
               <p className="text-xs text-[#987834] font-semibold mt-0.5">{product.tagline}</p>
             </div>
 
-            <div className="flex items-baseline gap-3 py-2 border-y border-gray-100">
-              <span className="text-2xl font-extrabold text-[#0D221A] font-serif">
+            <div className="flex items-baseline gap-3 py-2 border-y border-gray-100 flex-wrap">
+              <span className="text-xl sm:text-2xl font-extrabold text-[#0D221A] font-serif">
                 {product.price} <span className="text-xs font-normal">ج.م</span>
               </span>
               {product.originalPrice && (
-                <span className="text-sm text-gray-400 line-through font-light">
+                <span className="text-xs sm:text-sm text-gray-400 line-through font-light">
                   {product.originalPrice} ج.م
                 </span>
               )}
@@ -170,6 +176,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
               </span>
             </div>
 
+            {/* Content Tabs */}
             <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl text-[11px] font-bold">
               <button
                 onClick={() => setActiveTab('overview')}
@@ -198,104 +205,74 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
               </button>
             </div>
 
+            {/* Tab 1: Overview */}
             {activeTab === 'overview' && (
               <div className="space-y-2 animate-fadeIn text-xs leading-relaxed text-gray-700">
                 <p>{product.description || 'تركيبة فاخرة تمزج بين المكونات العضوية الزمردية والمستخلصات النباتية النادرة لنتائج سريعة ومبهرة.'}</p>
                 {product.benefits && (
-                  <div className="bg-[#F7F5F0] p-3 rounded-xl border border-[#C5A059]/30 mt-2">
-                    <span className="font-bold text-[#0D221A] block mb-1">الفوائد الرئيسية:</span>
-                    <p className="text-gray-700 font-light">{product.benefits}</p>
+                  <div className="bg-[#F7F5F0] p-2.5 rounded-xl border border-[#C5A059]/30 mt-1">
+                    <span className="font-bold text-[#0D221A] block mb-0.5">الفوائد الرئيسية:</span>
+                    <p className="text-gray-700 font-light text-[11px]">{product.benefits}</p>
                   </div>
                 )}
-                <div className="flex items-center gap-3 pt-1 text-[11px] text-gray-500">
+                <div className="flex items-center gap-3 text-[11px] text-gray-500">
                   <span>نوع البشرة: <strong className="text-[#0D221A]">{product.skinType || 'جميع أنواع البشرة'}</strong></span>
                 </div>
               </div>
             )}
 
+            {/* Tab 2: Ingredients */}
             {activeTab === 'ingredients' && (
               <div className="animate-fadeIn space-y-2 text-xs leading-relaxed text-gray-700">
                 <div className="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200">
                   <span className="font-bold text-emerald-900 block mb-1 flex items-center gap-1">
                     <Droplet className="w-3.5 h-3.5 text-emerald-600" />
-                    المكونات النادرة العضوية:
+                    المكونات العضوية الزمردية 🌿
                   </span>
-                  <p className="text-emerald-800 font-light">{product.ingredients || 'زيت الزمرد النادر، حمض الهيالورون الثلاثي، فيتامين C، مستخلص الورد الجوري العضوي، والببتيدات النباتية.'}</p>
+                  <p className="text-gray-600 font-light">{product.ingredients || 'زيت الزمرد العضوي، حمض الهيالورونيك الثلاثي، خلاصة الشاي الأخضر، وزيت جوجوبا بكر.'}</p>
                 </div>
               </div>
             )}
 
+            {/* Tab 3: How to Use */}
             {activeTab === 'howToUse' && (
               <div className="animate-fadeIn space-y-2 text-xs leading-relaxed text-gray-700">
-                <div className="bg-[#FAF8F5] p-3 rounded-xl border border-[#C5A059]/30">
+                <div className="bg-[#FAF8F5] p-3 rounded-xl border border-gray-200">
                   <span className="font-bold text-[#0D221A] block mb-1 flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5 text-[#C5A059]" />
-                    خطوات الاستخدام الصحيحة:
+                    طريقة الاستخدام الأمثلة ✨
                   </span>
-                  <p className="text-gray-700 font-light">{product.howToUse || 'ضعي 3 إلى 4 قطرات على بشرة نظيفة وجافة صباحاً ومساءً مع تدليك ناعم بحركات دائرية لأعلى.'}</p>
+                  <p className="text-gray-600 font-light">{product.howToUse || 'ضعي 3-4 قطرات على بشرة نظيفة وجافة صباحاً ومساءً. دلكي بحركات دائرية لطيفة حتى تمام الامتصاص.'}</p>
                 </div>
               </div>
             )}
 
+            {/* Tab 4: Reviews */}
             {activeTab === 'reviews' && (
               <div className="animate-fadeIn space-y-3">
-                
-                <div className="flex items-center gap-4 p-3 bg-[#F7F5F0] rounded-xl border border-[#C5A059]/20">
-                  <div className="text-center">
-                    <span className="text-2xl font-extrabold text-[#0D221A] font-serif">{avgRating || product.rating || '—'}</span>
-                    <StarRatingDisplay rating={avgRating || product.rating} size="w-3.5 h-3.5" />
-                    <span className="text-[10px] text-gray-500">{totalReviews} تقييم</span>
-                  </div>
-                  <div className="flex-1 space-y-1">
-                    {[5, 4, 3, 2, 1].map((star) => {
-                      const count = reviews.filter(r => r.rating === star).length;
-                      const pct = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
-                      return (
-                        <div key={star} className="flex items-center gap-2 text-[10px]" dir="ltr">
-                          <span className="w-3 text-gray-500 text-right">{star}</span>
-                          <Star className="w-3 h-3 text-[#C5A059] fill-[#C5A059]" />
-                          <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                            <div className="h-full bg-[#C5A059] rounded-full" style={{ width: `${pct}%` }} />
-                          </div>
-                          <span className="w-4 text-gray-400 text-left">{count}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {currentUser && currentUser.role !== 'Admin' && (
-                  <div className="p-3 bg-white rounded-xl border border-[#C5A059]/30 space-y-2">
-                    <p className="text-[11px] font-bold text-[#0D221A]">كتبي تقييمك للمنتج:</p>
+                {currentUser ? (
+                  <form onSubmit={handleSubmitReview} className="bg-[#FAF8F5] p-3 rounded-xl border border-[#C5A059]/30 space-y-2">
+                    <span className="font-bold text-[#0D221A] text-xs block">أضيفي تقييمكِ لمستحضر فيلورا:</span>
                     <StarRatingInput value={myRating} onChange={setMyRating} />
                     <textarea
+                      rows="2"
+                      placeholder="اكتبي رأيك بكل صراحة..."
                       value={myComment}
                       onChange={(e) => setMyComment(e.target.value)}
-                      placeholder="اكتبي رأيك في المنتج..."
-                      rows={2}
-                      className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:outline-none focus:border-[#C5A059] bg-[#F7F5F0] resize-none"
+                      className="w-full p-2 text-xs rounded-lg border border-gray-300 focus:outline-none focus:border-[#C5A059]"
                     />
-                    {reviewError && (
-                      <div className="flex items-center gap-1 text-rose-600 text-[10px]">
-                        <AlertCircle className="w-3 h-3" />
-                        {reviewError}
-                      </div>
-                    )}
-                    {reviewSuccess && (
-                      <div className="text-emerald-600 text-[10px] font-bold">تم إرسال تقييمك بنجاح!</div>
-                    )}
+                    {reviewError && <p className="text-[10px] text-rose-600 font-bold">{reviewError}</p>}
+                    {reviewSuccess && <p className="text-[10px] text-emerald-600 font-bold">تم نشر تقييمكِ بنجاح! ❤️</p>}
                     <button
-                      onClick={handleSubmitReview}
+                      type="submit"
                       disabled={submitting}
-                      className="btn-primary text-[11px] py-2 px-4 w-full"
+                      className="w-full py-1.5 rounded-lg bg-[#0D221A] text-[#EAD096] text-xs font-bold hover:bg-[#C5A059] hover:text-[#0D221A] transition-colors flex items-center justify-center gap-1"
                     >
                       <Send className="w-3 h-3" />
-                      {submitting ? 'جاري الإرسال...' : 'إرسال التقييم'}
+                      <span>{submitting ? 'جاري الإرسال...' : 'إرسال التقييم'}</span>
                     </button>
-                  </div>
-                )}
-
-                {!currentUser && (
+                  </form>
+                ) : (
                   <button
                     onClick={onOpenAuth}
                     className="w-full py-2.5 rounded-xl border border-[#C5A059]/40 text-[11px] font-bold text-[#0D221A] hover:bg-[#F7F5F0] transition-colors flex items-center justify-center gap-2"
@@ -305,15 +282,15 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
                   </button>
                 )}
 
-                <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
+                <div className="space-y-2 max-h-36 overflow-y-auto pr-1">
                   {reviews.length === 0 && (
-                    <p className="text-center text-xs text-gray-400 py-4">لا توجد تقييمات بعد — كوني أول من يقيّم!</p>
+                    <p className="text-center text-xs text-gray-400 py-3">لا توجد تقييمات بعد — كوني أول من يقيّم!</p>
                   )}
                   {reviews.map((review) => (
-                    <div key={review.id} className="p-3 bg-[#FAF8F5] rounded-xl border border-gray-100 text-right">
+                    <div key={review.id} className="p-2.5 bg-[#FAF8F5] rounded-xl border border-gray-100 text-right">
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-[#143529] text-[#EAD096] flex items-center justify-center text-[10px] font-bold">
+                          <div className="w-6 h-6 rounded-full bg-[#143529] text-[#EAD096] flex items-center justify-center text-[10px] font-bold">
                             {review.userName?.charAt(0)}
                           </div>
                           <span className="text-[11px] font-bold text-[#0D221A]">{review.userName}</span>
@@ -321,9 +298,6 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
                         <StarRatingDisplay rating={review.rating} size="w-3 h-3" />
                       </div>
                       <p className="text-[11px] text-gray-600 leading-relaxed">{review.comment}</p>
-                      <span className="text-[9px] text-gray-400 mt-1 block" dir="ltr">
-                        {new Date(review.createdAt).toLocaleDateString('ar-EG')}
-                      </span>
                     </div>
                   ))}
                 </div>
@@ -333,34 +307,39 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
 
           </div>
 
-          <div className="pt-3 border-t border-gray-100 space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center border border-gray-300 rounded-xl overflow-hidden bg-gray-50">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-3 py-1.5 text-gray-600 hover:bg-gray-200 font-bold"
-                >
-                  -
-                </button>
-                <span className="px-3 py-1.5 text-xs font-bold text-[#0D221A]">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="px-3 py-1.5 text-gray-600 hover:bg-gray-200 font-bold"
-                >
-                  +
-                </button>
-              </div>
+        </div>
 
+        {/* ALWAYS STICKY BOTTOM ACTION BAR (100% VISIBLE ON MOBILE) */}
+        <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 sm:p-4 z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.08)]">
+          <div className="flex items-center gap-2 sm:gap-3 max-w-xl mx-auto">
+            
+            {/* Quantity Controls */}
+            <div className="flex items-center border border-gray-300 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0">
               <button
-                onClick={handleAdd}
-                className="btn-primary flex-1 text-xs py-3 px-6 flex items-center justify-center gap-2 shadow-lg"
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                className="px-3 py-2 text-gray-600 hover:bg-gray-200 font-extrabold text-sm"
               >
-                <ShoppingBag className="w-4 h-4" />
-                <span>إضافة للسلة ({product.price * quantity} ج.م)</span>
+                -
+              </button>
+              <span className="px-3 py-2 text-xs font-extrabold text-[#0D221A]">{quantity}</span>
+              <button
+                onClick={() => setQuantity(quantity + 1)}
+                className="px-3 py-2 text-gray-600 hover:bg-gray-200 font-extrabold text-sm"
+              >
+                +
               </button>
             </div>
-          </div>
 
+            {/* Main Add to Cart CTA */}
+            <button
+              onClick={handleAdd}
+              className="btn-primary flex-1 text-xs sm:text-sm py-3 px-4 sm:px-6 flex items-center justify-center gap-2 shadow-xl"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span>إضافة للسلة ({product.price * quantity} ج.م)</span>
+            </button>
+
+          </div>
         </div>
 
       </div>
