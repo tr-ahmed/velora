@@ -111,7 +111,7 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
           
           {/* VELORA Care Logo — Positioned right above the central headline text */}
           <div className="mb-3 flex items-center justify-center mx-auto animate-fadeIn">
-            <VeloraLogo size="lg" glow={true} className="scale-118 sm:scale-135 drop-shadow-[0_5px_22px_rgba(197,160,89,0.55)]" />
+            <VeloraLogo size="xl" glow={true} className="scale-110 sm:scale-130 drop-shadow-[0_6px_25px_rgba(197,160,89,0.6)]" />
           </div>
 
           {/* Category badge (إصدار محدود بالذهب ✨) */}
