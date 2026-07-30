@@ -320,6 +320,7 @@ export default function App() {
               products={products}
               selectedCategory={selectedCategory}
               onAddToCart={handleAddToCart}
+              onRemoveFromCart={handleRemoveItem}
               onQuickView={(p) => setQuickViewProduct(p)}
               wishlist={wishlist}
               onToggleWishlist={handleToggleWishlist}
@@ -341,6 +342,7 @@ export default function App() {
               products={products}
               selectedCategory={selectedCategory}
               onAddToCart={handleAddToCart}
+              onRemoveFromCart={handleRemoveItem}
               onQuickView={(p) => setQuickViewProduct(p)}
               wishlist={wishlist}
               onToggleWishlist={handleToggleWishlist}

@@ -6,6 +6,7 @@ export default function ProductGrid({
   products = [], 
   selectedCategory, 
   onAddToCart, 
+  onRemoveFromCart,
   onQuickView, 
   onQuickBuy,
   wishlist, 
@@ -40,9 +41,15 @@ export default function ProductGrid({
   );
 
   const handleAddToCart = (product) => {
-    onAddToCart(product);
-    setAddedId(product.id);
-    setTimeout(() => setAddedId(null), 1800);
+    const alreadyInCart = cartItems.some(item => item.id === product.id);
+    if (alreadyInCart) {
+      onRemoveFromCart(product.id);
+      setAddedId(null);
+    } else {
+      onAddToCart(product);
+      setAddedId(product.id);
+      setTimeout(() => setAddedId(null), 1800);
+    }
   };
 
   const handleWishlistClick = (e, productId, productName) => {
@@ -241,14 +248,18 @@ export default function ProductGrid({
                         type="button"
                         onClick={(e) => { e.stopPropagation(); handleAddToCart(product); }}
                         className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 active:scale-90 relative ${
-                          isJustAdded || isInCart
+                          isInCart
+                            ? 'bg-rose-700 text-white border border-rose-400 shadow-md'
+                            : isJustAdded
                             ? 'bg-emerald-700 text-white border border-emerald-400 shadow-md'
                             : 'bg-[#0D221A] text-[#EAD096] hover:bg-[#C5A059] hover:text-[#0D221A]'
                         }`}
-                        title={isInCart ? `تمت الإضافة للسلة (${cartQty})` : "أضيفي للسلة"}
-                        aria-label="أضيفي للسلة"
+                        title={isInCart ? `إزالة من السلة` : "أضيفي للسلة"}
+                        aria-label={isInCart ? "إزالة من السلة" : "أضيفي للسلة"}
                       >
-                        {isJustAdded || isInCart ? (
+                        {isInCart ? (
+                          <X className="w-4 h-4 stroke-[3]" />
+                        ) : isJustAdded ? (
                           <Check className="w-4 h-4 text-emerald-200 stroke-[3]" />
                         ) : (
                           <ShoppingBag className="w-4 h-4" />
