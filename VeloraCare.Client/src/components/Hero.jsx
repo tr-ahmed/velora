@@ -106,16 +106,13 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
         {/* Gold Orb Glow */}
         <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#C5A059]/15 blur-3xl pointer-events-none" />
 
-        {/* Top Header Logo Bar — Perfectly balanced size */}
-        <div className="relative z-20 flex items-center justify-center text-center px-5 pt-4 pb-1 mt-1"
-             style={{ paddingTop: 'max(14px, env(safe-area-inset-top, 14px))' }}>
-          <div className="flex items-center justify-center mx-auto animate-fadeIn">
+        {/* Middle floating — Centered Logo, Badge, Headline, Description & Rating */}
+        <div className="relative z-20 flex-1 flex flex-col items-center justify-center text-center px-5 pt-4 pb-2">
+          
+          {/* VELORA Care Logo — Positioned right above the central headline text */}
+          <div className="mb-3 flex items-center justify-center mx-auto animate-fadeIn">
             <VeloraLogo size="lg" glow={true} className="scale-118 sm:scale-135 drop-shadow-[0_5px_22px_rgba(197,160,89,0.55)]" />
           </div>
-        </div>
-
-        {/* Middle floating — Centered Badge, Headline, Description & Rating */}
-        <div className="relative z-20 flex-1 flex flex-col items-center justify-center text-center px-5 py-2">
 
           {/* Category badge (إصدار محدود بالذهب ✨) */}
           <div
