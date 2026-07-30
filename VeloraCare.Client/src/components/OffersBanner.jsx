@@ -41,18 +41,17 @@ export default function OffersBanner({ offer, onApplyCoupon }) {
   const formatDigit = (num) => String(num).padStart(2, '0');
 
   return (
-    <div className="relative z-40 px-2 sm:px-4 pt-2 pb-1 bg-[#091712] print:hidden animate-fadeIn" dir="rtl">
+    <div className="relative z-40 px-2 sm:px-4 py-1.5 bg-[#081813]/85 backdrop-blur-2xl border-b border-[#C5A059]/35 shadow-2xl print:hidden animate-fadeIn" dir="rtl">
       
-      {/* Floating Capsule Bar Container */}
-      <div className="relative overflow-hidden rounded-2xl sm:rounded-full bg-gradient-to-r from-[#0C241B] via-[#143A2C] to-[#0C241B] border border-[#C5A059]/50 shadow-[0_8px_32px_rgba(0,0,0,0.6)] px-3 sm:px-6 py-2 transition-all">
+      {/* Glassmorphic Floating Capsule Container */}
+      <div className="relative overflow-hidden rounded-2xl sm:rounded-full bg-gradient-to-r from-[#0C241B]/90 via-[#143529]/90 to-[#0C241B]/90 border border-[#C5A059]/50 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-xl px-3 sm:px-6 py-2 transition-all">
         
         {/* Animated Golden Shimmer Bar */}
         <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#EAD096] to-transparent animate-pulse" />
-        <div className="absolute -inset-x-20 top-0 h-full w-40 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12 animate-shimmer pointer-events-none" />
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 relative z-10">
           
-          {/* Right Side: Title & Promo Badge */}
+          {/* Title & Promo Badge */}
           <div className="flex items-center gap-2.5 text-center sm:text-right">
             
             {/* Glowing Icon Orb */}
@@ -76,7 +75,7 @@ export default function OffersBanner({ offer, onApplyCoupon }) {
 
           </div>
 
-          {/* Left Side: Digit Timer Blocks & Copy Button */}
+          {/* Timer & Copy Button */}
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center">
             
             {/* Digital Timer Blocks */}
