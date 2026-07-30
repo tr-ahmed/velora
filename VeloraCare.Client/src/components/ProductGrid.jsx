@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingBag, Eye, Heart, Star, Check, Search, X, Sparkles, Zap } from 'lucide-react';
+import { ShoppingBag, Eye, Heart, Star, Check, Search, X, Sparkles } from 'lucide-react';
 import Pagination from './Pagination';
 
 export default function ProductGrid({ 
@@ -221,7 +221,7 @@ export default function ProductGrid({
 
                     {/* Action buttons */}
                     <div className="flex items-center gap-1.5">
-{/* Quick Buy Express Button */}
+{/* Quick View Button */}
                       <button
                         type="button"
                         onClick={(e) => {
@@ -229,11 +229,10 @@ export default function ProductGrid({
                           e.stopPropagation();
                           if (onQuickView) onQuickView(product);
                         }}
-                        className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] text-xs font-black flex items-center gap-1 shadow-md active:scale-95 transition-all hover:brightness-110 cursor-pointer"
+                        className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] text-xs font-black shadow-md active:scale-95 transition-all hover:brightness-110 cursor-pointer"
                         title="معاينة سريعة"
                         aria-label="معاينة"
                       >
-                        <Zap className="w-3.5 h-3.5 fill-current stroke-[2.5]" />
                         <span>معاينة</span>
                       </button>
 
