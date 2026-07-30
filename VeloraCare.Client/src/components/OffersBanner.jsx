@@ -41,7 +41,7 @@ export default function OffersBanner({ offer, onApplyCoupon }) {
   const formatDigit = (num) => String(num).padStart(2, '0');
 
   return (
-    <div className="sticky top-0 z-40 px-2 sm:px-4 py-1.5 bg-[#081813]/90 backdrop-blur-2xl border-b border-[#C5A059]/40 shadow-2xl print:hidden animate-fadeIn" dir="rtl">
+    <div className="w-full print:hidden animate-fadeIn" dir="rtl">
       
       {/* Glassmorphic Floating Capsule Container */}
       <div className="relative overflow-hidden rounded-2xl sm:rounded-full bg-gradient-to-r from-[#0C241B]/90 via-[#143529]/90 to-[#0C241B]/90 border border-[#C5A059]/50 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-xl px-3 sm:px-6 py-2 transition-all">

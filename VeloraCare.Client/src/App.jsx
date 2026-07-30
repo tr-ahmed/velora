@@ -285,9 +285,6 @@ export default function App() {
   return (
     <div dir="rtl" className="min-h-screen flex flex-col bg-[#FAF8F5] text-[#0D221A] pb-16 sm:pb-0">
       
-      {/* Top Flash Sale Offers Banner */}
-      <OffersBanner offer={offers[0]} />
-
       {/* Header Bar */}
       <Header
         cartCount={cartTotalCount}
@@ -311,12 +308,18 @@ export default function App() {
         
         {activeTab === 'home' && (
           <>
-            <Hero
-              onExploreClick={handleExploreClick}
-              onOpenQuiz={() => setIsQuizOpen(true)}
-              slides={heroSlides}
-              settings={heroSettings}
-            />
+            {/* Hero Container with Floating Offers Banner Overlay */}
+            <div className="relative">
+              <div className="absolute top-2 sm:top-4 inset-x-2 sm:inset-x-8 z-30 pointer-events-auto">
+                <OffersBanner offer={offers[0]} />
+              </div>
+              <Hero
+                onExploreClick={handleExploreClick}
+                onOpenQuiz={() => setIsQuizOpen(true)}
+                slides={heroSlides}
+                settings={heroSettings}
+              />
+            </div>
             <Categories
               selectedCategory={selectedCategory}
               onSelectCategory={(catId) => {

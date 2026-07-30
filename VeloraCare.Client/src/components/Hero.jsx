@@ -107,7 +107,7 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
         <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#C5A059]/15 blur-3xl pointer-events-none" />
 
         {/* Middle floating — Centered Logo, Badge, Headline, Description & Rating */}
-        <div className="relative z-20 flex-1 flex flex-col items-center justify-center text-center px-5 pt-4 pb-2">
+        <div className="relative z-20 flex-1 flex flex-col items-center justify-center text-center px-5 pt-16 sm:pt-20 pb-4">
           
           {/* VELORA Care Logo — Positioned right above the central headline text */}
           <div className="mb-3 flex items-center justify-center mx-auto animate-fadeIn">
