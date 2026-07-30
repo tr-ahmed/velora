@@ -115,11 +115,11 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
         </div>
 
         {/* Middle floating — Rating badge */}
-        <div className="relative z-20 flex-1 flex flex-col justify-center px-5 py-6">
+        <div className="relative z-20 flex-1 flex flex-col justify-center items-center text-center px-5 py-6">
           {/* Category badge */}
           <div
             key={`badge-${slide.id}`}
-            className="animate-slideUp inline-flex self-start items-center gap-1.5 mb-4 px-3 py-1.5 rounded-full bg-[#143529]/90 border border-[#C5A059]/50 backdrop-blur-md"
+            className="animate-slideUp inline-flex items-center justify-center gap-1.5 mb-4 px-3.5 py-1.5 rounded-full bg-[#143529]/90 border border-[#C5A059]/50 backdrop-blur-md mx-auto"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
             <span className="text-[#EAD096] text-[11px] font-extrabold">{slide.badge}</span>
@@ -128,7 +128,7 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
           {/* Main Headline */}
           <h1
             key={`h1-${slide.id}`}
-            className="animate-slideUp text-[2.6rem] leading-[1.1] font-extrabold text-white mb-2 font-serif"
+            className="animate-slideUp text-[2.4rem] sm:text-[2.8rem] leading-[1.15] font-extrabold text-white text-center mb-3 font-serif"
             style={{ animationDelay: '0.05s' }}
           >
             {slide.titleHighlight}
@@ -140,14 +140,14 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
 
           <p
             key={`desc-${slide.id}`}
-            className="animate-slideUp text-gray-300 text-sm leading-relaxed line-clamp-2 mb-6 max-w-xs font-light"
+            className="animate-slideUp text-gray-300 text-sm leading-relaxed text-center line-clamp-2 mb-6 max-w-sm mx-auto font-light"
             style={{ animationDelay: '0.1s' }}
           >
             {slide.description}
           </p>
 
           {/* Rating pill */}
-          <div className="flex items-center gap-2 mb-5">
+          <div className="flex items-center justify-center gap-2 mb-5">
             <div className="flex items-center gap-1 bg-[#0D221A]/70 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#C5A059]/30">
               <span className="text-[#C5A059] text-sm">★</span>
               <span className="text-white text-sm font-extrabold">{slide.rating}</span>
