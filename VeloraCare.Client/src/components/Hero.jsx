@@ -107,11 +107,11 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
         <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#C5A059]/15 blur-3xl pointer-events-none" />
 
         {/* Middle floating — Centered Enlarged Logo, Badge, Headline, Description & Rating */}
-        <div className="relative z-20 flex-1 flex flex-col items-center justify-center text-center px-5 pt-8 pb-4"
-             style={{ paddingTop: 'max(32px, env(safe-area-inset-top, 32px))' }}>
+        <div className="relative z-20 flex-1 flex flex-col items-center justify-center text-center px-5 pt-2 sm:pt-3 pb-2"
+             style={{ paddingTop: 'max(10px, env(safe-area-inset-top, 10px))' }}>
           
           {/* Prominent Enlarged VELORA Care Logo */}
-          <div className="mb-4 flex items-center justify-center mx-auto animate-fadeIn">
+          <div className="mb-2.5 flex items-center justify-center mx-auto animate-fadeIn">
             <VeloraLogo size="xl" glow={true} className="scale-105 sm:scale-125 drop-shadow-[0_4px_20px_rgba(197,160,89,0.5)]" />
           </div>
 
