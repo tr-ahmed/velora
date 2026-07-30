@@ -105,14 +105,11 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn"
-         style={{ paddingBottom: '56px' }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
       
-      <div className="relative w-full max-w-4xl bg-white border-t-2 sm:border-2 sm:rounded-3xl border-[#C5A059] shadow-2xl flex flex-col"
-           style={{ borderRadius: '28px 28px 0 0', maxHeight: 'calc(92svh - 56px)' }}>
-        
-        {/* Mobile Grab Handle */}
-        <div className="w-10 h-1.5 bg-gray-200 rounded-full mx-auto mt-3 mb-0 sm:hidden flex-shrink-0" />
+      <div className="relative w-full max-w-4xl bg-white border-2 rounded-3xl border-[#C5A059] shadow-2xl flex flex-col animate-popIn"
+           style={{ maxHeight: '88svh' }}>
+
 
         <button
           onClick={onClose}

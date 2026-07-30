@@ -57,21 +57,16 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn"
-         style={{ paddingBottom: '56px' }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
       
       <div
-        className="relative w-full max-w-md bg-[#0D221A] text-white border-t-2 sm:border-2 border-[#C5A059] shadow-2xl overflow-hidden overflow-y-auto"
+        className="relative w-full max-w-md bg-[#0D221A] text-white border-2 border-[#C5A059] rounded-3xl shadow-2xl overflow-hidden overflow-y-auto animate-popIn"
         style={{
-          borderRadius: '28px 28px 0 0',
-          maxHeight: 'calc(94svh - 56px)',
+          maxHeight: '88svh',
           paddingBottom: '0'
         }}
       >
-        {/* Mobile Grab Handle */}
-        <div className="w-10 h-1.5 bg-[#C5A059]/30 rounded-full mx-auto mt-3 mb-0 sm:hidden" />
-
-        <div className="px-5 sm:px-8 pt-4 sm:pt-0">
+        <div className="px-5 sm:px-8 pt-6 sm:pt-6">
         <button
           onClick={() => { resetForm(); onClose(); }}
           className="absolute top-3 left-3 sm:top-4 sm:left-4 w-10 h-10 text-[#C5A059] hover:text-white rounded-full bg-[#143529] flex items-center justify-center active:scale-90 transition-transform"

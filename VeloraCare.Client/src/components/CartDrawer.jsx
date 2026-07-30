@@ -38,29 +38,22 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
   };
 
   return (
-    <div className="fixed inset-0 z-50 animate-fadeIn" aria-modal="true" role="dialog">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn" aria-modal="true" role="dialog">
       
-      {/* Backdrop */}
+      {/* Backdrop click */}
       <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className="absolute inset-0"
         onClick={onClose}
       />
 
       {/* ============================================================
-          MOBILE: Full Bottom Sheet — sits ABOVE the bottom nav
+          MOBILE: Centered Modal Dialog
           ============================================================ */}
-      <div className="sm:hidden absolute left-0 right-0 bg-white animate-slideFromBottom flex flex-col"
+      <div className="sm:hidden relative w-full max-w-md bg-white rounded-3xl border-2 border-[#C5A059] shadow-2xl animate-popIn flex flex-col overflow-hidden"
            style={{
-             bottom: '56px',
-             borderRadius: '28px 28px 0 0',
-             maxHeight: 'calc(88svh - 56px)',
-             paddingBottom: '0'
+             maxHeight: '88svh'
            }}>
 
-        {/* Grab Handle */}
-        <div className="flex-shrink-0 pt-3 pb-1 flex flex-col items-center">
-          <div className="w-10 h-1.5 rounded-full bg-gray-200" />
-        </div>
 
         {/* Sheet Header */}
         <div className="flex-shrink-0 flex items-center justify-between px-5 pb-3 pt-1">

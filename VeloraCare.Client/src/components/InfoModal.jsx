@@ -71,11 +71,9 @@ export default function InfoModal({ isOpen, onClose, contentType }) {
   const activeContent = contentMap[contentType] || contentMap.faq;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
-      <div className="bg-white rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 max-w-lg w-full border-t-2 sm:border-2 border-[#C5A059] shadow-2xl space-y-4 max-h-[92vh] sm:max-h-[90vh] overflow-y-auto relative">
-        
-        {/* Mobile Grab Handle */}
-        <div className="w-12 h-1.5 bg-[#C5A059]/40 rounded-full mx-auto mb-2 sm:hidden" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+      <div className="bg-white rounded-3xl p-5 sm:p-6 max-w-lg w-full border-2 border-[#C5A059] shadow-2xl space-y-4 max-h-[88vh] sm:max-h-[90vh] overflow-y-auto relative animate-popIn">
+
 
         <div className="flex items-center justify-between border-b pb-3">
           <div className="flex items-center gap-3">
