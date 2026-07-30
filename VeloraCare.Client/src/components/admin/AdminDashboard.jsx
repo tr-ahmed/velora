@@ -302,32 +302,47 @@ export default function AdminDashboard({
     return filteredProducts.slice((productsPage - 1) * productsPerPage, productsPage * productsPerPage);
   }, [filteredProducts, productsPage, productsPerPage]);
 
-  // Dynamic Customer Database extracted from Orders
+  // Dynamic Customer Database extracted from Orders & Users
   const customerDatabase = useMemo(() => {
     const map = new Map();
-    orders.forEach(o => {
+    (orders || []).forEach(o => {
       const key = o.phone || o.fullName;
       if (!key) return;
       if (!map.has(key)) {
         map.set(key, {
-          name: o.fullName,
-          phone: o.phone,
-          city: o.city,
-          address: o.address,
+          name: o.fullName || 'عميلة فيلورا',
+          phone: o.phone || 'غير مسجل',
+          city: o.city || 'القاهرة',
+          address: o.address || 'العنوان الرئيسي',
           totalSpent: 0,
           ordersCount: 0,
-          lastOrderDate: o.createdAt
+          lastOrderDate: o.createdAt || new Date().toISOString()
         });
       }
       const cust = map.get(key);
       cust.totalSpent += (o.total || 0);
       cust.ordersCount += 1;
-      if (new Date(o.createdAt) > new Date(cust.lastOrderDate)) {
-        cust.lastOrderDate = o.createdAt;
+      if (o.createdAt) {
+        try {
+          if (!cust.lastOrderDate || new Date(o.createdAt) > new Date(cust.lastOrderDate)) {
+            cust.lastOrderDate = o.createdAt;
+          }
+        } catch (e) {}
       }
     });
+
     return Array.from(map.values());
   }, [orders]);
+
+  const formatDateSafe = (dateVal) => {
+    if (!dateVal) return 'حديثاً';
+    try {
+      const d = new Date(dateVal);
+      return isNaN(d.getTime()) ? 'حديثاً' : d.toLocaleDateString('ar-EG');
+    } catch (e) {
+      return 'حديثاً';
+    }
+  };
 
   const filteredCustomers = useMemo(() => {
     return customerDatabase.filter(c => 
@@ -1837,13 +1852,13 @@ export default function AdminDashboard({
                   <div className="grid grid-cols-2 gap-2 text-xs pt-1">
                     <div>
                       <span className="text-[10px] text-gray-400 block">المحافظة والعنوان</span>
-                      <p className="font-bold text-[#0D221A] text-[11px] truncate">{cust.city}</p>
+                      <p className="font-bold text-[#0D221A] text-[11px] truncate">{cust.city || 'القاهرة'}</p>
                       <p className="text-[10px] text-gray-500 truncate" title={cust.address}>{cust.address || 'العنوان الرئيسي'}</p>
                     </div>
                     <div className="text-left">
                       <span className="text-[10px] text-gray-400 block">إجمالي المشتريات</span>
-                      <p className="font-bold text-[#0D221A] text-[11px]">{cust.ordersCount} طلبات</p>
-                      <p className="text-[10px] text-gray-500" dir="ltr">آخر طلب: {new Date(cust.lastOrderDate).toLocaleDateString('ar-EG')}</p>
+                      <p className="font-bold text-[#0D221A] text-[11px]">{cust.ordersCount || 1} طلبات</p>
+                      <p className="text-[10px] text-gray-500" dir="ltr">آخر طلب: {formatDateSafe(cust.lastOrderDate)}</p>
                     </div>
                   </div>
                 </div>
@@ -1867,14 +1882,14 @@ export default function AdminDashboard({
                 <tbody className="divide-y divide-gray-100">
                   {paginatedCustomers.map((cust, idx) => (
                     <tr key={idx} className="hover:bg-gray-50">
-                      <td className="py-3 px-2 font-bold text-[#0D221A]">{cust.name}</td>
-                      <td className="py-3 px-2 text-gray-600" dir="ltr">{cust.phone}</td>
-                      <td className="py-3 px-2 font-bold text-emerald-800">{cust.city}</td>
-                      <td className="py-3 px-2 text-gray-500 max-w-[200px] truncate" title={cust.address}>{cust.address}</td>
-                      <td className="py-3 px-2 font-bold">{cust.ordersCount} طلبات</td>
+                      <td className="py-3 px-2 font-bold text-[#0D221A]">{cust.name || 'عميلة فيلورا'}</td>
+                      <td className="py-3 px-2 text-gray-600" dir="ltr">{cust.phone || 'غير مسجل'}</td>
+                      <td className="py-3 px-2 font-bold text-emerald-800">{cust.city || 'القاهرة'}</td>
+                      <td className="py-3 px-2 text-gray-500 max-w-[200px] truncate" title={cust.address}>{cust.address || 'العنوان الرئيسي'}</td>
+                      <td className="py-3 px-2 font-bold">{cust.ordersCount || 1} طلبات</td>
                       <td className="py-3 px-2 font-extrabold text-[#987834]">{(cust.totalSpent || 0).toLocaleString()} ج.م</td>
                       <td className="py-3 px-2 text-gray-400" dir="ltr">
-                        {new Date(cust.lastOrderDate).toLocaleDateString('ar-EG')}
+                        {formatDateSafe(cust.lastOrderDate)}
                       </td>
                     </tr>
                   ))}
