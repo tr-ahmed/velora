@@ -1,5 +1,6 @@
 export const CATEGORIES = [
   { id: 'all', name: 'الكل', icon: 'Sparkles' },
+  { id: 'offers', name: 'عروض حصرية 🔥', icon: 'Tag' },
   { id: 'serums', name: 'سيروم وإكسير النضارة', icon: 'Droplets' },
   { id: 'creams', name: 'كريمات الترطيب الملكية', icon: 'Heart' },
   { id: 'oils', name: 'زيوت العناية العضوية', icon: 'Sun' },

@@ -116,3 +116,14 @@ public class HeroSettings
     public double AutoPlayInterval { get; set; } = 5.5;
     public bool ShowTrustHighlights { get; set; } = true;
 }
+
+public class Offer
+{
+    public int Id { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string Subtitle { get; set; } = string.Empty;
+    public string CouponCode { get; set; } = string.Empty;
+    public int DiscountPercentage { get; set; } = 15;
+    public DateTime EndTime { get; set; } = DateTime.UtcNow.AddDays(3);
+    public bool IsActive { get; set; } = true;
+}

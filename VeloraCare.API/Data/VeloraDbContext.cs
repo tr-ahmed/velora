@@ -16,6 +16,7 @@ public class VeloraDbContext : DbContext
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<HeroSlide> HeroSlides => Set<HeroSlide>();
     public DbSet<HeroSettings> HeroSettings => Set<HeroSettings>();
+    public DbSet<Offer> Offers => Set<Offer>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

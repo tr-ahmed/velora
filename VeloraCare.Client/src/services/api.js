@@ -504,3 +504,74 @@ export async function updateHeroSettingsApi(settingsData) {
     return true;
   }
 }
+
+/* ============================================================
+   OFFERS API FUNCTIONS
+   ============================================================ */
+export async function fetchOffersApi() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/offers`);
+    if (!res.ok) throw new Error('Fetch offers failed');
+    return await res.json();
+  } catch (err) {
+    return [
+      {
+        id: 1,
+        title: 'عروض الفلاش السريعة ✨',
+        subtitle: 'خصم ملكي حصري 15% على كافة السيرومات والزيوت الزمردية في مصر',
+        couponCode: 'VELORA15',
+        discountPercentage: 15,
+        endTime: new Date(Date.now() + 48 * 3600 * 1000).toISOString(),
+        isActive: true
+      }
+    ];
+  }
+}
+
+export async function fetchAdminOffersApi() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/offers/admin`);
+    if (!res.ok) throw new Error('Fetch admin offers failed');
+    return await res.json();
+  } catch (err) {
+    return fetchOffersApi();
+  }
+}
+
+export async function saveOfferApi(offerData) {
+  try {
+    const isUpdate = Boolean(offerData.id);
+    const url = isUpdate ? `${API_BASE_URL}/offers/${offerData.id}` : `${API_BASE_URL}/offers`;
+    const method = isUpdate ? 'PUT' : 'POST';
+
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(offerData)
+    });
+    if (!res.ok) throw new Error('Save offer failed');
+    return await res.json();
+  } catch (err) {
+    return offerData;
+  }
+}
+
+export async function toggleOfferApi(id) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/offers/${id}/toggle`, { method: 'PUT' });
+    if (!res.ok) throw new Error('Toggle offer failed');
+    return await res.json();
+  } catch (err) {
+    return true;
+  }
+}
+
+export async function deleteOfferApi(id) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/offers/${id}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error('Delete offer failed');
+    return true;
+  } catch (err) {
+    return true;
+  }
+}

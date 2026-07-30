@@ -16,9 +16,11 @@ import WishlistPage from './components/WishlistPage';
 import UserProfilePage from './components/UserProfilePage';
 import MobileBottomNav from './components/MobileBottomNav';
 import InfoModal from './components/InfoModal';
+import OffersBanner from './components/OffersBanner';
 import { 
   fetchProductsFromApi,
-  fetchHeroSlidesApi, fetchHeroSettingsApi, saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi 
+  fetchHeroSlidesApi, fetchHeroSettingsApi, saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi,
+  fetchOffersApi
 } from './services/api';
 
 export default function App() {
@@ -121,6 +123,8 @@ export default function App() {
     }
   });
 
+  const [offers, setOffers] = useState([]);
+
   useEffect(() => {
     async function loadHeroData() {
       try {
@@ -129,8 +133,11 @@ export default function App() {
 
         const settings = await fetchHeroSettingsApi();
         if (settings) setHeroSettings(settings);
+
+        const offersData = await fetchOffersApi();
+        if (offersData && offersData.length > 0) setOffers(offersData);
       } catch (err) {
-        console.warn('Hero API Load Fallback:', err);
+        console.warn('Hero/Offers API Load Fallback:', err);
       }
     }
     loadHeroData();
@@ -264,6 +271,9 @@ export default function App() {
   return (
     <div dir="rtl" className="min-h-screen flex flex-col bg-[#FAF8F5] text-[#0D221A] pb-16 sm:pb-0">
       
+      {/* Top Flash Sale Offers Banner */}
+      <OffersBanner offer={offers[0]} />
+
       {/* Header Bar */}
       <Header
         cartCount={cartTotalCount}

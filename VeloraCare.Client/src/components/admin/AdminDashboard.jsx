@@ -8,6 +8,7 @@ import {
 import ProductFormModal from './ProductFormModal';
 import CouponFormModal from './CouponFormModal';
 import HeroSlideFormModal from './HeroSlideFormModal';
+import OfferFormModal from './OfferFormModal';
 import VeloraLogo from '../VeloraLogo';
 import Pagination from '../Pagination';
 import { 
@@ -15,7 +16,8 @@ import {
   fetchProductsFromApi, saveProductApi, deleteProductApi,
   fetchCouponsApi, createCouponApi, toggleCouponApi, deleteCouponApi,
   saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi,
-  fetchUsersApi, updateUserRoleApi, deleteUserApi, updateUserApi
+  fetchUsersApi, updateUserRoleApi, deleteUserApi, updateUserApi,
+  fetchAdminOffersApi, saveOfferApi, toggleOfferApi, deleteOfferApi
 } from '../../services/api';
 import { EGYPT_GOVERNORATES } from '../../data/governorates';
 
@@ -106,6 +108,11 @@ export default function AdminDashboard({
   const [editingProduct, setEditingProduct] = useState(null);
   const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
   const [isHeroSlideModalOpen, setIsHeroSlideModalOpen] = useState(false);
+  
+  // Offers State
+  const [offers, setOffers] = useState([]);
+  const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
+  const [editingOffer, setEditingOffer] = useState(null);
   const [editingHeroSlide, setEditingHeroSlide] = useState(null);
 
   // Hero Slide Action Handlers linked to C# API
@@ -145,6 +152,27 @@ export default function AdminDashboard({
     await saveHeroSlideApi(updated);
   };
 
+  // Offers Action Handlers
+  const handleSaveOffer = async (offerData) => {
+    const saved = await saveOfferApi(offerData);
+    if (offerData.id) {
+      setOffers(prev => prev.map(o => o.id === offerData.id ? saved : o));
+    } else {
+      setOffers(prev => [saved, ...prev]);
+    }
+  };
+
+  const handleToggleOfferActive = async (id) => {
+    await toggleOfferApi(id);
+    setOffers(prev => prev.map(o => o.id === id ? { ...o, isActive: !o.isActive } : o));
+  };
+
+  const handleDeleteOffer = async (id) => {
+    if (!confirm('هل أنت متأكد من حذف هذا العرض بالكامل؟')) return;
+    await deleteOfferApi(id);
+    setOffers(prev => prev.filter(o => o.id !== id));
+  };
+
   const handleUpdateHeroSettings = async (updater) => {
     if (!setHeroSettings) return;
     setHeroSettings(prev => {
@@ -167,13 +195,14 @@ export default function AdminDashboard({
   const loadData = async () => {
     setLoading(true);
     try {
-      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, usersRes] = await Promise.all([
+      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, usersRes, offersRes] = await Promise.all([
         fetchDashboardStatsApi(),
         fetchAnalyticsReportsApi(),
         fetchProductsFromApi('all'),
         fetchAllOrdersApi(),
         fetchCouponsApi(),
-        fetchUsersApi()
+        fetchUsersApi(),
+        fetchAdminOffersApi()
       ]);
       setStats(statsRes || { totalRevenue: 0, totalOrders: 0, totalProducts: 0, totalCustomers: 0, activeCoupons: 0, recentOrders: [] });
       setAnalytics(analyticsRes || { generatedAt: new Date().toISOString(), totalRevenue: 0, totalOrders: 0, averageOrderValue: 0, customerSatisfactionRate: '0%', conversionRate: '0%', salesByCity: [], salesByCategory: [], ordersByStatus: [], topProducts: [] });
@@ -181,6 +210,7 @@ export default function AdminDashboard({
       setOrders(Array.isArray(ordersRes) ? ordersRes : []);
       setCoupons(Array.isArray(couponsRes) ? couponsRes : []);
       setUsers(Array.isArray(usersRes) ? usersRes : []);
+      setOffers(Array.isArray(offersRes) ? offersRes : []);
     } catch (err) {
       console.error('Error loading admin data:', err);
     } finally {
@@ -516,6 +546,7 @@ export default function AdminDashboard({
   // Merged Nav Items (Combined Overview, Hero Manager & Full Reports)
   const navItems = [
     { id: 'overview', label: 'الرئيسية والتقارير الشاملة 📊', icon: <BarChart3 className="w-4 h-4 text-[#C5A059]" /> },
+    { id: 'offers', label: `عروض الفلاش 🔥 (${offers.length})`, icon: <Sparkles className="w-4 h-4 text-[#C5A059]" /> },
     { id: 'hero', label: `إدارة الهيرو والسلايدر 🌟 (${heroSlides.length})`, icon: <Sparkles className="w-4 h-4 text-[#C5A059]" /> },
     { id: 'orders', label: `إدارة الطلبات (${orders.length})`, icon: <ShoppingBag className="w-4 h-4" /> },
     { id: 'products', label: `المنتجات والمخزون (${products.length})`, icon: <Package className="w-4 h-4" /> },
@@ -2158,6 +2189,110 @@ export default function AdminDashboard({
           </div>
         )}
 
+        {/* TAB 8: OFFERS MANAGEMENT */}
+        {activeTab === 'offers' && (
+          <div className="bg-white rounded-3xl p-5 sm:p-8 border border-[#C5A059]/30 shadow-md space-y-6 animate-fadeIn">
+            
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-100 pb-4">
+              <div>
+                <h2 className="text-xl font-bold font-serif text-[#0D221A] flex items-center gap-2">
+                  <span>إدارة عروض الفلاش والخصومات</span>
+                  <Sparkles className="w-5 h-5 text-[#C5A059]" />
+                </h2>
+                <p className="text-xs text-gray-500 font-light mt-1">
+                  أنشئي وخصصي عروض العداد التنازلي التفاعلية التي تظهر في بنر الشاشة الرئيسية لزيادة المبيعات في مصر
+                </p>
+              </div>
+
+              <button
+                onClick={() => { setEditingOffer(null); setIsOfferModalOpen(true); }}
+                className="btn-primary text-xs py-2.5 px-5 flex items-center gap-2 shadow-lg"
+              >
+                <Plus className="w-4 h-4" />
+                <span>إضافة عرض جديد ✨</span>
+              </button>
+            </div>
+
+            {offers.length === 0 ? (
+              <div className="text-center py-12 bg-[#FAF8F5] rounded-2xl border border-dashed border-gray-300 p-6">
+                <Sparkles className="w-10 h-10 text-[#C5A059] mx-auto opacity-50 mb-2" />
+                <h4 className="font-bold text-gray-700 text-sm">لا توجد عروض حالية</h4>
+                <p className="text-xs text-gray-500 mt-1">اضغطي على إضافة عرض جديد لبدء عرض فلاش تنازلي مميز في المتجر.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {offers.map((off) => (
+                  <div
+                    key={off.id}
+                    className={`rounded-2xl p-5 border transition-all flex flex-col justify-between space-y-4 ${
+                      off.isActive
+                        ? 'bg-[#0D221A] text-white border-[#C5A059] shadow-xl'
+                        : 'bg-gray-50 text-gray-700 border-gray-200 opacity-75'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-extrabold font-serif text-base text-[#EAD096]">{off.title}</span>
+                          <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
+                            off.isActive ? 'bg-[#C5A059] text-[#0D221A]' : 'bg-gray-300 text-gray-700'
+                          }`}>
+                            {off.isActive ? 'نشط في المتجر 🟢' : 'معطل ⚪'}
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-300 font-light mt-1">{off.subtitle}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-xs pt-3 border-t border-[#C5A059]/20 font-mono">
+                      <div className="flex items-center gap-1.5 text-[#EAD096]">
+                        <Tag className="w-3.5 h-3.5" />
+                        <span>كود: <strong>{off.couponCode}</strong> ({off.discountPercentage}% خصم)</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-gray-300">
+                        <Clock className="w-3.5 h-3.5 text-[#C5A059]" />
+                        <span>ينتهي: {new Date(off.endTime).toLocaleDateString('ar-EG')}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2">
+                      <button
+                        onClick={() => handleToggleOfferActive(off.id)}
+                        className={`text-xs px-3 py-1.5 rounded-xl font-bold transition-all ${
+                          off.isActive
+                            ? 'bg-rose-900/60 text-rose-200 border border-rose-500/40 hover:bg-rose-800'
+                            : 'bg-emerald-900/60 text-emerald-200 border border-emerald-500/40 hover:bg-emerald-800'
+                        }`}
+                      >
+                        {off.isActive ? 'إيقاف العرض' : 'تفعيل العرض 🚀'}
+                      </button>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => { setEditingOffer(off); setIsOfferModalOpen(true); }}
+                          className="p-2 text-[#C5A059] hover:bg-[#143529] rounded-xl transition-colors"
+                          title="تعديل العرض"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteOffer(off.id)}
+                          className="p-2 text-rose-400 hover:bg-rose-950 rounded-xl transition-colors"
+                          title="حذف العرض"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                ))}
+              </div>
+            )}
+
+          </div>
+        )}
+
       </div>
 
       {/* Order Details Modal */}
@@ -2218,7 +2353,7 @@ export default function AdminDashboard({
         </div>
       )}
 
-      {/* Product & Coupon Modals */}
+      {/* Product, Coupon, Hero & Offer Modals */}
       <ProductFormModal
         isOpen={isProductModalOpen}
         onClose={() => setIsProductModalOpen(false)}
@@ -2237,6 +2372,13 @@ export default function AdminDashboard({
         onClose={() => setIsHeroSlideModalOpen(false)}
         slide={editingHeroSlide}
         onSave={handleSaveHeroSlide}
+      />
+
+      <OfferFormModal
+        isOpen={isOfferModalOpen}
+        onClose={() => setIsOfferModalOpen(false)}
+        offer={editingOffer}
+        onSave={handleSaveOffer}
       />
 
       {/* Native Android Mobile App Dock for Admin Dashboard */}

@@ -169,6 +169,20 @@ public static class DbInitializer
         }
 
         context.Orders.AddRange(orders);
+
+        if (!context.Offers.Any())
+        {
+            context.Offers.Add(new Offer
+            {
+                Title = "عروض الفلاش السريعة ✨",
+                Subtitle = "خصم ملكي حصري 15% على كافة السيرومات والزيوت الزمردية في مصر",
+                CouponCode = "VELORA15",
+                DiscountPercentage = 15,
+                EndTime = DateTime.UtcNow.AddDays(2),
+                IsActive = true
+            });
+        }
+
         context.SaveChanges();
     }
 }

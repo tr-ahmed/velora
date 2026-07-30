@@ -19,7 +19,8 @@ export default function ProductGrid({
   const itemsPerPage = 6;
 
   const filteredProducts = products.filter(p => {
-    const matchCat = selectedCategory === 'all' || p.category === selectedCategory;
+    const matchCat = selectedCategory === 'all' || 
+      (selectedCategory === 'offers' ? Boolean(p.originalPrice && p.originalPrice > p.price) : p.category === selectedCategory);
     const matchSearch = !searchQuery || 
       p.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.tagline?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -171,9 +172,9 @@ export default function ProductGrid({
                   )}
 
                   {/* Discount badge */}
-                  {product.originalPrice && !isInCart && (
-                    <div className="absolute bottom-2.5 left-2.5 bg-emerald-700 text-white text-[9px] sm:text-[11px] font-extrabold px-2 py-0.5 rounded-full">
-                      {Math.round((1 - product.price / product.originalPrice) * 100)}% خصم
+                  {product.originalPrice && product.originalPrice > product.price && !isInCart && (
+                    <div className="absolute bottom-2.5 left-2.5 bg-gradient-to-r from-emerald-800 to-emerald-700 border border-emerald-400 text-white text-[9px] sm:text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-md">
+                      وفرت {product.originalPrice - product.price} ج.م 🔥
                     </div>
                   )}
                 </div>
