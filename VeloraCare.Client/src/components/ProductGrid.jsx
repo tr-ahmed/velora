@@ -105,7 +105,7 @@ export default function ProductGrid({
 
       {/* Grid Display */}
       {filteredProducts.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
           {paginatedProducts.map((product) => {
             const isWishlisted = wishlist.includes(product.id);
             const isJustAdded = addedId === product.id;
@@ -113,7 +113,7 @@ export default function ProductGrid({
             return (
               <div
                 key={product.id}
-                className="group bg-white rounded-3xl overflow-hidden border border-[#C5A059]/30 shadow-sm hover:shadow-xl hover:border-[#C5A059] transition-all duration-300 flex flex-col justify-between"
+                className="group bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-[#C5A059]/30 shadow-sm hover:shadow-xl hover:border-[#C5A059] transition-all duration-300 flex flex-col justify-between"
               >
                 {/* Product Image Header */}
                 <div className="relative aspect-[4/3] bg-[#0D221A] overflow-hidden">
@@ -128,7 +128,7 @@ export default function ProductGrid({
 
                   {/* Badge Tag */}
                   {product.badge && (
-                    <span className="absolute top-3 right-3 z-10 bg-gradient-to-r from-[#C5A059] to-[#D4AF37] text-[#0D221A] text-[10px] sm:text-xs font-extrabold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full shadow-md pointer-events-none">
+                    <span className="absolute top-2 right-2 sm:top-3 sm:right-3 z-10 bg-gradient-to-r from-[#C5A059] to-[#D4AF37] text-[#0D221A] text-[9px] sm:text-xs font-extrabold px-2 py-0.5 sm:px-3 sm:py-1 rounded-full shadow-md pointer-events-none truncate max-w-[110px] sm:max-w-none">
                       {product.badge}
                     </span>
                   )}
@@ -137,7 +137,7 @@ export default function ProductGrid({
                   <button
                     type="button"
                     onClick={(e) => handleWishlistClick(e, product.id, product.name)}
-                    className={`absolute top-3 left-3 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all transform active:scale-125 shadow-lg ${
+                    className={`absolute top-2 left-2 sm:top-3 sm:left-3 z-20 w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all transform active:scale-125 shadow-lg ${
                       isWishlisted 
                         ? 'bg-rose-600 text-white border-2 border-white' 
                         : 'bg-white/90 backdrop-blur-md text-[#0D221A] hover:bg-rose-500 hover:text-white border border-[#C5A059]/40'
@@ -145,7 +145,7 @@ export default function ProductGrid({
                     aria-label="إضافة للمفضلة"
                     title={isWishlisted ? "إزالة من المفضلة" : "إضافة للمفضلة"}
                   >
-                    <Heart className={`w-4 h-4 sm:w-5 sm:h-5 ${isWishlisted ? 'fill-current text-white' : 'text-rose-500'}`} />
+                    <Heart className={`w-3.5 h-3.5 sm:w-5 sm:h-5 ${isWishlisted ? 'fill-current text-white' : 'text-rose-500'}`} />
                   </button>
 
                   {/* Quick View Floating Button */}
@@ -162,7 +162,7 @@ export default function ProductGrid({
                 </div>
 
                 {/* Product Info Body */}
-                <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between space-y-3 sm:space-y-4">
+                <div className="p-3 sm:p-6 flex-1 flex flex-col justify-between space-y-2 sm:space-y-4">
                   
                   <div>
                     {/* Rating Stars */}

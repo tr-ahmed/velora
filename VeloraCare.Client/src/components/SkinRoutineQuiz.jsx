@@ -41,18 +41,21 @@ export default function SkinRoutineQuiz({ onClose, onAddRoutineToCart }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
-      <div className="relative w-full max-w-2xl bg-[#0D221A] text-white rounded-3xl p-6 md:p-10 border-2 border-[#C5A059] shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+      <div className="relative w-full max-w-2xl bg-[#0D221A] text-white rounded-t-3xl sm:rounded-3xl p-5 md:p-10 border-t-2 sm:border-2 border-[#C5A059] shadow-2xl overflow-hidden max-h-[92vh] sm:max-h-[90vh] overflow-y-auto">
         
+        {/* Mobile Grab Handle */}
+        <div className="w-12 h-1.5 bg-[#C5A059]/40 rounded-full mx-auto mb-3 sm:hidden" />
+
         {/* Background glow */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#C5A059]/10 rounded-full blur-3xl pointer-events-none" />
 
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 left-4 p-2 text-[#C5A059] hover:text-white rounded-full bg-[#143529]"
+          className="absolute top-3 left-3 sm:top-4 sm:left-4 p-2 text-[#C5A059] hover:text-white rounded-full bg-[#143529]"
         >
-          <X className="w-6 h-6" />
+          <X className="w-4 h-4 sm:w-6 sm:h-6" />
         </button>
 
         {step <= 3 ? (

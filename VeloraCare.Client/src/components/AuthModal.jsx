@@ -57,15 +57,18 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
       
-      <div className="relative w-full max-w-md bg-[#0D221A] text-white rounded-3xl p-6 sm:p-8 border-2 border-[#C5A059] shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+      <div className="relative w-full max-w-md bg-[#0D221A] text-white rounded-t-3xl sm:rounded-3xl p-5 sm:p-8 border-t-2 sm:border-2 border-[#C5A059] shadow-2xl overflow-hidden max-h-[92vh] sm:max-h-[90vh] overflow-y-auto">
         
+        {/* Mobile Grab Handle */}
+        <div className="w-12 h-1.5 bg-[#C5A059]/40 rounded-full mx-auto mb-3 sm:hidden" />
+
         <button
           onClick={() => { resetForm(); onClose(); }}
-          className="absolute top-4 left-4 p-2 text-[#C5A059] hover:text-white rounded-full bg-[#143529]"
+          className="absolute top-3 left-3 sm:top-4 sm:left-4 p-2 text-[#C5A059] hover:text-white rounded-full bg-[#143529]"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         <div className="text-center space-y-2 mb-6">

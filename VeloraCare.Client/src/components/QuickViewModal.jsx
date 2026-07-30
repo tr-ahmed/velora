@@ -106,15 +106,18 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
   if (!product) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
       
-      <div className="relative w-full max-w-3xl bg-white rounded-3xl overflow-hidden border-2 border-[#C5A059] shadow-2xl max-h-[92vh] flex flex-col md:flex-row">
+      <div className="relative w-full max-w-3xl bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden border-t-2 sm:border-2 border-[#C5A059] shadow-2xl max-h-[92vh] sm:max-h-[90vh] flex flex-col md:flex-row">
         
+        {/* Mobile Grab Handle */}
+        <div className="w-12 h-1.5 bg-[#C5A059]/40 rounded-full mx-auto my-2 sm:hidden flex-shrink-0" />
+
         <button
           onClick={onClose}
-          className="absolute top-4 left-4 z-20 w-9 h-9 rounded-full bg-[#0D221A]/80 text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0D221A] flex items-center justify-center transition-colors shadow-lg"
+          className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#0D221A]/80 text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0D221A] flex items-center justify-center transition-colors shadow-lg"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         <div className="md:w-1/2 relative bg-[#0D221A] flex items-center justify-center p-6 min-h-[260px] md:min-h-full">

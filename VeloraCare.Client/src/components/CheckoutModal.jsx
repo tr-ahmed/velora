@@ -105,21 +105,24 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
       
-      <div className="relative w-full max-w-4xl bg-white rounded-3xl overflow-hidden border-2 border-[#C5A059] shadow-2xl max-h-[90vh] flex flex-col">
+      <div className="relative w-full max-w-4xl bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden border-t-2 sm:border-2 border-[#C5A059] shadow-2xl max-h-[92vh] sm:max-h-[90vh] flex flex-col">
         
+        {/* Mobile Grab Handle */}
+        <div className="w-12 h-1.5 bg-[#C5A059]/40 rounded-full mx-auto my-2.5 sm:hidden flex-shrink-0" />
+
         <button
           onClick={onClose}
-          className="absolute top-4 left-4 z-20 w-9 h-9 rounded-full bg-[#0D221A] text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0D221A] flex items-center justify-center transition-colors shadow-lg"
+          className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#0D221A] text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0D221A] flex items-center justify-center transition-colors shadow-lg"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         {step === 'form' ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 overflow-y-auto">
             
-            <div className="lg:col-span-7 p-6 md:p-8 space-y-6">
+            <div className="lg:col-span-7 p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
               
               <div>
                 <span className="text-xs text-[#C5A059] font-bold uppercase tracking-wider">إنهاء الطلب الآمن</span>
