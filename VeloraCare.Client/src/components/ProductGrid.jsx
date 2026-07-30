@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingBag, Eye, Heart, Star, Check, Search, X, Sparkles } from 'lucide-react';
+import { ShoppingBag, Eye, Heart, Star, Check, Search, X, Sparkles, Zap } from 'lucide-react';
 import Pagination from './Pagination';
 
 export default function ProductGrid({ 
@@ -7,6 +7,7 @@ export default function ProductGrid({
   selectedCategory, 
   onAddToCart, 
   onQuickView, 
+  onQuickBuy,
   wishlist, 
   onToggleWishlist,
   searchQuery = '',
@@ -220,21 +221,23 @@ export default function ProductGrid({
 
                     {/* Action buttons */}
                     <div className="flex items-center gap-1.5">
-                      {/* Quick view — mobile */}
+                      {/* Quick Buy Express Button */}
                       <button
                         type="button"
-                        onClick={(e) => { e.stopPropagation(); onQuickView(product); }}
-                        className="md:hidden w-10 h-10 rounded-xl bg-[#F7F5F0] flex items-center justify-center border border-[#C5A059]/30 active:scale-90 transition-transform"
-                        aria-label="معاينة"
+                        onClick={(e) => { e.stopPropagation(); onQuickBuy && onQuickBuy(product); }}
+                        className="px-2.5 py-2 rounded-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] text-[10px] sm:text-xs font-black flex items-center gap-1 shadow-md active:scale-95 transition-all hover:brightness-110"
+                        title="شراء سريع فوري"
+                        aria-label="شراء سريع"
                       >
-                        <Eye className="w-4 h-4 text-[#987834]" />
+                        <Zap className="w-3.5 h-3.5 fill-current stroke-[2.5]" />
+                        <span>شراء سريع</span>
                       </button>
 
                       {/* Add to cart button */}
                       <button
                         type="button"
                         onClick={(e) => { e.stopPropagation(); handleAddToCart(product); }}
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 active:scale-90 relative ${
+                        className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 active:scale-90 relative ${
                           isJustAdded || isInCart
                             ? 'bg-emerald-700 text-white border border-emerald-400 shadow-md'
                             : 'bg-[#0D221A] text-[#EAD096] hover:bg-[#C5A059] hover:text-[#0D221A]'
@@ -243,9 +246,9 @@ export default function ProductGrid({
                         aria-label="أضيفي للسلة"
                       >
                         {isJustAdded || isInCart ? (
-                          <Check className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-emerald-200 stroke-[3]" />
+                          <Check className="w-4 h-4 text-emerald-200 stroke-[3]" />
                         ) : (
-                          <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
+                          <ShoppingBag className="w-4 h-4" />
                         )}
                       </button>
                     </div>

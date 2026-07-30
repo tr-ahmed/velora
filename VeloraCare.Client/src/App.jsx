@@ -225,6 +225,11 @@ export default function App() {
     );
   };
 
+  const handleQuickBuy = (product, qty = 1) => {
+    handleAddToCart(product, qty);
+    setIsCheckoutOpen(true);
+  };
+
   const handleRemoveItem = (productId) => {
     setCartItems(prev => prev.filter(item => item.id !== productId));
   };
@@ -424,6 +429,7 @@ export default function App() {
           product={quickViewProduct}
           onClose={() => setQuickViewProduct(null)}
           onAddToCart={handleAddToCart}
+          onQuickBuy={handleQuickBuy}
           currentUser={currentUser}
           onOpenAuth={() => setIsAuthModalOpen(true)}
         />

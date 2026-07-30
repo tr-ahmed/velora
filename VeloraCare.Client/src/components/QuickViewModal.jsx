@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, ShoppingBag, Star, ShieldCheck, Heart, Sparkles, Droplet, Clock, MessageSquare, Send, AlertCircle } from 'lucide-react';
+import { X, ShoppingBag, Star, ShieldCheck, Heart, Sparkles, Droplet, Clock, MessageSquare, Send, AlertCircle, Zap } from 'lucide-react';
 import { fetchProductReviewsApi, submitReviewApi } from '../services/api';
 
 function StarRatingInput({ value, onChange }) {
@@ -41,7 +41,7 @@ function StarRatingDisplay({ rating, size = 'w-4 h-4' }) {
   );
 }
 
-export default function QuickViewModal({ product, onClose, onAddToCart, currentUser, onOpenAuth }) {
+export default function QuickViewModal({ product, onClose, onAddToCart, onQuickBuy, currentUser, onOpenAuth }) {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('overview');
   const [reviews, setReviews] = useState([]);
@@ -336,13 +336,26 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
               </button>
             </div>
 
+            {/* Quick Buy Express CTA */}
+            <button
+              onClick={() => {
+                onAddToCart(product, quantity);
+                if (onQuickBuy) onQuickBuy(product);
+                onClose();
+              }}
+              className="flex-1 rounded-2xl text-xs sm:text-sm font-black py-3 px-3 sm:px-4 flex items-center justify-center gap-1.5 shadow-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] hover:brightness-110 active:scale-95 transition-all"
+            >
+              <Zap className="w-4 h-4 fill-current stroke-[2.5]" />
+              <span>شراء سريع فوري</span>
+            </button>
+
             {/* Main Add to Cart CTA */}
             <button
               onClick={handleAdd}
-              className="btn-primary flex-1 text-sm py-3.5 px-4 sm:px-6 flex items-center justify-center gap-2 shadow-xl"
+              className="bg-[#0D221A] text-[#EAD096] border border-[#C5A059] rounded-2xl text-xs sm:text-sm font-bold py-3 px-3 sm:px-4 flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
             >
-              <ShoppingBag className="w-5 h-5" />
-              <span>إضافة للسلة ({product.price * quantity} ج.م)</span>
+              <ShoppingBag className="w-4 h-4" />
+              <span>سلة ({product.price * quantity} ج.م)</span>
             </button>
 
           </div>
