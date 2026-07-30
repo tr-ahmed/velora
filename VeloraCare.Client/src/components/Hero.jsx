@@ -106,11 +106,11 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
         {/* Gold Orb Glow */}
         <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#C5A059]/15 blur-3xl pointer-events-none" />
 
-        {/* Top Logo bar */}
-        <div className="relative z-20 flex items-center justify-between px-5 pt-4"
+        {/* Top Centered Prominent Logo bar */}
+        <div className="relative z-20 flex items-center justify-center text-center px-5 pt-4 pb-2"
              style={{ paddingTop: 'max(16px, env(safe-area-inset-top, 16px))' }}>
-          <div className="flex items-center gap-2">
-            <VeloraLogo size="sm" glow={true} />
+          <div className="flex items-center justify-center mx-auto">
+            <VeloraLogo size="lg" glow={true} className="scale-105 sm:scale-125" />
           </div>
         </div>
 
