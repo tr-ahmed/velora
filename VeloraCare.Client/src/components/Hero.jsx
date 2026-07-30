@@ -155,7 +155,7 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
               <span>100% عضوي</span>
               <span className="text-gray-500">•</span>
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>مُختبر سريرياً</span>
+              <span>آمن ومؤثر</span>
             </div>
           </div>
         </div>
@@ -317,7 +317,7 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
             {showTrustHighlights && (
               <div className="pt-6 border-t border-[#C5A059]/20 grid grid-cols-4 gap-2 text-xs font-semibold text-gray-300">
                 <div className="flex items-center justify-center lg:justify-start gap-1"><Leaf className="w-3.5 h-3.5 text-[#C5A059]" /><span>100% نباتي عضوي</span></div>
-                <div className="flex items-center justify-center lg:justify-start gap-1"><ShieldCheck className="w-3.5 h-3.5 text-[#C5A059]" /><span>مُختبر سريرياً</span></div>
+                <div className="flex items-center justify-center lg:justify-start gap-1"><ShieldCheck className="w-3.5 h-3.5 text-[#C5A059]" /><span>آمن ومؤثر</span></div>
                 <div className="flex items-center justify-center lg:justify-start gap-1"><Award className="w-3.5 h-3.5 text-[#C5A059]" /><span>جودة ملكية</span></div>
                 <div className="flex items-center justify-center lg:justify-start gap-1"><HeartHandshake className="w-3.5 h-3.5 text-[#C5A059]" /><span>بدون مواد كيميائية</span></div>
               </div>

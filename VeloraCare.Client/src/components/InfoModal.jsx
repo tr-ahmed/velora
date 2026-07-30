@@ -12,7 +12,7 @@ export default function InfoModal({ isOpen, onClose, contentType }) {
         <div className="space-y-4 text-xs sm:text-sm text-gray-700">
           <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-gray-200 space-y-1">
             <h4 className="font-bold text-[#0D221A] text-sm">س: هل مستحضرات VELORA طبيعية وآمنة؟</h4>
-            <p className="text-gray-600 font-light">ج: نعم، جميع منتجاتنا مستخلصة من أعشاب ومكونات زمردية عضوية 100% ومختبرة سريرياً لضمان الفاعلية وأعلى درجات الأمان.</p>
+            <p className="text-gray-600 font-light">ج: نعم، جميع منتجاتنا مستخلصة من أعشاب ومكونات زمردية عضوية 100% وآمنة ومؤثرة لضمان الفاعلية وأعلى درجات الأمان.</p>
           </div>
           <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-gray-200 space-y-1">
             <h4 className="font-bold text-[#0D221A] text-sm">س: ما هي مدة توصيل الشحنة داخل مصر؟</h4>
