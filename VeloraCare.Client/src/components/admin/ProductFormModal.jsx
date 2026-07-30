@@ -179,39 +179,50 @@ export default function ProductFormModal({ isOpen, onClose, product, onSave }) {
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">سعر البيع (ج.م) *</label>
+              <label className="block text-xs font-bold text-[#0D221A] mb-1">سعر البيع الحالي (ج.م) *</label>
               <input
                 type="number"
                 required
                 placeholder="650"
                 value={formData.price}
                 onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs font-bold focus:border-[#C5A059] focus:outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs font-bold focus:border-[#C5A059] focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-[#143529] mb-1">سعر التكلفة / الشراء (ج.م) 🏷️</label>
+              <label className="block text-xs font-bold text-rose-700 mb-1">السعر الأصلي (بدلاً من) <s>ج.م</s></label>
+              <input
+                type="number"
+                placeholder="850"
+                value={formData.originalPrice}
+                onChange={(e) => setFormData({ ...formData, originalPrice: e.target.value })}
+                className="w-full px-3 py-2 border border-rose-300 bg-rose-50/50 rounded-xl text-xs font-bold text-rose-800 focus:border-rose-500 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-[#143529] mb-1">سعر التكلفة (ج.م) 🏷️</label>
               <input
                 type="number"
                 placeholder="290"
                 value={formData.costPrice}
                 onChange={(e) => setFormData({ ...formData, costPrice: e.target.value })}
-                className="w-full px-3.5 py-2 border border-emerald-400 bg-emerald-50/60 rounded-xl text-xs font-bold focus:border-emerald-700 focus:outline-none"
+                className="w-full px-3 py-2 border border-emerald-400 bg-emerald-50/60 rounded-xl text-xs font-bold focus:border-emerald-700 focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">كمية المخزون *</label>
+              <label className="block text-xs font-bold text-gray-700 mb-1">المخزون *</label>
               <input
                 type="number"
                 required
                 min="0"
                 value={formData.stock}
                 onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
-                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs font-bold focus:border-[#C5A059] focus:outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-xl text-xs font-bold focus:border-[#C5A059] focus:outline-none"
               />
             </div>
           </div>

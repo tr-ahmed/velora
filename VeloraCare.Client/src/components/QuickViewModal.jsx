@@ -170,9 +170,9 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
               <span className="text-xl sm:text-2xl font-extrabold text-[#0D221A] font-serif">
                 {product.price} <span className="text-xs font-normal">ج.م</span>
               </span>
-              {product.originalPrice && (
-                <span className="text-xs sm:text-sm text-gray-400 line-through font-light">
-                  {product.originalPrice} ج.م
+              {product.originalPrice && product.originalPrice > product.price && (
+                <span className="text-xs sm:text-sm text-gray-500 font-light">
+                  بدلاً من <span className="line-through text-rose-600/80 font-bold">{product.originalPrice} ج.م</span>
                 </span>
               )}
               <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">

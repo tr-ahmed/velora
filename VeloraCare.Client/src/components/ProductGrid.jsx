@@ -211,9 +211,9 @@ export default function ProductGrid({
                       <span className="text-sm sm:text-base font-extrabold text-[#0D221A] font-serif leading-none">
                         {product.price} <span className="text-[10px] font-normal text-gray-500">ج.م</span>
                       </span>
-                      {product.originalPrice && (
-                        <span className="text-[10px] text-gray-400 line-through font-light">
-                          {product.originalPrice} ج.م
+                      {product.originalPrice && product.originalPrice > product.price && (
+                        <span className="text-[10px] text-gray-500 font-light mt-0.5 whitespace-nowrap">
+                          بدلاً من <span className="line-through text-rose-600/80 font-bold">{product.originalPrice} ج.م</span>
                         </span>
                       )}
                     </div>
