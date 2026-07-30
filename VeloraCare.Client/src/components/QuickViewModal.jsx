@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, ShoppingBag, Star, ShieldCheck, Heart, Sparkles, Droplet, Clock, MessageSquare, Send, AlertCircle, Zap } from 'lucide-react';
+import { X, ShoppingBag, Star, ShieldCheck, Heart, Sparkles, Droplet, Clock, MessageSquare, Send, AlertCircle } from 'lucide-react';
 import { fetchProductReviewsApi, submitReviewApi } from '../services/api';
 
 function StarRatingInput({ value, onChange }) {
@@ -342,11 +342,11 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                 if (onQuickBuy) onQuickBuy(product, quantity);
                 onClose();
               }}
-              className="w-11 h-11 rounded-2xl flex items-center justify-center shadow-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] hover:brightness-110 active:scale-95 transition-all"
-              title="شراء سريع فوري"
+              className="flex-1 py-3 rounded-2xl font-extrabold text-base bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] shadow-xl hover:brightness-110 active:scale-[0.98] transition-all"
+              title="شراء سريع"
               aria-label="شراء سريع"
             >
-              <Zap className="w-5 h-5 fill-current stroke-[2.5]" />
+              شراء
             </button>
 
             {/* Main Add to Cart CTA */}

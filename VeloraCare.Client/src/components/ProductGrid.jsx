@@ -229,11 +229,11 @@ export default function ProductGrid({
                           e.stopPropagation();
                           if (onQuickView) onQuickView(product);
                         }}
-                        className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] text-xs font-black shadow-md active:scale-95 transition-all hover:brightness-110 cursor-pointer"
+                        className="w-9 h-9 rounded-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] shadow-md active:scale-95 transition-all hover:brightness-110 cursor-pointer flex items-center justify-center"
                         title="معاينة سريعة"
                         aria-label="معاينة"
                       >
-                        <span>معاينة</span>
+                        <Eye className="w-4 h-4" />
                       </button>
 
                       {/* Add to cart button */}
