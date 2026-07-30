@@ -16,11 +16,9 @@ import WishlistPage from './components/WishlistPage';
 import UserProfilePage from './components/UserProfilePage';
 import MobileBottomNav from './components/MobileBottomNav';
 import InfoModal from './components/InfoModal';
-import OffersBanner from './components/OffersBanner';
 import { 
   fetchProductsFromApi,
-  fetchHeroSlidesApi, fetchHeroSettingsApi, saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi,
-  fetchOffersApi
+  fetchHeroSlidesApi, fetchHeroSettingsApi, saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi
 } from './services/api';
 
 export default function App() {
@@ -133,11 +131,8 @@ export default function App() {
 
         const settings = await fetchHeroSettingsApi();
         if (settings) setHeroSettings(settings);
-
-        const offersData = await fetchOffersApi();
-        if (offersData && offersData.length > 0) setOffers(offersData);
       } catch (err) {
-        console.warn('Hero/Offers API Load Fallback:', err);
+        console.warn('Hero API Load Fallback:', err);
       }
     }
     loadHeroData();
@@ -308,18 +303,12 @@ export default function App() {
         
         {activeTab === 'home' && (
           <>
-            {/* Hero Container with Floating Offers Banner Overlay */}
-            <div className="relative">
-              <div className="absolute top-2 sm:top-4 inset-x-2 sm:inset-x-8 z-30 pointer-events-auto">
-                <OffersBanner offer={offers[0]} />
-              </div>
-              <Hero
+            <Hero
                 onExploreClick={handleExploreClick}
                 onOpenQuiz={() => setIsQuizOpen(true)}
                 slides={heroSlides}
                 settings={heroSettings}
               />
-            </div>
             <Categories
               selectedCategory={selectedCategory}
               onSelectCategory={(catId) => {
