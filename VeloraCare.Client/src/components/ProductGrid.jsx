@@ -229,12 +229,11 @@ export default function ProductGrid({
                           e.stopPropagation();
                           if (onQuickBuy) onQuickBuy(product);
                         }}
-                        className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] text-xs font-black flex items-center gap-1 shadow-md active:scale-95 transition-all hover:brightness-110 cursor-pointer"
+                        className="w-9 h-9 rounded-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] flex items-center justify-center shadow-md active:scale-95 transition-all hover:brightness-110 cursor-pointer"
                         title="شراء المنتج فوراً"
                         aria-label="شراء"
                       >
-                        <Zap className="w-3.5 h-3.5 fill-current stroke-[2.5]" />
-                        <span>شراء</span>
+                        <Zap className="w-5 h-5 fill-current stroke-[2.5]" />
                       </button>
 
                       {/* Add to cart button */}

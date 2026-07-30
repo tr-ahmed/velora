@@ -343,10 +343,11 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                 if (onQuickBuy) onQuickBuy(product);
                 onClose();
               }}
-              className="flex-1 rounded-2xl text-xs sm:text-sm font-black py-3 px-3 sm:px-4 flex items-center justify-center gap-1.5 shadow-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] hover:brightness-110 active:scale-95 transition-all"
+              className="w-11 h-11 rounded-2xl flex items-center justify-center shadow-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] hover:brightness-110 active:scale-95 transition-all"
+              title="شراء سريع فوري"
+              aria-label="شراء سريع"
             >
-              <Zap className="w-4 h-4 fill-current stroke-[2.5]" />
-              <span>شراء سريع فوري</span>
+              <Zap className="w-5 h-5 fill-current stroke-[2.5]" />
             </button>
 
             {/* Main Add to Cart CTA */}
