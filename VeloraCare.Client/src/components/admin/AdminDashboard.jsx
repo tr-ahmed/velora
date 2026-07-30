@@ -1858,7 +1858,7 @@ export default function AdminDashboard({
                     <div className="text-left">
                       <span className="text-[10px] text-gray-400 block">إجمالي المشتريات</span>
                       <p className="font-bold text-[#0D221A] text-[11px]">{cust.ordersCount || 1} طلبات</p>
-                      <p className="text-[10px] text-gray-500" dir="ltr">آخر طلب: {formatDateSafe(cust.lastOrderDate)}</p>
+                      <p className="text-[10px] text-gray-500">آخر طلب: <span dir="ltr">{formatDateSafe(cust.lastOrderDate)}</span></p>
                     </div>
                   </div>
                 </div>
@@ -1883,7 +1883,7 @@ export default function AdminDashboard({
                   {paginatedCustomers.map((cust, idx) => (
                     <tr key={idx} className="hover:bg-gray-50">
                       <td className="py-3 px-2 font-bold text-[#0D221A]">{cust.name || 'عميلة فيلورا'}</td>
-                      <td className="py-3 px-2 text-gray-600" dir="ltr">{cust.phone || 'غير مسجل'}</td>
+                      <td className="py-3 px-2 text-gray-600">{cust.phone ? <span dir="ltr">{cust.phone}</span> : 'غير مسجل'}</td>
                       <td className="py-3 px-2 font-bold text-emerald-800">{cust.city || 'القاهرة'}</td>
                       <td className="py-3 px-2 text-gray-500 max-w-[200px] truncate" title={cust.address}>{cust.address || 'العنوان الرئيسي'}</td>
                       <td className="py-3 px-2 font-bold">{cust.ordersCount || 1} طلبات</td>

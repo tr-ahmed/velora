@@ -262,7 +262,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-[#0D221A] pb-16 sm:pb-0">
+    <div dir="rtl" className="min-h-screen flex flex-col bg-[#FAF8F5] text-[#0D221A] pb-16 sm:pb-0">
       
       {/* Header Bar */}
       <Header

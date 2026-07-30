@@ -131,7 +131,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs pt-1 text-gray-400">
                 <span className="flex items-center gap-1">
                   <Phone className="w-3.5 h-3.5 text-[#C5A059]" />
-                  <span dir="ltr">{phone || 'غير مسجل'}</span>
+                  {phone ? <span dir="ltr">{phone}</span> : <span>غير مسجل</span>}
                 </span>
                 <span className="flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5 text-[#C5A059]" />

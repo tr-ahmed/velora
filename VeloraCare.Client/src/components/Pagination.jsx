@@ -31,14 +31,15 @@ export default function Pagination({ currentPage, totalPages, onPageChange, tota
         </p>
       )}
 
-      <div className="flex items-center gap-1.5" dir="ltr">
+      <div className="flex items-center gap-1.5" dir="rtl">
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className="p-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-[#F7F5F0] hover:border-[#C5A059] disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm"
           title="الصفحة السابقة"
+          aria-label="الصفحة السابقة"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronRight className="w-4 h-4" />
         </button>
 
         {getPageNumbers().map(num => (
@@ -60,8 +61,9 @@ export default function Pagination({ currentPage, totalPages, onPageChange, tota
           disabled={currentPage === totalPages}
           className="p-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-[#F7F5F0] hover:border-[#C5A059] disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm"
           title="الصفحة التالية"
+          aria-label="الصفحة التالية"
         >
-          <ChevronRight className="w-4 h-4" />
+          <ChevronLeft className="w-4 h-4" />
         </button>
       </div>
     </div>
