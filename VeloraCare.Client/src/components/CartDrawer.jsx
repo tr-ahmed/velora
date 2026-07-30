@@ -47,13 +47,14 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
       />
 
       {/* ============================================================
-          MOBILE: Full Bottom Sheet (slides up from bottom)
+          MOBILE: Full Bottom Sheet — sits ABOVE the bottom nav
           ============================================================ */}
-      <div className="sm:hidden absolute bottom-0 left-0 right-0 bg-white animate-slideFromBottom flex flex-col"
+      <div className="sm:hidden absolute left-0 right-0 bg-white animate-slideFromBottom flex flex-col"
            style={{
+             bottom: '64px',
              borderRadius: '28px 28px 0 0',
-             maxHeight: '92svh',
-             paddingBottom: 'env(safe-area-inset-bottom, 0px)'
+             maxHeight: 'calc(88svh - 64px)',
+             paddingBottom: '0'
            }}>
 
         {/* Grab Handle */}

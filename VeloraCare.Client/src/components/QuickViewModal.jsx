@@ -106,11 +106,13 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
   if (!product) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn print:hidden">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn print:hidden"
+         style={{ paddingBottom: '64px' }}
+         onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       
       {/* Modal Card Box */}
-      <div className="relative w-full max-w-3xl bg-white rounded-t-[28px] sm:rounded-3xl overflow-hidden border-t-2 sm:border-2 border-[#C5A059] shadow-2xl flex flex-col"
-           style={{ maxHeight: '92svh' }}>
+      <div className="relative w-full max-w-3xl bg-white rounded-t-[28px] sm:rounded-3xl overflow-hidden border-t-2 sm:border-2 border-[#C5A059] shadow-2xl flex flex-col sm:pb-0"
+           style={{ maxHeight: 'calc(92svh - 64px)', paddingBottom: '0' }}>
         
         {/* Mobile Grab Handle */}
         <div className="w-10 h-1.5 bg-gray-200 rounded-full mx-auto mt-3 mb-0 sm:hidden flex-shrink-0" />
@@ -313,22 +315,24 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
 
         </div>
 
-        {/* ALWAYS STICKY BOTTOM ACTION BAR (100% VISIBLE ON MOBILE) */}
-        <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 sm:p-4 z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.08)]">
+        {/* ALWAYS STICKY BOTTOM ACTION BAR */}
+        <div
+          className="flex-shrink-0 bg-white border-t border-gray-200 p-3 sm:p-4 z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.08)]"
+        >
           <div className="flex items-center gap-2 sm:gap-3 max-w-xl mx-auto">
             
             {/* Quantity Controls */}
             <div className="flex items-center border border-gray-300 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="px-3 py-2 text-gray-600 hover:bg-gray-200 font-extrabold text-sm"
+                className="w-10 h-11 flex items-center justify-center text-gray-600 hover:bg-gray-200 font-extrabold text-lg active:bg-gray-300"
               >
                 -
               </button>
-              <span className="px-3 py-2 text-xs font-extrabold text-[#0D221A]">{quantity}</span>
+              <span className="px-3 text-sm font-extrabold text-[#0D221A] min-w-[32px] text-center">{quantity}</span>
               <button
                 onClick={() => setQuantity(quantity + 1)}
-                className="px-3 py-2 text-gray-600 hover:bg-gray-200 font-extrabold text-sm"
+                className="w-10 h-11 flex items-center justify-center text-gray-600 hover:bg-gray-200 font-extrabold text-lg active:bg-gray-300"
               >
                 +
               </button>
@@ -337,9 +341,9 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
             {/* Main Add to Cart CTA */}
             <button
               onClick={handleAdd}
-              className="btn-primary flex-1 text-xs sm:text-sm py-3 px-4 sm:px-6 flex items-center justify-center gap-2 shadow-xl"
+              className="btn-primary flex-1 text-sm py-3.5 px-4 sm:px-6 flex items-center justify-center gap-2 shadow-xl"
             >
-              <ShoppingBag className="w-4 h-4" />
+              <ShoppingBag className="w-5 h-5" />
               <span>إضافة للسلة ({product.price * quantity} ج.م)</span>
             </button>
 
