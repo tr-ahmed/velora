@@ -226,6 +226,7 @@ export default function App() {
   };
 
   const handleQuickBuy = (product, qty = 1) => {
+    if (!product) return;
     setCartItems(prev => {
       const existing = prev.find(item => item.id === product.id);
       if (existing) {
@@ -233,6 +234,8 @@ export default function App() {
       }
       return [...prev, { ...product, quantity: qty }];
     });
+    setQuickViewProduct(null);
+    setIsCartOpen(false);
     setIsCheckoutOpen(true);
   };
 
