@@ -150,10 +150,110 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
         {step === 'form' ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 overflow-y-auto">
             
+            {/* 1. ORDER SUMMARY & PROMO COUPON (FIRST / TOP) */}
+            <div className="lg:col-span-5 bg-[#0D221A] text-white p-6 md:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-l border-[#C5A059]/30">
+              <div>
+                <h3 className="text-lg font-bold font-serif text-[#EAD096] mb-4 pb-2 border-b border-[#C5A059]/30 flex items-center justify-between">
+                  <span>ملخص الطلب والمنتجات</span>
+                  <span className="bg-[#C5A059] text-[#0D221A] text-xs font-bold px-2.5 py-0.5 rounded-full font-mono">
+                    {cartItems.length} عنصر
+                  </span>
+                </h3>
+
+                <div className="space-y-3 max-h-56 overflow-y-auto pr-1">
+                  {cartItems.map((item) => (
+                    <div key={item.id} className="flex items-center gap-3 text-xs">
+                      <div className="w-12 h-12 rounded-xl bg-black/40 border border-[#C5A059]/40 overflow-hidden flex-shrink-0">
+                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-bold text-white line-clamp-1">{item.name}</h4>
+                        <p className="text-gray-400 text-[10px]">الكمية: {item.quantity}</p>
+                      </div>
+                      <span className="font-bold text-[#EAD096]">{item.price * item.quantity} ج.م</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Promo Coupon Box */}
+                <div className="mt-4 p-3 bg-[#143529] rounded-2xl border border-[#C5A059]/40 space-y-2 text-xs">
+                  <div className="flex items-center justify-between text-[#EAD096]">
+                    <span className="flex items-center gap-1.5 font-bold">
+                      <Tag className="w-3.5 h-3.5 text-[#C5A059]" />
+                      <span>كود الخصم / الكوبون 🏷️</span>
+                    </span>
+                    {appliedCoupon && (
+                      <span className="text-emerald-300 bg-emerald-900/60 px-2 py-0.5 rounded-full text-[10px] border border-emerald-500/40">
+                        خصم {appliedCoupon.discountPercentage}% مفعل ✓
+                      </span>
+                    )}
+                  </div>
+
+                  <form onSubmit={handleApplyCoupon} className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="كود الخصم (مثال: VELORA15)"
+                      value={couponInput}
+                      onChange={(e) => setCouponInput(e.target.value)}
+                      disabled={Boolean(appliedCoupon)}
+                      className="flex-1 px-3 py-1.5 bg-[#0D221A] border border-[#C5A059]/40 text-[#EAD096] rounded-xl text-xs uppercase font-mono font-bold focus:outline-none focus:border-[#C5A059]"
+                    />
+                    {appliedCoupon ? (
+                      <button
+                        type="button"
+                        onClick={() => { setAppliedCoupon(null); setCouponInput(''); setCouponSuccess(''); }}
+                        className="px-3 py-1.5 bg-rose-900/60 text-rose-200 border border-rose-500/40 rounded-xl text-xs font-bold hover:bg-rose-800"
+                      >
+                        إلغاء
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        disabled={validatingCoupon || !couponInput.trim()}
+                        className="px-3.5 py-1.5 bg-gradient-to-r from-[#EAD096] to-[#C5A059] text-[#0D221A] rounded-xl text-xs font-black hover:brightness-110 disabled:opacity-50"
+                      >
+                        {validatingCoupon ? 'جاري...' : 'تطبيق'}
+                      </button>
+                    )}
+                  </form>
+
+                  {couponError && <p className="text-[10px] text-rose-400 font-bold">{couponError}</p>}
+                  {couponSuccess && <p className="text-[10px] text-emerald-400 font-bold">{couponSuccess}</p>}
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-[#C5A059]/30 space-y-2 text-xs text-gray-300">
+                  <div className="flex justify-between">
+                    <span>المجموع قبل الخصم:</span>
+                    <span>{subtotal} ج.م</span>
+                  </div>
+                  {discountAmount > 0 && (
+                    <div className="flex justify-between text-emerald-400 font-bold">
+                      <span>قيمة الخصم ({appliedCoupon.discountPercentage}%):</span>
+                      <span>- {discountAmount} ج.م</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between">
+                    <span>الشحن والتوصيل:</span>
+                    <span>{shippingFee === 0 ? 'مجاني' : `${shippingFee} ج.م`}</span>
+                  </div>
+                  <div className="flex justify-between text-base font-extrabold text-[#EAD096] pt-2 border-t border-[#C5A059]/20 font-serif">
+                    <span>المجموع النهائي:</span>
+                    <span>{total} ج.م</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-[#C5A059]/20 text-[11px] text-gray-400 flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[#C5A059]" />
+                <span>ضمان VELORA الملكي: تغليف محمي 100% وتوصيل خلال 2-4 أيام عمل.</span>
+              </div>
+            </div>
+
+            {/* 2. SHIPPING DATA & PERSONAL FORM (SECOND) */}
             <div className="lg:col-span-7 p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
               
               <div>
-                <span className="text-xs text-[#C5A059] font-bold uppercase tracking-wider">إنهاء الطلب الآمن</span>
+                <span className="text-xs text-[#C5A059] font-bold uppercase tracking-wider">الخطوة الأخيرة</span>
                 <h2 className="text-2xl font-bold text-[#0D221A] font-serif">
                   بيانات الشحن والتوصيل في مصر
                 </h2>
@@ -261,101 +361,6 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
 
               </form>
 
-            </div>
-
-            <div className="lg:col-span-5 bg-[#0D221A] text-white p-6 md:p-8 flex flex-col justify-between border-t lg:border-t-0 lg:border-r border-[#C5A059]/30">
-              <div>
-                <h3 className="text-lg font-bold font-serif text-[#EAD096] mb-4 pb-2 border-b border-[#C5A059]/30">
-                  ملخص الطلب ({cartItems.length})
-                </h3>
-
-                <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
-                  {cartItems.map((item) => (
-                    <div key={item.id} className="flex items-center gap-3 text-xs">
-                      <div className="w-12 h-12 rounded-lg bg-black/40 border border-[#C5A059]/40 overflow-hidden flex-shrink-0">
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-white line-clamp-1">{item.name}</h4>
-                        <p className="text-gray-400 text-[10px]">الكمية: {item.quantity}</p>
-                      </div>
-                      <span className="font-bold text-[#EAD096]">{item.price * item.quantity} ج.م</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Promo Coupon Box */}
-                <div className="mt-4 p-3 bg-[#143529] rounded-2xl border border-[#C5A059]/40 space-y-2 text-xs">
-                  <div className="flex items-center justify-between text-[#EAD096]">
-                    <span className="flex items-center gap-1.5 font-bold">
-                      <Tag className="w-3.5 h-3.5 text-[#C5A059]" />
-                      <span>كود الخصم / الكوبون 🏷️</span>
-                    </span>
-                    {appliedCoupon && (
-                      <span className="text-emerald-300 bg-emerald-900/60 px-2 py-0.5 rounded-full text-[10px] border border-emerald-500/40">
-                        خصم {appliedCoupon.discountPercentage}% مفعل ✓
-                      </span>
-                    )}
-                  </div>
-
-                  <form onSubmit={handleApplyCoupon} className="flex gap-2">
-                    <input
-                      type="text"
-                      placeholder="كود الخصم (مثال: VELORA15)"
-                      value={couponInput}
-                      onChange={(e) => setCouponInput(e.target.value)}
-                      disabled={Boolean(appliedCoupon)}
-                      className="flex-1 px-3 py-1.5 bg-[#0D221A] border border-[#C5A059]/40 text-[#EAD096] rounded-xl text-xs uppercase font-mono font-bold focus:outline-none focus:border-[#C5A059]"
-                    />
-                    {appliedCoupon ? (
-                      <button
-                        type="button"
-                        onClick={() => { setAppliedCoupon(null); setCouponInput(''); setCouponSuccess(''); }}
-                        className="px-3 py-1.5 bg-rose-900/60 text-rose-200 border border-rose-500/40 rounded-xl text-xs font-bold hover:bg-rose-800"
-                      >
-                        إلغاء
-                      </button>
-                    ) : (
-                      <button
-                        type="submit"
-                        disabled={validatingCoupon || !couponInput.trim()}
-                        className="px-3.5 py-1.5 bg-gradient-to-r from-[#EAD096] to-[#C5A059] text-[#0D221A] rounded-xl text-xs font-black hover:brightness-110 disabled:opacity-50"
-                      >
-                        {validatingCoupon ? 'جاري...' : 'تطبيق'}
-                      </button>
-                    )}
-                  </form>
-
-                  {couponError && <p className="text-[10px] text-rose-400 font-bold">{couponError}</p>}
-                  {couponSuccess && <p className="text-[10px] text-emerald-400 font-bold">{couponSuccess}</p>}
-                </div>
-
-                <div className="mt-4 pt-3 border-t border-[#C5A059]/30 space-y-2 text-xs text-gray-300">
-                  <div className="flex justify-between">
-                    <span>المجموع قبل الخصم:</span>
-                    <span>{subtotal} ج.م</span>
-                  </div>
-                  {discountAmount > 0 && (
-                    <div className="flex justify-between text-emerald-400 font-bold">
-                      <span>قيمة الخصم ({appliedCoupon.discountPercentage}%):</span>
-                      <span>- {discountAmount} ج.م</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between">
-                    <span>الشحن والتوصيل:</span>
-                    <span>{shippingFee === 0 ? 'مجاني' : `${shippingFee} ج.م`}</span>
-                  </div>
-                  <div className="flex justify-between text-base font-extrabold text-[#EAD096] pt-2 border-t border-[#C5A059]/20 font-serif">
-                    <span>المجموع النهائي:</span>
-                    <span>{total} ج.م</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-6 pt-4 border-t border-[#C5A059]/20 text-[11px] text-gray-400 flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#C5A059]" />
-                <span>ضمان VELORA الملكي: تغليف محمي 100% وتوصيل خلال 2-4 أيام عمل.</span>
-              </div>
             </div>
 
           </div>
