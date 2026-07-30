@@ -114,12 +114,12 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
           </div>
         </div>
 
-        {/* Middle floating — Rating badge */}
-        <div className="relative z-20 flex-1 flex flex-col justify-center px-5 py-6">
+        {/* Middle floating — Centered Badge, Headline, Description & Rating */}
+        <div className="relative z-20 flex-1 flex flex-col items-center justify-center text-center px-5 py-4">
           {/* Category badge */}
           <div
             key={`badge-${slide.id}`}
-            className="animate-slideUp inline-flex self-start items-center gap-1.5 mb-4 px-3 py-1.5 rounded-full bg-[#143529]/90 border border-[#C5A059]/50 backdrop-blur-md"
+            className="animate-slideUp inline-flex items-center gap-1.5 mb-3 px-3.5 py-1.5 rounded-full bg-[#143529]/90 border border-[#C5A059]/50 backdrop-blur-md mx-auto"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
             <span className="text-[#EAD096] text-[11px] font-extrabold">{slide.badge}</span>
@@ -128,7 +128,7 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
           {/* Main Headline */}
           <h1
             key={`h1-${slide.id}`}
-            className="animate-slideUp text-[2.6rem] leading-[1.1] font-extrabold text-white mb-2 font-serif"
+            className="animate-slideUp text-[2.4rem] sm:text-[2.8rem] leading-[1.15] font-extrabold text-white text-center mb-3 font-serif max-w-md mx-auto"
             style={{ animationDelay: '0.05s' }}
           >
             {slide.titleHighlight}
@@ -140,19 +140,19 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
 
           <p
             key={`desc-${slide.id}`}
-            className="animate-slideUp text-gray-300 text-sm leading-relaxed line-clamp-2 mb-6 max-w-xs font-light"
+            className="animate-slideUp text-gray-300 text-xs sm:text-sm leading-relaxed line-clamp-3 mb-4 max-w-sm font-light text-center mx-auto"
             style={{ animationDelay: '0.1s' }}
           >
             {slide.description}
           </p>
 
-          {/* Rating pill */}
-          <div className="flex items-center gap-2 mb-5">
-            <div className="flex items-center gap-1 bg-[#0D221A]/70 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#C5A059]/30">
-              <span className="text-[#C5A059] text-sm">★</span>
-              <span className="text-white text-sm font-extrabold">{slide.rating}</span>
+          {/* Rating pill & Trust Badges */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-4 mx-auto">
+            <div className="flex items-center gap-1 bg-[#0D221A]/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#C5A059]/40 shadow-sm">
+              <span className="text-[#C5A059] text-xs">★</span>
+              <span className="text-white text-xs font-extrabold">{slide.rating}</span>
             </div>
-            <div className="flex items-center gap-1.5 text-[11px] text-gray-300 font-medium">
+            <div className="flex items-center gap-1.5 text-[11px] text-gray-300 font-medium bg-[#0D221A]/60 backdrop-blur-md px-3 py-1 rounded-full border border-[#C5A059]/20 shadow-sm">
               <Leaf className="w-3.5 h-3.5 text-emerald-400" />
               <span>100% عضوي</span>
               <span className="text-gray-500">•</span>
