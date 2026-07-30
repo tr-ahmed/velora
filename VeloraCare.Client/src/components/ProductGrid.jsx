@@ -221,19 +221,20 @@ export default function ProductGrid({
 
                     {/* Action buttons */}
                     <div className="flex items-center gap-1.5">
-                      {/* Quick Buy Express Button */}
+{/* Quick Buy Express Button */}
                       <button
                         type="button"
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          if (onQuickBuy) onQuickBuy(product);
+                          if (onQuickView) onQuickView(product);
                         }}
-                        className="w-9 h-9 rounded-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] flex items-center justify-center shadow-md active:scale-95 transition-all hover:brightness-110 cursor-pointer"
-                        title="شراء المنتج فوراً"
-                        aria-label="شراء"
+                        className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] text-xs font-black flex items-center gap-1 shadow-md active:scale-95 transition-all hover:brightness-110 cursor-pointer"
+                        title="معاينة سريعة"
+                        aria-label="معاينة"
                       >
-                        <Zap className="w-5 h-5 fill-current stroke-[2.5]" />
+                        <Zap className="w-3.5 h-3.5 fill-current stroke-[2.5]" />
+                        <span>معاينة</span>
                       </button>
 
                       {/* Add to cart button */}

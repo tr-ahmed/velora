@@ -339,8 +339,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
             {/* Quick Buy Express CTA */}
             <button
               onClick={() => {
-                onAddToCart(product, quantity);
-                if (onQuickBuy) onQuickBuy(product);
+                if (onQuickBuy) onQuickBuy(product, quantity);
                 onClose();
               }}
               className="w-11 h-11 rounded-2xl flex items-center justify-center shadow-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] hover:brightness-110 active:scale-95 transition-all"

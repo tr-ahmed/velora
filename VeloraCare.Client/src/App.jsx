@@ -225,9 +225,18 @@ export default function App() {
     );
   };
 
-  const handleQuickBuy = (product) => {
+  const handleQuickBuy = (product, qty = 1) => {
     if (!product) return;
-    setQuickViewProduct(product);
+    setCartItems(prev => {
+      const existing = prev.find(item => item.id === product.id);
+      if (existing) {
+        return prev.map(item => item.id === product.id ? { ...item, quantity: item.quantity + qty } : item);
+      }
+      return [...prev, { ...product, quantity: qty }];
+    });
+    setQuickViewProduct(null);
+    setIsCartOpen(false);
+    setIsCheckoutOpen(true);
   };
 
   const handleRemoveItem = (productId) => {
