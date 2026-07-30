@@ -120,20 +120,20 @@ export default function QuickViewModal({ product, onClose, onAddToCart, currentU
           <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
-        <div className="md:w-1/2 relative bg-[#0D221A] flex items-center justify-center p-6 min-h-[260px] md:min-h-full">
+        <div className="md:w-1/2 relative bg-[#0D221A] flex items-center justify-center p-4 sm:p-6 min-h-[220px] sm:min-h-[300px] flex-shrink-0">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full max-h-[380px] object-cover rounded-2xl shadow-xl border border-[#C5A059]/30"
+            className="w-full h-full max-h-[280px] sm:max-h-[380px] object-cover rounded-2xl shadow-xl border border-[#C5A059]/40"
           />
           {product.badge && (
-            <span className="absolute top-4 right-4 bg-gradient-to-r from-[#C5A059] to-[#D4AF37] text-[#0D221A] font-extrabold text-xs px-3 py-1 rounded-full shadow-md">
+            <span className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-gradient-to-r from-[#C5A059] via-[#D4AF37] to-[#987834] text-[#0D221A] font-extrabold text-[10px] sm:text-xs px-3 py-1 rounded-full shadow-md">
               {product.badge}
             </span>
           )}
         </div>
 
-        <div className="md:w-1/2 p-6 overflow-y-auto flex flex-col justify-between space-y-4">
+        <div className="md:w-1/2 p-4 sm:p-6 overflow-y-auto flex flex-col justify-between space-y-4">
           
           <div className="space-y-3 text-right">
             

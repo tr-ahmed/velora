@@ -121,18 +121,23 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
       {/* Main Content Grid */}
       <div key={slide.id} className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-12 items-center my-auto animate-fadeIn">
         
-        {/* Mobile Product Spotlight Showcase (Shows at top on mobile) */}
-        <div className="lg:hidden flex items-center justify-center my-1">
-          <div className="relative w-36 sm:w-48 aspect-square rounded-2xl p-1.5 bg-gradient-to-b from-[#C5A059]/40 to-[#143529]/70 backdrop-blur-md border border-[#C5A059]/50 shadow-xl">
-            <div className="relative w-full h-full rounded-xl overflow-hidden bg-[#0D221A]">
-              <img src={slide.productImage} alt={slide.productTitle} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0D221A] via-transparent to-transparent opacity-70" />
-              <div className="absolute bottom-1.5 right-1.5 left-1.5 p-1.5 rounded-lg bg-[#0D221A]/85 backdrop-blur-md border border-[#C5A059]/30 text-right">
-                <div className="flex items-center justify-between text-[9px]">
-                  <span className="text-[#C5A059] font-bold">مستحضر ملكي 👑</span>
-                  <span className="text-emerald-400 font-extrabold">{slide.rating}</span>
+        {/* Mobile Product Spotlight Showcase (Prominent & Enlarged Card on Mobile) */}
+        <div className="lg:hidden flex items-center justify-center my-3">
+          <div className="relative w-60 xs:w-68 sm:w-80 aspect-square rounded-3xl p-2.5 bg-gradient-to-b from-[#C5A059]/50 via-[#143529]/80 to-[#0D221A] backdrop-blur-xl border-2 border-[#C5A059]/60 shadow-[0_0_30px_rgba(197,160,89,0.25)] animate-float">
+            <div className="relative w-full h-full rounded-2xl overflow-hidden bg-[#0D221A]">
+              <img src={slide.productImage} alt={slide.productTitle} className="w-full h-full object-cover object-center scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0D221A] via-[#0D221A]/20 to-transparent opacity-85" />
+              
+              {/* Product Badge Overlay */}
+              <div className="absolute bottom-2.5 right-2.5 left-2.5 p-2.5 rounded-xl bg-[#0D221A]/90 backdrop-blur-md border border-[#C5A059]/40 text-right shadow-lg">
+                <div className="flex items-center justify-between text-[10px] mb-0.5">
+                  <span className="text-[#C5A059] font-extrabold flex items-center gap-1">
+                    <span>مستحضر ملكي 👑</span>
+                  </span>
+                  <span className="text-emerald-400 font-extrabold px-1.5 py-0.5 rounded bg-emerald-950/80 border border-emerald-500/30">{slide.rating}</span>
                 </div>
-                <h4 className="text-[11px] font-bold text-white truncate">{slide.productTitle}</h4>
+                <h4 className="text-xs font-bold text-white truncate">{slide.productTitle}</h4>
+                <p className="text-[10px] text-[#EAD096] truncate font-light mt-0.5">{slide.productSub}</p>
               </div>
             </div>
           </div>
