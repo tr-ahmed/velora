@@ -10,7 +10,8 @@ export default function ProductGrid({
   wishlist, 
   onToggleWishlist,
   searchQuery = '',
-  onClearSearch
+  onClearSearch,
+  cartItems = []
 }) {
   const [addedId, setAddedId] = useState(null);
   const [wishlistToast, setWishlistToast] = useState(null);
@@ -106,11 +107,14 @@ export default function ProductGrid({
           {paginatedProducts.map((product) => {
             const isWishlisted = wishlist.includes(product.id);
             const isJustAdded = addedId === product.id;
+            const cartItem = cartItems.find(item => item.id === product.id);
+            const isInCart = Boolean(cartItem);
+            const cartQty = cartItem?.quantity || 0;
 
             return (
               <div
                 key={product.id}
-                className="group product-card flex flex-col"
+                className="group product-card flex flex-col relative"
                 onClick={() => onQuickView(product)}
               >
                 {/* ---- IMAGE ---- */}
@@ -158,8 +162,16 @@ export default function ProductGrid({
                     </button>
                   </div>
 
+                  {/* In Cart Badge Indicator */}
+                  {isInCart && (
+                    <div className="absolute bottom-2.5 right-2.5 z-20 bg-[#0D221A]/95 text-[#EAD096] border border-[#C5A059] text-[9px] sm:text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-xl flex items-center gap-1 backdrop-blur-md animate-popIn">
+                      <Check className="w-3 h-3 text-emerald-400 stroke-[3]" />
+                      <span>في السلة {cartQty > 1 ? `(${cartQty})` : ''}</span>
+                    </div>
+                  )}
+
                   {/* Discount badge */}
-                  {product.originalPrice && (
+                  {product.originalPrice && !isInCart && (
                     <div className="absolute bottom-2.5 left-2.5 bg-emerald-700 text-white text-[9px] sm:text-[11px] font-extrabold px-2 py-0.5 rounded-full">
                       {Math.round((1 - product.price / product.originalPrice) * 100)}% خصم
                     </div>
@@ -217,18 +229,23 @@ export default function ProductGrid({
                         <Eye className="w-4 h-4 text-[#987834]" />
                       </button>
 
-                      {/* Add to cart */}
+                      {/* Add to cart button */}
                       <button
                         type="button"
                         onClick={(e) => { e.stopPropagation(); handleAddToCart(product); }}
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 active:scale-90 ${
-                          isJustAdded
-                            ? 'bg-emerald-600 text-white scale-105'
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 active:scale-90 relative ${
+                          isJustAdded || isInCart
+                            ? 'bg-emerald-700 text-white border border-emerald-400 shadow-md'
                             : 'bg-[#0D221A] text-[#EAD096] hover:bg-[#C5A059] hover:text-[#0D221A]'
                         }`}
+                        title={isInCart ? `تمت الإضافة للسلة (${cartQty})` : "أضيفي للسلة"}
                         aria-label="أضيفي للسلة"
                       >
-                        {isJustAdded ? <Check className="w-4 h-4 sm:w-5 sm:h-5" /> : <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />}
+                        {isJustAdded || isInCart ? (
+                          <Check className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-emerald-200 stroke-[3]" />
+                        ) : (
+                          <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
+                        )}
                       </button>
                     </div>
                   </div>

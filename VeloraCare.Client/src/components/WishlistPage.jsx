@@ -1,8 +1,8 @@
 import React from 'react';
-import { Heart, ShoppingBag, Trash2, ArrowLeft, Star } from 'lucide-react';
+import { Heart, ShoppingBag, Trash2, ArrowLeft, Star, Check } from 'lucide-react';
 import { PRODUCTS } from '../data/products';
 
-export default function WishlistPage({ wishlist, onToggleWishlist, onAddToCart, onExploreClick }) {
+export default function WishlistPage({ wishlist, onToggleWishlist, onAddToCart, onExploreClick, cartItems = [] }) {
   const wishlistedProducts = PRODUCTS.filter(p => wishlist.includes(p.id));
 
   const handleAddAllToCart = () => {
@@ -51,54 +51,72 @@ export default function WishlistPage({ wishlist, onToggleWishlist, onAddToCart, 
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {wishlistedProducts.map((product) => (
-            <div
-              key={product.id}
-              className="bg-white rounded-3xl overflow-hidden border border-[#C5A059]/30 shadow-md hover:border-[#C5A059] transition-all flex flex-col justify-between"
-            >
-              <div className="relative aspect-[4/3] bg-[#0D221A]">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
-                
-                {/* Remove button */}
-                <button
-                  onClick={() => onToggleWishlist(product.id)}
-                  className="absolute top-3 left-3 w-8 h-8 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-                  title="إزالة من المفضلة"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
+          {wishlistedProducts.map((product) => {
+            const cartItem = cartItems.find(item => item.id === product.id);
+            const isInCart = Boolean(cartItem);
+            const cartQty = cartItem?.quantity || 0;
 
-              <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center gap-1 mb-1">
-                    <Star className="w-3.5 h-3.5 text-[#C5A059] fill-[#C5A059]" />
-                    <span className="text-xs text-gray-500 font-bold">{product.rating}</span>
-                  </div>
-                  <h3 className="font-bold text-[#0D221A] text-base leading-snug">{product.name}</h3>
-                  <p className="text-xs text-gray-500 line-clamp-1 mt-1 font-light">{product.tagline}</p>
-                </div>
+            return (
+              <div
+                key={product.id}
+                className="bg-white rounded-3xl overflow-hidden border border-[#C5A059]/30 shadow-md hover:border-[#C5A059] transition-all flex flex-col justify-between"
+              >
+                <div className="relative aspect-[4/3] bg-[#0D221A]">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
 
-                <div className="pt-3 border-t flex items-center justify-between">
-                  <span className="text-lg font-extrabold text-[#0D221A] font-serif">
-                    {product.price} <span className="text-xs font-normal">ج.م</span>
-                  </span>
-
+                  {/* In Cart Badge Indicator */}
+                  {isInCart && (
+                    <div className="absolute bottom-3 right-3 z-20 bg-[#0D221A]/95 text-[#EAD096] border border-[#C5A059] text-xs font-extrabold px-3 py-1 rounded-full shadow-xl flex items-center gap-1 backdrop-blur-md animate-popIn">
+                      <Check className="w-3.5 h-3.5 text-emerald-400 stroke-[3]" />
+                      <span>في السلة {cartQty > 1 ? `(${cartQty})` : ''}</span>
+                    </div>
+                  )}
+                  
+                  {/* Remove button */}
                   <button
-                    onClick={() => onAddToCart(product, 1)}
-                    className="btn-primary text-xs py-2 px-4 flex items-center gap-1.5"
+                    onClick={() => onToggleWishlist(product.id)}
+                    className="absolute top-3 left-3 w-8 h-8 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                    title="إزالة من المفضلة"
                   >
-                    <ShoppingBag className="w-3.5 h-3.5" />
-                    <span>إضافة للسلة</span>
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
+
+                <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-1 mb-1">
+                      <Star className="w-3.5 h-3.5 text-[#C5A059] fill-[#C5A059]" />
+                      <span className="text-xs text-gray-500 font-bold">{product.rating}</span>
+                    </div>
+                    <h3 className="font-bold text-[#0D221A] text-base leading-snug">{product.name}</h3>
+                    <p className="text-xs text-gray-500 line-clamp-1 mt-1 font-light">{product.tagline}</p>
+                  </div>
+
+                  <div className="pt-3 border-t flex items-center justify-between">
+                    <span className="text-lg font-extrabold text-[#0D221A] font-serif">
+                      {product.price} <span className="text-xs font-normal">ج.م</span>
+                    </span>
+
+                    <button
+                      onClick={() => onAddToCart(product, 1)}
+                      className={`text-xs py-2 px-4 flex items-center gap-1.5 rounded-full font-bold transition-all shadow-md ${
+                        isInCart
+                          ? 'bg-emerald-700 text-white border border-emerald-400'
+                          : 'btn-primary'
+                      }`}
+                    >
+                      {isInCart ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : <ShoppingBag className="w-3.5 h-3.5" />}
+                      <span>{isInCart ? `في السلة (${cartQty})` : 'إضافة للسلة'}</span>
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

@@ -309,6 +309,7 @@ export default function App() {
               onToggleWishlist={handleToggleWishlist}
               searchQuery={searchQuery}
               onClearSearch={() => setSearchQuery('')}
+              cartItems={cartItems}
             />
             <Testimonials />
           </>
@@ -329,6 +330,7 @@ export default function App() {
               onToggleWishlist={handleToggleWishlist}
               searchQuery={searchQuery}
               onClearSearch={() => setSearchQuery('')}
+              cartItems={cartItems}
             />
           </div>
         )}
@@ -339,6 +341,7 @@ export default function App() {
             onToggleWishlist={handleToggleWishlist}
             onAddToCart={handleAddToCart}
             onExploreClick={handleExploreClick}
+            cartItems={cartItems}
           />
         )}
 
