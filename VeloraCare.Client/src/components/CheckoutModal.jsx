@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle, CreditCard, Truck, ShieldCheck, Sparkles, ShoppingBag, ArrowLeft, MapPin, Phone, User, Package } from 'lucide-react';
+import { X, CheckCircle, CreditCard, Truck, ShieldCheck, Sparkles, ShoppingBag, ArrowLeft, MapPin, Phone, User, Package, Tag } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { createOrderApi, saveLocalOrder } from '../services/api';
+import { createOrderApi, saveLocalOrder, validateCouponApi } from '../services/api';
 import { EGYPT_GOVERNORATES } from '../data/governorates';
 
 export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderComplete, currentUser }) {
@@ -16,6 +16,13 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
   });
   const [completedOrder, setCompletedOrder] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Coupon states
+  const [couponInput, setCouponInput] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponError, setCouponError] = useState('');
+  const [couponSuccess, setCouponSuccess] = useState('');
+  const [validatingCoupon, setValidatingCoupon] = useState(false);
 
   useEffect(() => {
     if (isOpen && currentUser) {
@@ -32,8 +39,29 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
   if (!isOpen) return null;
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const shippingFee = subtotal >= 1000 ? 0 : 60;
-  const total = subtotal + shippingFee;
+  const discountAmount = appliedCoupon ? Math.round((subtotal * appliedCoupon.discountPercentage) / 100) : 0;
+  const discountedSubtotal = Math.max(0, subtotal - discountAmount);
+  const shippingFee = discountedSubtotal >= 1000 ? 0 : 60;
+  const total = discountedSubtotal + shippingFee;
+
+  const handleApplyCoupon = async (e) => {
+    e.preventDefault();
+    if (!couponInput.trim()) return;
+
+    setValidatingCoupon(true);
+    setCouponError('');
+    setCouponSuccess('');
+
+    try {
+      const res = await validateCouponApi(couponInput.trim());
+      setAppliedCoupon(res);
+      setCouponSuccess(`تم تطبيق كود الخصم بنجاح! خصم ${res.discountPercentage}% 🎉`);
+    } catch (err) {
+      setCouponError(err.message || 'كود الخصم غير صحيح أو غير مفعل');
+    } finally {
+      setValidatingCoupon(false);
+    }
+  };
 
   const handleSubmitOrder = async (e) => {
     e.preventDefault();
@@ -256,11 +284,63 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                   ))}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-[#C5A059]/30 space-y-2 text-xs text-gray-300">
+                {/* Promo Coupon Box */}
+                <div className="mt-4 p-3 bg-[#143529] rounded-2xl border border-[#C5A059]/40 space-y-2 text-xs">
+                  <div className="flex items-center justify-between text-[#EAD096]">
+                    <span className="flex items-center gap-1.5 font-bold">
+                      <Tag className="w-3.5 h-3.5 text-[#C5A059]" />
+                      <span>كود الخصم / الكوبون 🏷️</span>
+                    </span>
+                    {appliedCoupon && (
+                      <span className="text-emerald-300 bg-emerald-900/60 px-2 py-0.5 rounded-full text-[10px] border border-emerald-500/40">
+                        خصم {appliedCoupon.discountPercentage}% مفعل ✓
+                      </span>
+                    )}
+                  </div>
+
+                  <form onSubmit={handleApplyCoupon} className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="كود الخصم (مثال: VELORA15)"
+                      value={couponInput}
+                      onChange={(e) => setCouponInput(e.target.value)}
+                      disabled={Boolean(appliedCoupon)}
+                      className="flex-1 px-3 py-1.5 bg-[#0D221A] border border-[#C5A059]/40 text-[#EAD096] rounded-xl text-xs uppercase font-mono font-bold focus:outline-none focus:border-[#C5A059]"
+                    />
+                    {appliedCoupon ? (
+                      <button
+                        type="button"
+                        onClick={() => { setAppliedCoupon(null); setCouponInput(''); setCouponSuccess(''); }}
+                        className="px-3 py-1.5 bg-rose-900/60 text-rose-200 border border-rose-500/40 rounded-xl text-xs font-bold hover:bg-rose-800"
+                      >
+                        إلغاء
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        disabled={validatingCoupon || !couponInput.trim()}
+                        className="px-3.5 py-1.5 bg-gradient-to-r from-[#EAD096] to-[#C5A059] text-[#0D221A] rounded-xl text-xs font-black hover:brightness-110 disabled:opacity-50"
+                      >
+                        {validatingCoupon ? 'جاري...' : 'تطبيق'}
+                      </button>
+                    )}
+                  </form>
+
+                  {couponError && <p className="text-[10px] text-rose-400 font-bold">{couponError}</p>}
+                  {couponSuccess && <p className="text-[10px] text-emerald-400 font-bold">{couponSuccess}</p>}
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-[#C5A059]/30 space-y-2 text-xs text-gray-300">
                   <div className="flex justify-between">
-                    <span>المجموع:</span>
+                    <span>المجموع قبل الخصم:</span>
                     <span>{subtotal} ج.م</span>
                   </div>
+                  {discountAmount > 0 && (
+                    <div className="flex justify-between text-emerald-400 font-bold">
+                      <span>قيمة الخصم ({appliedCoupon.discountPercentage}%):</span>
+                      <span>- {discountAmount} ج.م</span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <span>الشحن والتوصيل:</span>
                     <span>{shippingFee === 0 ? 'مجاني' : `${shippingFee} ج.م`}</span>
