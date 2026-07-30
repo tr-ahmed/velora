@@ -367,7 +367,7 @@ export default function App() {
             </h1>
             <div className="w-24 h-1 bg-[#C5A059] mx-auto rounded-full" />
             <p className="text-gray-700 leading-relaxed text-base font-light">
-              تأسست VELORA CARE لتعيد تعريف العناية بالبشرة في العالم العربي ومصر. نؤمن بأن كل امرأة تستحق عناية فائقة مستوحاة من أنقى خلاصة النباتات العضوية الزمردية بدون مساومة على النتيجة والجمال.
+              تأسست VELORA CARE لتعيد تعريف العناية بالبشرة الطبيعية والملكية في مصر. نؤمن بأن كل امرأة تستحق عناية فائقة مستوحاة من أنقى خلاصة النباتات العضوية الزمردية بدون مساومة على النتيجة والجمال.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 text-right">
               <div className="bg-white p-6 rounded-2xl border border-[#C5A059]/30 shadow-md">
