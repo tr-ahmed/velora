@@ -248,8 +248,8 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
                   onChange={(e) => setCity(e.target.value)}
                   className="w-full bg-[#FAF8F5] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A]"
                 >
-                  {EGYPT_GOVERNORATES.map(gov => (
-                    <option key={gov.id} value={gov.name}>{gov.name}</option>
+                  {EGYPT_GOVERNORATES.map(c => (
+                    <option key={c} value={c} className="text-[#0D221A] bg-white font-bold">{c}</option>
                   ))}
                 </select>
               </div>

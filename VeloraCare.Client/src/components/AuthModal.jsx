@@ -173,7 +173,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
                     className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] appearance-none"
                   >
                     {EGYPT_GOVERNORATES.map(c => (
-                      <option key={c} value={c}>{c}</option>
+                      <option key={c} value={c} className="text-[#0D221A] bg-white font-bold">{c}</option>
                     ))}
                   </select>
                 </div>

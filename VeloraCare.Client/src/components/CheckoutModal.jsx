@@ -168,7 +168,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                       className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] bg-[#F7F5F0] transition-all"
                     >
                       {EGYPT_GOVERNORATES.map(c => (
-                        <option key={c} value={c}>{c}</option>
+                        <option key={c} value={c} className="text-[#0D221A] bg-white font-bold">{c}</option>
                       ))}
                     </select>
                   </div>
