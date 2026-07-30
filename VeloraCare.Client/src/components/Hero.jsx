@@ -106,20 +106,19 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
         {/* Gold Orb Glow */}
         <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#C5A059]/15 blur-3xl pointer-events-none" />
 
-        {/* Top Centered Prominent Logo bar — Moved down slightly */}
-        <div className="relative z-20 flex items-center justify-center text-center px-5 pt-7 pb-2 mt-2 sm:mt-4"
-             style={{ paddingTop: 'max(28px, env(safe-area-inset-top, 28px))' }}>
-          <div className="flex items-center justify-center mx-auto">
-            <VeloraLogo size="lg" glow={true} className="scale-105 sm:scale-125" />
+        {/* Middle floating — Centered Enlarged Logo, Badge, Headline, Description & Rating */}
+        <div className="relative z-20 flex-1 flex flex-col items-center justify-center text-center px-5 pt-8 pb-4"
+             style={{ paddingTop: 'max(32px, env(safe-area-inset-top, 32px))' }}>
+          
+          {/* Prominent Enlarged VELORA Care Logo */}
+          <div className="mb-4 flex items-center justify-center mx-auto animate-fadeIn">
+            <VeloraLogo size="xl" glow={true} className="scale-105 sm:scale-125 drop-shadow-[0_4px_20px_rgba(197,160,89,0.5)]" />
           </div>
-        </div>
 
-        {/* Middle floating — Centered Badge, Headline, Description & Rating */}
-        <div className="relative z-20 flex-1 flex flex-col items-center justify-center text-center px-5 py-4">
-          {/* Category badge */}
+          {/* Category badge (إصدار محدود بالذهب ✨) */}
           <div
             key={`badge-${slide.id}`}
-            className="animate-slideUp inline-flex items-center gap-1.5 mb-3 px-3.5 py-1.5 rounded-full bg-[#143529]/90 border border-[#C5A059]/50 backdrop-blur-md mx-auto"
+            className="animate-slideUp inline-flex items-center gap-1.5 mb-3 px-3.5 py-1.5 rounded-full bg-[#143529]/90 border border-[#C5A059]/50 backdrop-blur-md mx-auto shadow-md"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
             <span className="text-[#EAD096] text-[11px] font-extrabold">{slide.badge}</span>
