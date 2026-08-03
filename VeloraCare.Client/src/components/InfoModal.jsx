@@ -32,7 +32,7 @@ export default function InfoModal({ isOpen, onClose, contentType }) {
         <div className="space-y-3 text-xs sm:text-sm text-gray-700 leading-relaxed">
           <p className="font-bold text-[#0D221A]">نقدم خدمة الشحن السريع لكافة محافظات جمهورية مصر العربية:</p>
           <ul className="list-disc list-inside space-y-2 text-gray-600 font-light">
-            <li>تكلفة الشحن 60 ج.م ثابتة لجميع المحافظات تضاف لقيمة الطلب.</li>
+            <li>يتم تحديد رسوم الشحن بواسطة شركة الشحن وتُدفع مباشرة للمندوب عند الاستلام.</li>
             <li>يتم تغليف جميع المنتجات بعناية في عبوات فاخرة لحمايتها أثناء النقل.</li>
           </ul>
         </div>

@@ -13,8 +13,8 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const discountAmount = Math.round((subtotal * discountPercent) / 100);
-  const shippingFee = subtotal === 0 ? 0 : 60;
-  const total = subtotal - discountAmount + shippingFee;
+  const shippingFee = 0; // Paid directly to courier
+  const total = subtotal - discountAmount;
 
   const handleApplyCoupon = async (e) => {
     e.preventDefault();
@@ -168,9 +168,9 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
                   <span className="font-bold">-{discountAmount} ج.م</span>
                 </div>
               )}
-              <div className="flex justify-between">
+              <div className="flex justify-between text-gray-500">
                 <span>رسوم الشحن:</span>
-                <span>{shippingFee === 0 ? '-' : `${shippingFee} ج.م`}</span>
+                <span className="text-[10px]">يُدفع لشركة الشحن</span>
               </div>
               <div className="flex justify-between text-sm font-bold text-[#0D221A] pt-2 border-t border-gray-100">
                 <span>المجموع الكلي:</span>
@@ -304,9 +304,9 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
                   <span>-{discountAmount} ج.م</span>
                 </div>
               )}
-              <div className="flex justify-between">
+              <div className="flex justify-between text-gray-500">
                 <span>رسوم الشحن:</span>
-                <span>{shippingFee === 0 ? '-' : `${shippingFee} ج.م`}</span>
+                <span className="text-[10px]">يُدفع لشركة الشحن</span>
               </div>
               <div className="flex justify-between text-base font-extrabold text-[#0D221A] pt-2 border-t font-serif">
                 <span>المجموع الكلي:</span>

@@ -42,8 +42,8 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const discountAmount = appliedCoupon ? Math.round((subtotal * appliedCoupon.discountPercentage) / 100) : 0;
   const discountedSubtotal = Math.max(0, subtotal - discountAmount);
-  const shippingFee = subtotal === 0 ? 0 : 60;
-  const total = discountedSubtotal + shippingFee;
+  const shippingFee = 0; // Paid directly to courier
+  const total = discountedSubtotal;
 
   const handleApplyCoupon = async (e) => {
     e.preventDefault();
@@ -222,9 +222,9 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                       <span>- {discountAmount} ج.م</span>
                     </div>
                   )}
-                  <div className="flex justify-between">
+                  <div className="flex justify-between text-gray-400">
                     <span>الشحن والتوصيل:</span>
-                    <span>{shippingFee === 0 ? '-' : `${shippingFee} ج.م`}</span>
+                    <span className="text-[10px]">يُدفع لشركة الشحن</span>
                   </div>
                   <div className="flex justify-between text-base font-extrabold text-[#EAD096] pt-2 border-t border-[#C5A059]/20 font-serif">
                     <span>المجموع النهائي:</span>
@@ -436,9 +436,9 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                   <span>المجموع الفرعي:</span>
                   <span>{completedOrder.subtotal} ج.م</span>
                 </div>
-                <div className="flex justify-between text-gray-300 text-[11px]">
+                <div className="flex justify-between text-gray-400 text-[11px]">
                   <span>الشحن والتوصيل:</span>
-                  <span>{completedOrder.shippingFee === 0 ? '-' : `${completedOrder.shippingFee} ج.م`}</span>
+                  <span className="text-[10px]">يُدفع لشركة الشحن</span>
                 </div>
                 <div className="flex justify-between text-[#EAD096] font-extrabold text-base pt-2 border-t border-[#C5A059]/20 font-serif">
                   <span>الإجمالي:</span>
