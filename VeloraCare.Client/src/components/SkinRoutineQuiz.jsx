@@ -44,7 +44,6 @@ export default function SkinRoutineQuiz({ onClose, onAddRoutineToCart, products 
 
   const routineTotal = recommendedProducts.reduce((s, p) => s + (p.price || 0), 0);
   const routineOriginal = recommendedProducts.reduce((s, p) => s + (p.originalPrice || p.price || 0), 0);
-  const routineDiscounted = Math.round(routineTotal * 0.8);
 
   const handleAddAll = () => {
     onAddRoutineToCart(recommendedProducts);
@@ -224,8 +223,13 @@ export default function SkinRoutineQuiz({ onClose, onAddRoutineToCart, products 
 
             {/* Special Discount offer */}
             <div className="p-3 bg-[#C5A059]/20 border border-[#C5A059] rounded-2xl text-xs text-[#EAD096] flex items-center justify-between">
-              <span>وفري 20% عند شراء الروتين الكامل الآن</span>
-              <span className="font-extrabold text-white text-sm">{routineDiscounted} ج.م (بدلاً من {routineOriginal} ج.م)</span>
+              <span>الإجمالي:</span>
+              <div className="flex items-center gap-2">
+                {routineOriginal > routineTotal && (
+                  <span className="line-through text-gray-400 text-[10px]">{routineOriginal} ج.م</span>
+                )}
+                <span className="font-extrabold text-white text-sm">{routineTotal} ج.م</span>
+              </div>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
@@ -235,7 +239,7 @@ export default function SkinRoutineQuiz({ onClose, onAddRoutineToCart, products 
                 className="btn-primary flex-1 py-3 text-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span>إضافة الروتين الكامل للسلة بخصم 20%</span>
+                <span>إضافة الروتين الكامل للسلة</span>
               </button>
 
               <button
