@@ -244,7 +244,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                 <div className="bg-[#E6EDE4] p-3 rounded-xl border border-gray-200">
                   <span className="font-bold text-[#0D221A] block mb-1 flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5 text-[#C5A059]" />
-                    طريقة الاستخدام الأمثلة ✨
+                    طريقة الاستخدام المثلى ✨
                   </span>
                   <p className="text-gray-600 font-light">{product.howToUse || 'ضعي 3-4 قطرات على بشرة نظيفة وجافة صباحاً ومساءً. دلكي بحركات دائرية لطيفة حتى تمام الامتصاص.'}</p>
                 </div>
