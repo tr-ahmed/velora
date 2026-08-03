@@ -15,51 +15,17 @@ export default function Footer({ onOpenQuiz, setActiveTab, onOpenInfoModal }) {
   };
 
   return (
-    <footer className="bg-[#0A1913] text-gray-300 border-t-2 border-[#C5A059]/40 pt-16 pb-8 print:hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        
-        {/* Top Newsletter Section */}
-        <div className="bg-gradient-to-r from-[#143529] to-[#0D221A] rounded-3xl p-8 lg:p-12 border border-[#C5A059]/40 mb-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-7 space-y-2 text-right">
-            <span className="text-xs text-[#C5A059] font-bold uppercase tracking-wider">انضمي لمجتمع ملكات VELORA</span>
-            <h3 className="text-2xl md:text-3xl font-bold font-serif text-[#EAD096]">
-              كوني أول من يعلم بجديد VELORA ✦
-            </h3>
-            <p className="text-xs md:text-sm text-gray-300 font-light">
-              اشتركي في النشرة البريدية لتصلك أحدث نصائح النضارة والعروض الحصرية قبل الجميع.
-            </p>
-          </div>
+    <footer className="relative bg-[#0A1913] text-gray-300 pt-20 pb-8 print:hidden mt-20">
+      {/* Top Wave */}
+      <div className="absolute top-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none rotate-180 transform -translate-y-[99%]">
+        <svg className="relative block w-full h-16 sm:h-24 text-[#0A1913]" viewBox="0 0 1200 160" preserveAspectRatio="none">
+          <path d="M0,80 C200,170 450,10 650,110 C850,210 1050,40 1200,120 L1200,160 L0,160 Z" fill="currentColor" />
+          <path d="M0,80 C200,170 450,10 650,110 C850,210 1050,40 1200,120" fill="none" stroke="#C5A059" strokeWidth="3" opacity="0.6" />
+        </svg>
+      </div>
 
-          <div className="lg:col-span-5">
-            {subscribed ? (
-              <div className="flex items-center gap-2 p-4 bg-[#C5A059]/20 border border-[#C5A059] rounded-2xl text-[#EAD096] text-xs font-bold">
-                <CheckCircle className="w-5 h-5 text-emerald-400" />
-                <span>شكراً لاشتراكك! سنبقيكِ على إطلاع بكل جديد</span>
-              </div>
-            ) : (
-              <form onSubmit={handleSubscribe} className="flex gap-2">
-                <div className="relative flex-1">
-                  <Mail className="w-4 h-4 text-[#C5A059] absolute right-3.5 top-3.5" />
-                  <input
-                    type="email"
-                    required
-                    placeholder="أدخلي بريدك الإلكتروني"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pr-10 pl-4 py-3 bg-[#0D221A] text-white placeholder-gray-400 text-xs rounded-xl border border-[#C5A059]/40 focus:outline-none focus:border-[#C5A059]"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="btn-primary text-xs px-6 py-3"
-                >
-                  <Send className="w-4 h-4" />
-                  <span>اشتراك</span>
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+        
 
         {/* Footer Navigation Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-[#C5A059]/20 text-right">
