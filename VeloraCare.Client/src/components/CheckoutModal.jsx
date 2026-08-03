@@ -260,7 +260,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                     placeholder="أدخلي اسمك الكريم"
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#F7F5F0] transition-all"
+                    className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#DFE6DB] transition-all"
                   />
                 </div>
 
@@ -273,7 +273,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                       placeholder="01XXXXXXXXX"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#F7F5F0] transition-all"
+                      className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#DFE6DB] transition-all"
                       dir="ltr"
                     />
                   </div>
@@ -283,7 +283,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                     <select
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] bg-[#F7F5F0] transition-all"
+                      className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] transition-all"
                     >
                       {EGYPT_GOVERNORATES.map(c => (
                         <option key={c} value={c} className="text-[#0D221A] bg-white font-bold">{c}</option>
@@ -301,7 +301,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                     placeholder="المنطقة، الشارع، رقم العمارة أو الشقة"
                     value={formData.address}
                     onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#F7F5F0] transition-all"
+                    className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#DFE6DB] transition-all"
                   />
                 </div>
 
@@ -315,7 +315,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                       className={`p-3.5 rounded-2xl border text-center flex flex-col items-center justify-center gap-1.5 transition-all ${
                         formData.paymentMethod === 'vodafone'
                           ? 'bg-[#0D221A] text-[#EAD096] border-[#C5A059] font-bold shadow-md ring-2 ring-[#C5A059]/40'
-                          : 'bg-[#F7F5F0] text-gray-700 border-gray-200 hover:bg-gray-100'
+                          : 'bg-[#DFE6DB] text-gray-700 border-gray-200 hover:bg-gray-100'
                       }`}
                     >
                       <Sparkles className="w-5 h-5 text-[#C5A059]" />
@@ -329,7 +329,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                       className={`p-3.5 rounded-2xl border text-center flex flex-col items-center justify-center gap-1.5 transition-all ${
                         formData.paymentMethod === 'instapay'
                           ? 'bg-[#0D221A] text-[#EAD096] border-[#C5A059] font-bold shadow-md ring-2 ring-[#C5A059]/40'
-                          : 'bg-[#F7F5F0] text-gray-700 border-gray-200 hover:bg-gray-100'
+                          : 'bg-[#DFE6DB] text-gray-700 border-gray-200 hover:bg-gray-100'
                       }`}
                     >
                       <CreditCard className="w-5 h-5 text-[#C5A059]" />

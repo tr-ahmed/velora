@@ -8,7 +8,7 @@
    ============================================ */
 
 :root {
-  --bg-primary: #FAF8F5;
+  --bg-primary: #E6EDE4;
   --bg-secondary: #F2EFE9;
   --bg-card: #FFFFFF;
   --bg-emerald-dark: #0D221A;
@@ -23,7 +23,7 @@
 
   --text-dark: #0A1913;
   --text-muted: #52635B;
-  --text-light: #FAF8F5;
+  --text-light: #E6EDE4;
   --text-gold: #C5A059;
 
   --border-gold: rgba(197, 160, 89, 0.35);
@@ -197,7 +197,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 14px 16px;
   border-radius: 14px;
   border: 1.5px solid rgba(197, 160, 89, 0.35);
-  background: #F7F5F0;
+  background: #DFE6DB;
   font-size: 14px;
   font-family: var(--font-arabic);
   color: var(--text-dark);

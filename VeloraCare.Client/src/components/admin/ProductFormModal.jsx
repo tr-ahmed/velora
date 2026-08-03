@@ -321,7 +321,7 @@ export default function ProductFormModal({ isOpen, onClose, product, onSave }) {
                   className={`flex items-center justify-center gap-2 w-full py-6 border-2 border-dashed rounded-xl cursor-pointer transition-all ${
                     uploading
                       ? 'border-[#C5A059]/40 bg-gray-50 cursor-wait'
-                      : 'border-gray-300 hover:border-[#C5A059] hover:bg-[#F7F5F0]'
+                      : 'border-gray-300 hover:border-[#C5A059] hover:bg-[#DFE6DB]'
                   }`}
                 >
                   {uploading ? (

@@ -580,7 +580,7 @@ export default function AdminDashboard({
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#0D221A] flex flex-col font-sans">
+    <div className="min-h-screen bg-[#E6EDE4] text-[#0D221A] flex flex-col font-sans">
       
       {/* Mobile Sleek Action Bar (Back to Store & Logout) */}
       <div className="sm:hidden sticky top-0 z-40 bg-[#0D221A] text-white px-4 py-2.5 border-b border-[#C5A059]/40 flex items-center justify-between shadow-md print:hidden">
@@ -742,7 +742,7 @@ export default function AdminDashboard({
           <div className="pt-4 mt-4 border-t border-gray-200 space-y-2 flex-shrink-0">
             <button
               onClick={onGoToStore}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold text-[#0D221A] bg-[#F7F5F0] hover:bg-gray-200 transition-all"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold text-[#0D221A] bg-[#DFE6DB] hover:bg-gray-200 transition-all"
             >
               <Store className="w-4 h-4 text-[#C5A059]" />
               <span>عودة للمتجر</span>
@@ -795,7 +795,7 @@ export default function AdminDashboard({
             {/* KPI Executive Summary Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Card 1: Total Revenue */}
-              <div className="relative overflow-hidden bg-gradient-to-br from-white via-[#FAF8F5] to-[#F2EFE9] text-[#0D221A] p-5 sm:p-6 rounded-3xl border border-[#C5A059]/40 shadow-sm hover:shadow-xl hover:border-[#C5A059] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group">
+              <div className="relative overflow-hidden bg-gradient-to-br from-white via-[#E6EDE4] to-[#F2EFE9] text-[#0D221A] p-5 sm:p-6 rounded-3xl border border-[#C5A059]/40 shadow-sm hover:shadow-xl hover:border-[#C5A059] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group">
                 <div className="flex items-center justify-between mb-3 z-10">
                   <span className="text-xs font-bold text-[#52635B] tracking-wide">إجمالي المبيعات</span>
                   <div className="w-10 h-10 rounded-2xl bg-[#0D221A] text-[#EAD096] border border-[#C5A059]/30 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
@@ -816,7 +816,7 @@ export default function AdminDashboard({
               </div>
 
               {/* Card 2: Average Order Value (AOV) */}
-              <div className="relative overflow-hidden bg-gradient-to-br from-white via-[#FAF8F5] to-[#F2EFE9] text-[#0D221A] p-5 sm:p-6 rounded-3xl border border-[#C5A059]/40 shadow-sm hover:shadow-xl hover:border-[#C5A059] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group">
+              <div className="relative overflow-hidden bg-gradient-to-br from-white via-[#E6EDE4] to-[#F2EFE9] text-[#0D221A] p-5 sm:p-6 rounded-3xl border border-[#C5A059]/40 shadow-sm hover:shadow-xl hover:border-[#C5A059] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group">
                 <div className="flex items-center justify-between mb-3 z-10">
                   <span className="text-xs font-bold text-[#52635B] tracking-wide">متوسط قيمة الطلب (AOV)</span>
                   <div className="w-10 h-10 rounded-2xl bg-[#143529] text-[#EAD096] border border-[#C5A059]/30 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
@@ -837,7 +837,7 @@ export default function AdminDashboard({
               </div>
 
               {/* Card 3: Customers */}
-              <div className="relative overflow-hidden bg-gradient-to-br from-white via-[#FAF8F5] to-[#F2EFE9] text-[#0D221A] p-5 sm:p-6 rounded-3xl border border-[#C5A059]/40 shadow-sm hover:shadow-xl hover:border-[#C5A059] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group">
+              <div className="relative overflow-hidden bg-gradient-to-br from-white via-[#E6EDE4] to-[#F2EFE9] text-[#0D221A] p-5 sm:p-6 rounded-3xl border border-[#C5A059]/40 shadow-sm hover:shadow-xl hover:border-[#C5A059] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group">
                 <div className="flex items-center justify-between mb-3 z-10">
                   <span className="text-xs font-bold text-[#52635B] tracking-wide">قاعدة العملاء</span>
                   <div className="w-10 h-10 rounded-2xl bg-[#0D221A] text-[#C5A059] border border-[#C5A059]/30 flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
@@ -858,7 +858,7 @@ export default function AdminDashboard({
               </div>
 
               {/* Card 4: Active Products */}
-              <div className="relative overflow-hidden bg-gradient-to-br from-white via-[#FAF8F5] to-[#F2EFE9] text-[#0D221A] p-5 sm:p-6 rounded-3xl border border-[#C5A059]/40 shadow-sm hover:shadow-xl hover:border-[#C5A059] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group">
+              <div className="relative overflow-hidden bg-gradient-to-br from-white via-[#E6EDE4] to-[#F2EFE9] text-[#0D221A] p-5 sm:p-6 rounded-3xl border border-[#C5A059]/40 shadow-sm hover:shadow-xl hover:border-[#C5A059] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between group">
                 <div className="flex items-center justify-between mb-3 z-10">
                   <span className="text-xs font-bold text-[#52635B] tracking-wide">المنتجات النشطة</span>
                   <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#C5A059] to-[#987834] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
@@ -956,7 +956,7 @@ export default function AdminDashboard({
                   <p className="text-[11px] text-amber-800 font-medium">التكلفة الإجمالية للمستحضرات المباعة</p>
                 </div>
 
-                <div className="p-5 rounded-2xl border border-[#C5A059]/40 bg-gradient-to-br from-[#FAF8F5] via-white to-[#F2EFE9] space-y-2 shadow-xs">
+                <div className="p-5 rounded-2xl border border-[#C5A059]/40 bg-gradient-to-br from-[#E6EDE4] via-white to-[#F2EFE9] space-y-2 shadow-xs">
                   <span className="text-xs font-bold text-[#0D221A]">متوسط هامش الربح الإجمالي</span>
                   <h4 className="text-2xl sm:text-3xl font-black text-[#987834] font-serif">
                     {financialMetrics.marginPct}% <span className="text-xs font-normal text-gray-500">هامش صافي</span>
@@ -975,7 +975,7 @@ export default function AdminDashboard({
                 {/* Mobile Cards */}
                 <div className="grid grid-cols-1 gap-3 md:hidden">
                   {topProfitableProducts.slice(0, 5).map((p) => (
-                    <div key={p.id} className="p-3.5 rounded-2xl border border-gray-200 bg-[#FAF8F5] space-y-2">
+                    <div key={p.id} className="p-3.5 rounded-2xl border border-gray-200 bg-[#E6EDE4] space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="font-bold text-xs text-[#0D221A]">{p.name}</span>
                         <span className="px-2.5 py-0.5 rounded-full bg-[#143529] text-[#EAD096] text-[10px] font-extrabold">
@@ -995,7 +995,7 @@ export default function AdminDashboard({
                 <div className="hidden md:block overflow-x-auto">
                   <table className="w-full text-right text-xs">
                     <thead>
-                      <tr className="border-b border-gray-200 text-gray-500 bg-[#FAF8F5]">
+                      <tr className="border-b border-gray-200 text-gray-500 bg-[#E6EDE4]">
                         <th className="py-3 px-3 rounded-r-xl">المنتج</th>
                         <th className="py-3 px-3">التصنيف</th>
                         <th className="py-3 px-3">سعر البيع</th>
@@ -1048,7 +1048,7 @@ export default function AdminDashboard({
                   const pct = orders.length > 0 ? Math.round((pmOrders.length / orders.length) * 100) : 0;
 
                   return (
-                    <div key={pm} className="p-5 rounded-2xl border border-[#C5A059]/30 bg-gradient-to-br from-[#FAF8F5] via-white to-[#F2EFE9] space-y-3 shadow-xs hover:border-[#C5A059] transition-all">
+                    <div key={pm} className="p-5 rounded-2xl border border-[#C5A059]/30 bg-gradient-to-br from-[#E6EDE4] via-white to-[#F2EFE9] space-y-3 shadow-xs hover:border-[#C5A059] transition-all">
                       <div className="flex justify-between items-center">
                         <span className="font-bold text-xs text-[#0D221A]">{paymentLabels[pm]}</span>
                         <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold border bg-[#143529] text-[#EAD096] border-[#C5A059]/40">
@@ -1082,7 +1082,7 @@ export default function AdminDashboard({
                       </div>
                       <h3 className="font-bold font-serif text-base text-[#0D221A]">أداء المحافظات المصرية</h3>
                     </div>
-                    <span className="text-xs text-[#987834] font-bold bg-[#FAF8F5] px-2.5 py-1 rounded-full border border-[#C5A059]/30">الحصة السوقية</span>
+                    <span className="text-xs text-[#987834] font-bold bg-[#E6EDE4] px-2.5 py-1 rounded-full border border-[#C5A059]/30">الحصة السوقية</span>
                   </div>
 
                   <div className="space-y-3.5 pt-1">
@@ -1151,7 +1151,7 @@ export default function AdminDashboard({
                 </div>
                 <button 
                   onClick={() => setActiveTab('orders')} 
-                  className="px-3.5 py-1.5 rounded-full bg-[#FAF8F5] text-[#987834] border border-[#C5A059]/30 text-xs font-bold hover:bg-[#C5A059] hover:text-[#0D221A] transition-all"
+                  className="px-3.5 py-1.5 rounded-full bg-[#E6EDE4] text-[#987834] border border-[#C5A059]/30 text-xs font-bold hover:bg-[#C5A059] hover:text-[#0D221A] transition-all"
                 >
                   إدارة جميع الطلبات ({orders.length}) ←
                 </button>
@@ -1182,7 +1182,7 @@ export default function AdminDashboard({
               <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-right text-xs">
                   <thead>
-                    <tr className="border-b border-gray-200 text-gray-500 font-bold bg-[#FAF8F5]">
+                    <tr className="border-b border-gray-200 text-gray-500 font-bold bg-[#E6EDE4]">
                       <th className="py-3 px-3 rounded-r-xl">رقم الطلب</th>
                       <th className="py-3 px-3">اسم العميلة</th>
                       <th className="py-3 px-3">رقم الهاتف</th>
@@ -1443,7 +1443,7 @@ export default function AdminDashboard({
             </div>
 
             {/* Filter Controls Toolbar */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 bg-[#F7F5F0] p-4 rounded-2xl border border-gray-200 print:hidden">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 bg-[#DFE6DB] p-4 rounded-2xl border border-gray-200 print:hidden">
               <div className="relative">
                 <Search className="w-4 h-4 text-gray-400 absolute right-3 top-3" />
                 <input
@@ -1516,7 +1516,7 @@ export default function AdminDashboard({
             {/* Orders Mobile Cards */}
             <div className="grid grid-cols-1 gap-3 md:hidden">
               {paginatedOrders.map((order) => (
-                <div key={order.id} className="p-4 rounded-2xl border border-gray-200 bg-[#F7F5F0] space-y-3">
+                <div key={order.id} className="p-4 rounded-2xl border border-gray-200 bg-[#DFE6DB] space-y-3">
                   <div className="flex items-center justify-between border-b pb-2">
                     <div>
                       <span className="font-mono font-bold text-xs text-[#0D221A]">{order.orderNumber}</span>
@@ -1660,7 +1660,7 @@ export default function AdminDashboard({
             </div>
 
             {/* Product Filters Toolbar */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-[#F7F5F0] p-4 rounded-2xl border border-gray-200 print:hidden">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-[#DFE6DB] p-4 rounded-2xl border border-gray-200 print:hidden">
               <div className="relative">
                 <Search className="w-4 h-4 text-gray-400 absolute right-3 top-3" />
                 <input
@@ -1708,7 +1708,7 @@ export default function AdminDashboard({
                 const marginPct = p.price > 0 ? Math.round((unitProfit / p.price) * 100) : 0;
 
                 return (
-                  <div key={p.id} className="p-4 rounded-2xl border border-gray-200 bg-[#F7F5F0] space-y-3 shadow-xs">
+                  <div key={p.id} className="p-4 rounded-2xl border border-gray-200 bg-[#DFE6DB] space-y-3 shadow-xs">
                     <div className="flex items-center gap-3">
                       <img src={p.image} alt={p.name} className="w-12 h-12 rounded-xl object-cover bg-[#0D221A] border border-[#C5A059]/30" />
                       <div className="flex-1">
@@ -1862,7 +1862,7 @@ export default function AdminDashboard({
               </button>
             </div>
 
-            <div className="bg-[#F7F5F0] p-4 rounded-2xl border border-gray-200 print:hidden">
+            <div className="bg-[#DFE6DB] p-4 rounded-2xl border border-gray-200 print:hidden">
               <div className="relative max-w-md">
                 <Search className="w-4 h-4 text-gray-400 absolute right-3 top-3" />
                 <input
@@ -1888,7 +1888,7 @@ export default function AdminDashboard({
             {/* Customers Mobile Cards */}
             <div className="grid grid-cols-1 gap-3 md:hidden">
               {paginatedCustomers.map((cust, idx) => (
-                <div key={idx} className="p-4 rounded-2xl border border-gray-200 bg-[#F7F5F0] space-y-3 shadow-xs">
+                <div key={idx} className="p-4 rounded-2xl border border-gray-200 bg-[#DFE6DB] space-y-3 shadow-xs">
                   <div className="flex items-center justify-between border-b border-gray-200/60 pb-2">
                     <div className="flex items-center gap-2.5">
                       <div className="w-9 h-9 rounded-full bg-[#143529] text-[#EAD096] border border-[#C5A059]/40 flex items-center justify-center font-bold text-xs shadow-xs">
@@ -1992,7 +1992,7 @@ export default function AdminDashboard({
                   key={coupon.id}
                   className={`relative overflow-hidden p-5 rounded-2xl border transition-all duration-300 flex flex-col justify-between space-y-4 shadow-sm hover:shadow-md ${
                     coupon.isActive 
-                      ? 'bg-gradient-to-br from-[#FAF8F5] via-white to-[#F2EFE9] border-[#C5A059]/80' 
+                      ? 'bg-gradient-to-br from-[#E6EDE4] via-white to-[#F2EFE9] border-[#C5A059]/80' 
                       : 'bg-gray-100/80 border-gray-300 opacity-60'
                   }`}
                 >
@@ -2074,7 +2074,7 @@ export default function AdminDashboard({
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {categories.map((cat) => (
-                  <div key={cat.id} className="p-4 bg-[#FAF8F5] rounded-2xl border border-gray-200 space-y-3">
+                  <div key={cat.id} className="p-4 bg-[#E6EDE4] rounded-2xl border border-gray-200 space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
                         <div className="w-10 h-10 rounded-xl bg-[#143529] text-[#EAD096] border border-[#C5A059]/40 flex items-center justify-center">
@@ -2124,7 +2124,7 @@ export default function AdminDashboard({
             </div>
 
             {/* Search */}
-            <div className="bg-[#F7F5F0] p-4 rounded-2xl border border-gray-200">
+            <div className="bg-[#DFE6DB] p-4 rounded-2xl border border-gray-200">
               <div className="relative max-w-md">
                 <Search className="w-4 h-4 text-gray-400 absolute right-3 top-3" />
                 <input
@@ -2149,7 +2149,7 @@ export default function AdminDashboard({
             {/* Users Mobile Cards */}
             <div className="grid grid-cols-1 gap-3 md:hidden">
               {paginatedUsers.map((u, idx) => (
-                <div key={u.id || idx} className="p-4 rounded-2xl border border-gray-200 bg-[#F7F5F0] space-y-3 shadow-xs">
+                <div key={u.id || idx} className="p-4 rounded-2xl border border-gray-200 bg-[#DFE6DB] space-y-3 shadow-xs">
                   <div className="flex items-center justify-between border-b border-gray-200/60 pb-2">
                     <div className="flex items-center gap-2.5">
                       <div className="w-9 h-9 rounded-full bg-[#143529] text-[#EAD096] border border-[#C5A059]/40 flex items-center justify-center font-bold text-xs shadow-xs">
@@ -2309,7 +2309,7 @@ export default function AdminDashboard({
             </div>
 
             {offers.length === 0 ? (
-              <div className="text-center py-12 bg-[#FAF8F5] rounded-2xl border border-dashed border-gray-300 p-6">
+              <div className="text-center py-12 bg-[#E6EDE4] rounded-2xl border border-dashed border-gray-300 p-6">
                 <Sparkles className="w-10 h-10 text-[#C5A059] mx-auto opacity-50 mb-2" />
                 <h4 className="font-bold text-gray-700 text-sm">لا توجد عروض حالية</h4>
                 <p className="text-xs text-gray-500 mt-1">اضغطي على إضافة عرض جديد لبدء عرض فلاش تنازلي مميز في المتجر.</p>
@@ -2408,7 +2408,7 @@ export default function AdminDashboard({
             </div>
 
             <div className="space-y-3 text-xs">
-              <div className="bg-[#F7F5F0] p-3 rounded-xl border border-gray-200 space-y-1">
+              <div className="bg-[#DFE6DB] p-3 rounded-xl border border-gray-200 space-y-1">
                 <p className="font-bold text-[#0D221A]">الاسم: {selectedOrderDetails.fullName}</p>
                 <p className="text-gray-600">الهاتف: <span dir="ltr">{selectedOrderDetails.phone}</span></p>
                 <p className="text-gray-600">المحافظة: {selectedOrderDetails.city}</p>

@@ -48,7 +48,7 @@ export default function WishlistPage({ wishlist, onToggleWishlist, onAddToCart, 
 
       {wishlistedProducts.length === 0 ? (
         <div className="text-center py-20 bg-white rounded-3xl border border-[#C5A059]/30 p-8 shadow-sm space-y-4 max-w-lg mx-auto">
-          <div className="w-16 h-16 rounded-full bg-[#F7F5F0] border-2 border-[#C5A059] text-rose-500 flex items-center justify-center mx-auto shadow-md">
+          <div className="w-16 h-16 rounded-full bg-[#DFE6DB] border-2 border-[#C5A059] text-rose-500 flex items-center justify-center mx-auto shadow-md">
             <Heart className="w-8 h-8" />
           </div>
           <h3 className="text-xl font-bold text-[#0D221A] font-serif">قائمة المفضلة فارغة حالياً</h3>

@@ -115,7 +115,7 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
         <form onSubmit={handleSubmit} className="space-y-4 text-xs">
           
           {/* Active Status Toggle */}
-          <div className="p-3 rounded-2xl bg-[#FAF8F5] border border-[#C5A059]/30 flex items-center justify-between">
+          <div className="p-3 rounded-2xl bg-[#E6EDE4] border border-[#C5A059]/30 flex items-center justify-between">
             <span className="font-bold text-[#0D221A]">حالة تفعيل السلايد في الواجهة</span>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
@@ -192,7 +192,7 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
           </div>
 
           {/* Main Product Showcase Info */}
-          <div className="p-4 rounded-2xl border border-gray-200 bg-[#FAF8F5] space-y-3">
+          <div className="p-4 rounded-2xl border border-gray-200 bg-[#E6EDE4] space-y-3">
             <h4 className="font-bold text-[#0D221A] flex items-center gap-1.5">
               <ImageIcon className="w-4 h-4 text-[#C5A059]" />
               <span>بيانات المنتج المعروض في السلايد:</span>
@@ -247,7 +247,7 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
           </div>
 
           {/* Mini Showcase Card Info */}
-          <div className="p-4 rounded-2xl border border-gray-200 bg-[#FAF8F5] space-y-3">
+          <div className="p-4 rounded-2xl border border-gray-200 bg-[#E6EDE4] space-y-3">
             <h4 className="font-bold text-[#0D221A] flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 text-[#C5A059]" />
               <span>بيانات البطاقة المصغرة الإضافية (Mini Card):</span>

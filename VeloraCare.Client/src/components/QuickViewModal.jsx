@@ -214,7 +214,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
               <div className="space-y-2 animate-fadeIn text-xs leading-relaxed text-gray-700">
                 <p>{product.description || 'تركيبة فاخرة تمزج بين المكونات العضوية الزمردية والمستخلصات النباتية النادرة لنتائج سريعة ومبهرة.'}</p>
                 {product.benefits && (
-                  <div className="bg-[#F7F5F0] p-2.5 rounded-xl border border-[#C5A059]/30 mt-1">
+                  <div className="bg-[#DFE6DB] p-2.5 rounded-xl border border-[#C5A059]/30 mt-1">
                     <span className="font-bold text-[#0D221A] block mb-0.5">الفوائد الرئيسية:</span>
                     <p className="text-gray-700 font-light text-[11px]">{product.benefits}</p>
                   </div>
@@ -241,7 +241,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
             {/* Tab 3: How to Use */}
             {activeTab === 'howToUse' && (
               <div className="animate-fadeIn space-y-2 text-xs leading-relaxed text-gray-700">
-                <div className="bg-[#FAF8F5] p-3 rounded-xl border border-gray-200">
+                <div className="bg-[#E6EDE4] p-3 rounded-xl border border-gray-200">
                   <span className="font-bold text-[#0D221A] block mb-1 flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5 text-[#C5A059]" />
                     طريقة الاستخدام الأمثلة ✨
@@ -255,7 +255,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
             {activeTab === 'reviews' && (
               <div className="animate-fadeIn space-y-3">
                 {currentUser ? (
-                  <form onSubmit={handleSubmitReview} className="bg-[#FAF8F5] p-3 rounded-xl border border-[#C5A059]/30 space-y-2">
+                  <form onSubmit={handleSubmitReview} className="bg-[#E6EDE4] p-3 rounded-xl border border-[#C5A059]/30 space-y-2">
                     <span className="font-bold text-[#0D221A] text-xs block">أضيفي تقييمكِ لمستحضر فيلورا:</span>
                     <StarRatingInput value={myRating} onChange={setMyRating} />
                     <textarea
@@ -279,7 +279,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                 ) : (
                   <button
                     onClick={onOpenAuth}
-                    className="w-full py-2.5 rounded-xl border border-[#C5A059]/40 text-[11px] font-bold text-[#0D221A] hover:bg-[#F7F5F0] transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-2.5 rounded-xl border border-[#C5A059]/40 text-[11px] font-bold text-[#0D221A] hover:bg-[#DFE6DB] transition-colors flex items-center justify-center gap-2"
                   >
                     <MessageSquare className="w-3.5 h-3.5 text-[#C5A059]" />
                     سجلي دخولك لكتابة تقييم
@@ -291,7 +291,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                     <p className="text-center text-xs text-gray-400 py-3">لا توجد تقييمات بعد — كوني أول من يقيّم!</p>
                   )}
                   {reviews.map((review) => (
-                    <div key={review.id} className="p-2.5 bg-[#FAF8F5] rounded-xl border border-gray-100 text-right">
+                    <div key={review.id} className="p-2.5 bg-[#E6EDE4] rounded-xl border border-gray-100 text-right">
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">
                           <div className="w-6 h-6 rounded-full bg-[#143529] text-[#EAD096] flex items-center justify-center text-[10px] font-bold">

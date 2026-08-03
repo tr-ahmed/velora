@@ -243,7 +243,7 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
 
         {/* Wavy bottom transition — mobile */}
         <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-10 pointer-events-none">
-          <svg className="relative block w-full h-16 sm:h-24 text-[#FAF8F5]" viewBox="0 0 1200 160" preserveAspectRatio="none">
+          <svg className="relative block w-full h-16 sm:h-24 text-[#E6EDE4]" viewBox="0 0 1200 160" preserveAspectRatio="none">
             <path d="M0,40 C150,140 350,-40 550,90 C750,220 950,10 1200,80 L1200,160 L0,160 Z" fill="currentColor" opacity="0.45" />
             <path d="M0,80 C200,170 450,10 650,110 C850,210 1050,40 1200,120 L1200,160 L0,160 Z" fill="currentColor" />
             <path d="M0,80 C200,170 450,10 650,110 C850,210 1050,40 1200,120" fill="none" stroke="#C5A059" strokeWidth="3" opacity="0.8" />
@@ -368,7 +368,7 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
 
         {/* Wave */}
         <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
-          <svg className="relative block w-full h-36 lg:h-44 text-[#FAF8F5]" viewBox="0 0 1200 160" preserveAspectRatio="none">
+          <svg className="relative block w-full h-36 lg:h-44 text-[#E6EDE4]" viewBox="0 0 1200 160" preserveAspectRatio="none">
             <path d="M0,40 C150,140 350,-40 550,90 C750,220 950,10 1200,80 L1200,160 L0,160 Z" fill="currentColor" opacity="0.45" />
             <path d="M0,80 C200,170 450,10 650,110 C850,210 1050,40 1200,120 L1200,160 L0,160 Z" fill="currentColor" />
             <path d="M0,80 C200,170 450,10 650,110 C850,210 1050,40 1200,120" fill="none" stroke="#C5A059" strokeWidth="3" opacity="0.8" />

@@ -74,7 +74,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
         <div className="flex-1 overflow-y-auto px-4 space-y-3 pb-3" style={{ overscrollBehavior: 'contain' }}>
           {cartItems.length === 0 ? (
             <div className="text-center py-12 space-y-3">
-              <div className="w-16 h-16 rounded-full bg-[#F7F5F0] border border-[#C5A059]/40 text-[#C5A059] flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 rounded-full bg-[#DFE6DB] border border-[#C5A059]/40 text-[#C5A059] flex items-center justify-center mx-auto">
                 <ShoppingBag className="w-8 h-8" />
               </div>
               <h4 className="font-bold text-gray-800 text-base">سلتك فارغة حالياً</h4>
@@ -86,7 +86,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
             cartItems.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center gap-3 p-3 bg-[#F7F5F0] rounded-2xl border border-[#C5A059]/20"
+                className="flex items-center gap-3 p-3 bg-[#DFE6DB] rounded-2xl border border-[#C5A059]/20"
               >
                 {/* Image */}
                 <div className="w-16 h-16 rounded-xl bg-[#0D221A] overflow-hidden flex-shrink-0 border border-[#C5A059]/30">
@@ -222,7 +222,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
           {cartItems.length === 0 ? (
             <div className="text-center py-16 space-y-4">
-              <div className="w-16 h-16 rounded-full bg-[#F7F5F0] border border-[#C5A059]/40 text-[#C5A059] flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 rounded-full bg-[#DFE6DB] border border-[#C5A059]/40 text-[#C5A059] flex items-center justify-center mx-auto">
                 <ShoppingBag className="w-8 h-8" />
               </div>
               <h4 className="font-bold text-gray-800 text-lg">سلتك فارغة حالياً</h4>
@@ -232,7 +232,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
             cartItems.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center gap-4 p-3 bg-[#F7F5F0] rounded-2xl border border-[#C5A059]/20 shadow-sm"
+                className="flex items-center gap-4 p-3 bg-[#DFE6DB] rounded-2xl border border-[#C5A059]/20 shadow-sm"
               >
                 <div className="w-16 h-16 rounded-xl bg-[#0D221A] overflow-hidden flex-shrink-0 border border-[#C5A059]/40">
                   <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
@@ -278,7 +278,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
                   placeholder="كود الخصم (مثال: VELORA15)"
                   value={coupon}
                   onChange={(e) => setCoupon(e.target.value)}
-                  className="w-full pr-9 pl-3 py-2 text-xs border border-[#C5A059]/40 rounded-xl focus:outline-none focus:border-[#C5A059] bg-[#F7F5F0]"
+                  className="w-full pr-9 pl-3 py-2 text-xs border border-[#C5A059]/40 rounded-xl focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB]"
                 />
               </div>
               <button

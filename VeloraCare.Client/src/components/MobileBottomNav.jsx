@@ -155,7 +155,7 @@ export default function MobileBottomNav({
             <div className="space-y-2 pt-1 text-xs">
               <button
                 onClick={() => { setIsProfileMenuOpen(false); setActiveTab('profile'); }}
-                className="w-full p-3 rounded-2xl bg-[#FAF8F5] hover:bg-[#F0EBE1] border border-gray-200 flex items-center justify-between font-bold text-[#0D221A] transition-colors"
+                className="w-full p-3 rounded-2xl bg-[#E6EDE4] hover:bg-[#F0EBE1] border border-gray-200 flex items-center justify-between font-bold text-[#0D221A] transition-colors"
               >
                 <div className="flex items-center gap-2.5">
                   <User className="w-4 h-4 text-[#C5A059]" />

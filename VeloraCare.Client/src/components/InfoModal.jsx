@@ -10,15 +10,15 @@ export default function InfoModal({ isOpen, onClose, contentType }) {
       icon: <HelpCircle className="w-6 h-6 text-[#C5A059]" />,
       body: (
         <div className="space-y-4 text-xs sm:text-sm text-gray-700">
-          <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-gray-200 space-y-1">
+          <div className="bg-[#E6EDE4] p-4 rounded-2xl border border-gray-200 space-y-1">
             <h4 className="font-bold text-[#0D221A] text-sm">س: هل مستحضرات VELORA طبيعية وآمنة؟</h4>
             <p className="text-gray-600 font-light">ج: نعم، جميع منتجاتنا مستخلصة من أعشاب ومكونات زمردية عضوية 100% وآمنة ومؤثرة لضمان الفاعلية وأعلى درجات الأمان.</p>
           </div>
-          <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-gray-200 space-y-1">
+          <div className="bg-[#E6EDE4] p-4 rounded-2xl border border-gray-200 space-y-1">
             <h4 className="font-bold text-[#0D221A] text-sm">س: ما هي مدة توصيل الشحنة داخل مصر؟</h4>
             <p className="text-gray-600 font-light">ج: يتم التوصيل داخل القاهرة والجيزة خلال 24 إلى 48 ساعة، وباقي المحافظات خلال 2 إلى 3 أيام عمل.</p>
           </div>
-          <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-gray-200 space-y-1">
+          <div className="bg-[#E6EDE4] p-4 rounded-2xl border border-gray-200 space-y-1">
             <h4 className="font-bold text-[#0D221A] text-sm">س: ما هي وسائل الدفع المتاحة؟</h4>
             <p className="text-gray-600 font-light">ج: نوفر الدفع الإلكتروني السريع والآمن عبر فودافون كاش (Vodafone Cash) وتطبيق انستا باي (InstaPay).</p>
           </div>

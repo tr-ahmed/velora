@@ -95,7 +95,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#0D221A] py-8 px-4 sm:px-6 lg:px-12">
+    <div className="min-h-screen bg-[#E6EDE4] text-[#0D221A] py-8 px-4 sm:px-6 lg:px-12">
       <div className="max-w-4xl mx-auto space-y-6">
         
         {/* Profile Royal Header Banner */}
@@ -237,7 +237,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
                   required
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full bg-[#FAF8F5] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A]"
+                  className="w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A]"
                 />
               </div>
 
@@ -250,7 +250,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
                   dir="ltr"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full bg-[#FAF8F5] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-right text-[#0D221A]"
+                  className="w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-right text-[#0D221A]"
                 />
               </div>
 
@@ -260,7 +260,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
                 <select
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="w-full bg-[#FAF8F5] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A]"
+                  className="w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A]"
                 >
                   {EGYPT_GOVERNORATES.map(c => (
                     <option key={c} value={c} className="text-[#0D221A] bg-white font-bold">{c}</option>
@@ -277,7 +277,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="اسم الشارع، رقم العمارة، الشقة، وأي علامة مميزة..."
-                  className="w-full bg-[#FAF8F5] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A]"
+                  className="w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A]"
                 />
               </div>
             </div>
@@ -343,7 +343,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
                   required
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="w-full bg-[#FAF8F5] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold"
+                  className="w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold"
                 />
               </div>
 
@@ -354,7 +354,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
                   required
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full bg-[#FAF8F5] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold"
+                  className="w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold"
                 />
               </div>
 
@@ -365,7 +365,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full bg-[#FAF8F5] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold"
+                  className="w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold"
                 />
               </div>
             </div>
@@ -398,7 +398,7 @@ function OrderCard({ order }) {
   const statusColor = statusColors[order.status] || 'bg-gray-100 text-gray-800 border-gray-300';
 
   return (
-    <div className="p-5 rounded-2xl border border-gray-200 bg-[#FAF8F5] space-y-3 hover:shadow-md transition-shadow">
+    <div className="p-5 rounded-2xl border border-gray-200 bg-[#E6EDE4] space-y-3 hover:shadow-md transition-shadow">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <span className="font-mono font-bold text-xs bg-white px-2.5 py-1 rounded-lg border border-gray-300">

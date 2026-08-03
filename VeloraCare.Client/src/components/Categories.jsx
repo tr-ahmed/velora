@@ -75,7 +75,7 @@ export default function Categories({ selectedCategory, onSelectCategory }) {
               className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-bold transition-all whitespace-nowrap text-xs ${
                 isSelected
                   ? 'bg-[#0D221A] text-[#EAD096] border border-[#C5A059] shadow-md scale-105'
-                  : 'bg-white text-gray-700 hover:bg-[#F7F5F0] border border-gray-200 hover:border-[#C5A059]/40'
+                  : 'bg-white text-gray-700 hover:bg-[#DFE6DB] border border-gray-200 hover:border-[#C5A059]/40'
               }`}
             >
               <span className="text-base">{cat.icon}</span>

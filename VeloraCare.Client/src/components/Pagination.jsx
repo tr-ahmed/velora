@@ -35,7 +35,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, tota
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="p-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-[#F7F5F0] hover:border-[#C5A059] disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm"
+          className="p-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-[#DFE6DB] hover:border-[#C5A059] disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm"
           title="الصفحة السابقة"
           aria-label="الصفحة السابقة"
         >
@@ -59,7 +59,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange, tota
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="p-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-[#F7F5F0] hover:border-[#C5A059] disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm"
+          className="p-2 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-[#DFE6DB] hover:border-[#C5A059] disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm"
           title="الصفحة التالية"
           aria-label="الصفحة التالية"
         >
