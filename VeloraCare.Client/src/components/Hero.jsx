@@ -126,7 +126,7 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
           {/* Main Headline */}
           <h1
             key={`h1-${slide.id}`}
-            className="animate-slideUp text-[2.4rem] sm:text-[2.8rem] leading-[1.15] font-extrabold text-white text-center mb-3 font-serif max-w-md mx-auto"
+            className="animate-slideUp text-[2rem] sm:text-[2.5rem] leading-[1.2] font-extrabold text-white text-center mb-3 font-serif max-w-md mx-auto"
             style={{ animationDelay: '0.05s' }}
           >
             {slide.titleHighlight}
