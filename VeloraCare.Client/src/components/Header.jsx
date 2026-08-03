@@ -6,7 +6,8 @@ export default function Header({
   cartCount, 
   wishlistCount, 
   onOpenCart, 
-  onOpenQuiz, 
+  onOpenQuiz,
+  onOpenTrackOrder,
   activeTab, 
   setActiveTab,
   currentUser,
@@ -106,7 +107,14 @@ export default function Header({
             </div>
 
             {/* 3. Action Controls & Search (Left Column) */}
-            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <div className="flex items-center gap-1 sm:gap-4">
+              <button
+                onClick={onOpenTrackOrder}
+                className="hidden lg:flex items-center gap-2 px-4 py-2 text-sm font-bold text-[#C5A059] bg-[#C5A059]/10 rounded-full hover:bg-[#C5A059] hover:text-[#0D221A] transition-colors border border-[#C5A059]/30"
+              >
+                <Truck className="w-4 h-4" />
+                <span>تتبع طلبك</span>
+              </button>
               
               {/* Expandable Live Search Box */}
               <div className="relative w-[130px] sm:w-40 lg:w-48 xl:w-56">
@@ -273,6 +281,17 @@ export default function Header({
                   {link.label}
                 </button>
               ))}
+
+              <button 
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenTrackOrder();
+                }}
+                className="w-full flex items-center justify-center gap-2 p-3 mt-2 bg-[#143529] rounded-xl border border-[#C5A059]/40 text-[#EAD096] hover:bg-[#C5A059]/20 transition-colors"
+              >
+                <Truck className="w-4 h-4" />
+                <span className="font-bold text-xs">تتبع طلبك كزائر</span>
+              </button>
             </div>
           )}
         </nav>

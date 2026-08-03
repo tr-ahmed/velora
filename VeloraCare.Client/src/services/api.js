@@ -19,6 +19,15 @@ export async function createOrderApi(orderData) {
   return await res.json();
 }
 
+export async function trackOrderApi(orderNumber, phone) {
+  const res = await fetch(`${API_BASE_URL}/orders/track?orderNumber=${encodeURIComponent(orderNumber)}&phone=${encodeURIComponent(phone)}`);
+  if (!res.ok) {
+    if (res.status === 404) throw new Error('الطلب غير موجود أو البيانات غير متطابقة');
+    throw new Error('حدث خطأ أثناء البحث عن الطلب');
+  }
+  return await res.json();
+}
+
 export async function loginUserApi(email, password) {
   const res = await fetch(`${API_BASE_URL}/auth/login`, {
     method: 'POST',

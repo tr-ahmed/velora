@@ -41,6 +41,22 @@ public class OrdersController : ControllerBase
         return Ok(orders);
     }
 
+    [HttpGet("track")]
+    public async Task<IActionResult> TrackOrder([FromQuery] string orderNumber, [FromQuery] string phone)
+    {
+        if (string.IsNullOrWhiteSpace(orderNumber) || string.IsNullOrWhiteSpace(phone))
+            return BadRequest(new { message = "رقم الطلب ورقم الهاتف مطلوبان" });
+
+        var order = await _db.Orders
+            .Include(o => o.Items)
+            .FirstOrDefaultAsync(o => o.OrderNumber == orderNumber && o.Phone == phone);
+
+        if (order == null)
+            return NotFound(new { message = "الطلب غير موجود أو البيانات غير متطابقة" });
+
+        return Ok(order);
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {

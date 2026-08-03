@@ -14,6 +14,7 @@ import AuthModal from './components/AuthModal';
 import AdminDashboard from './components/admin/AdminDashboard';
 import WishlistPage from './components/WishlistPage';
 import UserProfilePage from './components/UserProfilePage';
+import TrackOrderModal from './components/TrackOrderModal';
 import MobileBottomNav from './components/MobileBottomNav';
 import InfoModal from './components/InfoModal';
 import { Search, X } from 'lucide-react';
@@ -46,6 +47,7 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isTrackOrderOpen, setIsTrackOrderOpen] = useState(false);
   const [isAdminView, setIsAdminView] = useState(false);
 
   const [currentUser, setCurrentUser] = useState(() => {
@@ -281,6 +283,7 @@ export default function App() {
         wishlistCount={wishlist.length}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenQuiz={() => setIsQuizOpen(true)}
+        onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         currentUser={currentUser}
@@ -501,16 +504,23 @@ export default function App() {
         currentUser={currentUser}
       />
 
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        onLoginSuccess={(user) => {
-          setCurrentUser(user);
-          if (user.role === 'Admin') {
-            setIsAdminView(true);
-          }
-        }}
-      />
+      {isAuthModalOpen && (
+        <AuthModal 
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)} 
+          onLoginSuccess={(user) => {
+            setCurrentUser(user);
+            setIsAuthModalOpen(false);
+            if (user.role === 'Admin') {
+              setIsAdminView(true);
+            }
+          }} 
+        />
+      )}
+
+      {isTrackOrderOpen && (
+        <TrackOrderModal onClose={() => setIsTrackOrderOpen(false)} />
+      )}
 
       <ContactWidget />
 
