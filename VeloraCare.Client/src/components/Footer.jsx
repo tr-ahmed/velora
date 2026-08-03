@@ -15,7 +15,7 @@ export default function Footer({ onOpenQuiz, setActiveTab, onOpenInfoModal }) {
   };
 
   return (
-    <footer className="bg-[#0A1913] text-gray-300 border-t-2 border-[#C5A059]/40 pt-16 pb-8 print:hidden mt-20">
+    <footer className="bg-[#0A1913] text-gray-300 border-t-2 border-[#C5A059]/40 pt-16 pb-8 print:hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         
 
