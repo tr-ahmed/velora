@@ -16,6 +16,7 @@ import WishlistPage from './components/WishlistPage';
 import UserProfilePage from './components/UserProfilePage';
 import MobileBottomNav from './components/MobileBottomNav';
 import InfoModal from './components/InfoModal';
+import { Search, X } from 'lucide-react';
 import { 
   fetchProductsFromApi,
   fetchHeroSlidesApi, fetchHeroSettingsApi, saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi
@@ -26,6 +27,7 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isMobileSearchExpanded, setIsMobileSearchExpanded] = useState(false);
   const [infoModalType, setInfoModalType] = useState(null);
   const [cartItems, setCartItems] = useState([
     {
@@ -279,6 +281,44 @@ export default function App() {
         onQuickView={(p) => setQuickViewProduct(p)}
       />
 
+      {/* Floating Mobile Search Button */}
+      <div className="sm:hidden fixed top-4 left-4 z-[60] print:hidden">
+        <button
+          onClick={() => setIsMobileSearchExpanded(!isMobileSearchExpanded)}
+          className={`w-11 h-11 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 border backdrop-blur-md ${
+            isMobileSearchExpanded
+              ? 'bg-[#0D221A]/95 text-rose-400 border-rose-500/30 hover:bg-rose-950'
+              : 'bg-gradient-to-br from-[#143529]/95 to-[#0D221A]/95 text-[#C5A059] border-[#C5A059]/50 hover:border-[#C5A059] hover:brightness-110'
+          }`}
+          aria-label="البحث"
+        >
+          {isMobileSearchExpanded ? <X className="w-5 h-5" /> : <Search className="w-5 h-5 stroke-[2.5]" />}
+        </button>
+      </div>
+
+      {/* Transparent Mobile Search Overlay */}
+      {isMobileSearchExpanded && (
+        <div className="sm:hidden fixed inset-x-0 top-0 pt-20 pb-4 px-4 z-[50] bg-transparent animate-fadeIn print:hidden pointer-events-none">
+          <div className="relative max-w-sm mx-auto shadow-2xl rounded-2xl pointer-events-auto">
+            <input
+              type="text"
+              autoFocus
+              placeholder="ابحثي عن منتج..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                if (activeTab !== 'products' && e.target.value.trim().length > 0) {
+                  setActiveTab('products');
+                  window.scrollTo(0, 0);
+                }
+              }}
+              className="w-full bg-[#143529]/95 backdrop-blur-xl text-[#EAD096] placeholder-gray-400 text-sm rounded-2xl py-3.5 pr-12 pl-4 border border-[#C5A059]/50 focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/40 transition-all shadow-[0_8px_30px_rgba(0,0,0,0.2)]"
+            />
+            <Search className="w-5 h-5 text-[#C5A059] absolute right-4 top-3.5" />
+          </div>
+        </div>
+      )}
+
       {/* Main Page Routing/Views */}
       <main className="flex-1">
         
@@ -302,6 +342,7 @@ export default function App() {
               selectedCategory={selectedCategory}
               onAddToCart={handleAddToCart}
               onRemoveFromCart={handleRemoveItem}
+              onUpdateQuantity={handleUpdateQuantity}
               onQuickView={(p) => setQuickViewProduct(p)}
               wishlist={wishlist}
               onToggleWishlist={handleToggleWishlist}
@@ -324,6 +365,7 @@ export default function App() {
               selectedCategory={selectedCategory}
               onAddToCart={handleAddToCart}
               onRemoveFromCart={handleRemoveItem}
+              onUpdateQuantity={handleUpdateQuantity}
               onQuickView={(p) => setQuickViewProduct(p)}
               wishlist={wishlist}
               onToggleWishlist={handleToggleWishlist}

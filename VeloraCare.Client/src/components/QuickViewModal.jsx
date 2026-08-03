@@ -107,7 +107,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn print:hidden"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn print:hidden"
       onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       
@@ -315,7 +315,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
 
         {/* ALWAYS STICKY BOTTOM ACTION BAR */}
         <div
-          className="flex-shrink-0 bg-white border-t border-gray-200 p-3 sm:p-4 z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.08)]"
+          className="flex-shrink-0 bg-white border-t border-gray-200 p-3 pb-5 sm:p-4 sm:pb-4 z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.08)] rounded-b-3xl"
         >
           <div className="flex items-center gap-2 sm:gap-3 max-w-xl mx-auto">
             

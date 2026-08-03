@@ -13,7 +13,8 @@ export default function ProductGrid({
   onToggleWishlist,
   searchQuery = '',
   onClearSearch,
-  cartItems = []
+  cartItems = [],
+  onUpdateQuantity
 }) {
   const [addedId, setAddedId] = useState(null);
   const [wishlistToast, setWishlistToast] = useState(null);
@@ -237,43 +238,43 @@ export default function ProductGrid({
 
                     {/* Action buttons */}
                     <div className="flex items-center gap-1.5">
-{/* Quick View Button */}
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          if (onQuickView) onQuickView(product);
-                        }}
-                        className="w-9 h-9 rounded-xl bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] shadow-md active:scale-95 transition-all hover:brightness-110 cursor-pointer flex items-center justify-center"
-                        title="معاينة سريعة"
-                        aria-label="معاينة"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-
-                      {/* Add to cart button */}
-                      <button
-                        type="button"
-                        onClick={(e) => { e.stopPropagation(); handleAddToCart(product); }}
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 active:scale-90 relative ${
-                          isInCart
-                            ? 'bg-rose-700 text-white border border-rose-400 shadow-md'
-                            : isJustAdded
-                            ? 'bg-emerald-700 text-white border border-emerald-400 shadow-md'
-                            : 'bg-[#0D221A] text-[#EAD096] hover:bg-[#C5A059] hover:text-[#0D221A]'
-                        }`}
-                        title={isInCart ? `إزالة من السلة` : "أضيفي للسلة"}
-                        aria-label={isInCart ? "إزالة من السلة" : "أضيفي للسلة"}
-                      >
-                        {isInCart ? (
-                          <ShoppingBag className="w-4 h-4 text-emerald-200 fill-emerald-200" />
-                        ) : isJustAdded ? (
-                          <Check className="w-4 h-4 text-emerald-200 stroke-[3]" />
-                        ) : (
-                          <ShoppingBag className="w-4 h-4" />
-                        )}
-                      </button>
+                      {isInCart && onUpdateQuantity ? (
+                        <div className="flex items-center border-2 border-[#0D221A] rounded-xl overflow-hidden bg-white shadow-sm h-9">
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); onUpdateQuantity(product.id, cartQty - 1); }}
+                            className="w-8 h-full flex items-center justify-center text-[#0D221A] hover:bg-gray-100 font-extrabold text-lg active:bg-gray-200"
+                          >
+                            -
+                          </button>
+                          <span className="text-sm font-extrabold text-[#0D221A] w-6 text-center">{cartQty}</span>
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); onUpdateQuantity(product.id, cartQty + 1); }}
+                            className="w-8 h-full flex items-center justify-center text-[#0D221A] hover:bg-gray-100 font-extrabold text-lg active:bg-gray-200"
+                          >
+                            +
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={(e) => { e.stopPropagation(); handleAddToCart(product); }}
+                          className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 active:scale-90 relative ${
+                            isJustAdded
+                              ? 'bg-emerald-700 text-white border border-emerald-400 shadow-md'
+                              : 'bg-[#0D221A] text-[#EAD096] border border-[#C5A059] hover:bg-[#C5A059] hover:text-[#0D221A]'
+                          }`}
+                          title="أضف للسلة"
+                          aria-label="أضف للسلة"
+                        >
+                          {isJustAdded ? (
+                            <Check className="w-4 h-4 text-emerald-200 stroke-[3]" />
+                          ) : (
+                            <ShoppingBag className="w-4 h-4" />
+                          )}
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>

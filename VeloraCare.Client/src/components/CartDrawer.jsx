@@ -181,20 +181,24 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
             {couponError && <p className="text-xs text-rose-600 font-bold">{couponError}</p>}
 
             {/* Totals */}
-            <div className="space-y-1 text-sm text-gray-600">
+            <div className="space-y-2 text-xs text-gray-600 pt-1">
               <div className="flex justify-between">
-                <span className="font-bold text-[#0D221A]">{total} ج.م</span>
-                <span>المجموع الكلي</span>
+                <span>المجموع الفرعي:</span>
+                <span className="font-bold text-gray-800">{subtotal} ج.م</span>
               </div>
               {discountAmount > 0 && (
-                <div className="flex justify-between text-emerald-700 text-xs">
+                <div className="flex justify-between text-emerald-700">
+                  <span>الخصم ({discountPercent}%):</span>
                   <span className="font-bold">-{discountAmount} ج.م</span>
-                  <span>خصم {discountPercent}%</span>
                 </div>
               )}
-              <div className="flex justify-between text-xs">
+              <div className="flex justify-between">
+                <span>رسوم الشحن:</span>
                 <span>{shippingFee === 0 ? <strong className="text-emerald-700">مجاني</strong> : `${shippingFee} ج.م`}</span>
-                <span className="text-gray-500">الشحن</span>
+              </div>
+              <div className="flex justify-between text-sm font-bold text-[#0D221A] pt-2 border-t border-gray-100">
+                <span>المجموع الكلي:</span>
+                <span className="text-[#987834]">{total} ج.م</span>
               </div>
             </div>
 

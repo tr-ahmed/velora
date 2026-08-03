@@ -109,7 +109,7 @@ export default function Header({
             <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
               
               {/* Expandable Live Search Box */}
-              <div className="relative hidden md:block w-40 lg:w-48 xl:w-56">
+              <div className="relative w-[130px] sm:w-40 lg:w-48 xl:w-56">
                 <form onSubmit={handleSearchSubmit}>
                   <input
                     type="text"
@@ -163,7 +163,7 @@ export default function Header({
               {/* Wishlist Button */}
               <button 
                 onClick={() => setActiveTab('wishlist')}
-                className="relative p-2 text-gray-300 hover:text-[#C5A059] rounded-full hover:bg-white/5 transition-colors"
+                className="relative hidden sm:block p-2 text-gray-300 hover:text-[#C5A059] rounded-full hover:bg-white/5 transition-colors"
                 title="المفضلة"
               >
                 <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-rose-400" />
@@ -176,7 +176,7 @@ export default function Header({
 
               {/* User Account / Admin Badge */}
               {currentUser ? (
-                <div className="flex items-center gap-1.5">
+                <div className="hidden sm:flex items-center gap-1.5">
                   {/* Strict Admin Check */}
                   {currentUser?.role === 'Admin' && (
                     <button
@@ -221,7 +221,7 @@ export default function Header({
               ) : (
                 <button
                   onClick={onOpenAuthModal}
-                  className="flex items-center gap-1.5 text-xs text-[#EAD096] font-bold hover:text-white px-3.5 py-1.5 rounded-full bg-[#143529] border border-[#C5A059]/40 hover:border-[#C5A059] transition-all shadow-sm"
+                  className="hidden sm:flex items-center gap-1.5 text-xs text-[#EAD096] font-bold hover:text-white px-3.5 py-1.5 rounded-full bg-[#143529] border border-[#C5A059]/40 hover:border-[#C5A059] transition-all shadow-sm"
                 >
                   <User className="w-3.5 h-3.5 text-[#C5A059]" />
                   <span>دخول</span>
@@ -231,7 +231,7 @@ export default function Header({
               {/* Cart Drawer Main CTA Button */}
               <button
                 onClick={onOpenCart}
-                className="flex items-center gap-1.5 bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#987834] text-[#0D221A] px-3.5 py-1.5 rounded-full font-extrabold text-xs shadow-md hover:brightness-110 active:scale-95 border border-[#F3E5AB]/40 transition-all"
+                className="hidden sm:flex items-center gap-1.5 bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#987834] text-[#0D221A] px-3.5 py-1.5 rounded-full font-extrabold text-xs shadow-md hover:brightness-110 active:scale-95 border border-[#F3E5AB]/40 transition-all"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span className="hidden xs:inline">السلة</span>
