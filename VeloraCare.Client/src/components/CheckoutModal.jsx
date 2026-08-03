@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, CheckCircle, CreditCard, Truck, ShieldCheck, Sparkles, ShoppingBag, ArrowLeft, MapPin, Phone, User, Package, Tag } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { createOrderApi, saveLocalOrder, validateCouponApi } from '../services/api';
+import { createOrderApi, validateCouponApi } from '../services/api';
 import { EGYPT_GOVERNORATES } from '../data/governorates';
 
 export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderComplete, currentUser }) {
@@ -16,6 +16,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
   });
   const [completedOrder, setCompletedOrder] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [orderError, setOrderError] = useState('');
 
   // Coupon states
   const [couponInput, setCouponInput] = useState('');
@@ -65,6 +66,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
 
   const handleSubmitOrder = async (e) => {
     e.preventDefault();
+    setOrderError('');
     setIsSubmitting(true);
 
     const orderPayload = {
@@ -86,7 +88,6 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
 
     try {
       const result = await createOrderApi(orderPayload);
-      saveLocalOrder({ ...orderPayload, orderNumber: result.orderNumber });
       setCompletedOrder({
         orderNumber: result.orderNumber,
         ...formData,
@@ -111,18 +112,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
       onOrderComplete();
     } catch (err) {
       console.error('Order creation failed:', err);
-      const fallbackOrder = saveLocalOrder(orderPayload);
-      setCompletedOrder({
-        orderNumber: fallbackOrder.orderNumber,
-        ...formData,
-        items: [...cartItems],
-        subtotal,
-        shippingFee,
-        total
-      });
-      setStep('success');
-      onOrderComplete();
-    } finally {
+      setOrderError(err.message || 'فشل إنشاء الطلب. يرجى المحاولة مرة أخرى.');
       setIsSubmitting(false);
     }
   };
@@ -349,6 +339,12 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
 
                   </div>
                 </div>
+
+                {orderError && (
+                  <div className="text-rose-600 bg-rose-50 border border-rose-200 text-xs font-bold p-3 rounded-xl text-center mt-4">
+                    {orderError}
+                  </div>
+                )}
 
                 <button
                   type="submit"

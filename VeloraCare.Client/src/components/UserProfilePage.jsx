@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { User, Phone, MapPin, Mail, Lock, Camera, CheckCircle, ShoppingBag, Clock, ShieldCheck, LogOut, ArrowLeft, Store, Eye, ChevronDown, ChevronUp } from 'lucide-react';
 import { EGYPT_GOVERNORATES } from '../data/governorates';
-import { fetchMyOrdersApi } from '../services/api';
+import { fetchMyOrdersApi, updateUserApi } from '../services/api';
 
 export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, onExploreClick, initialTab = 'info' }) {
   const [activeSubTab, setActiveSubTab] = useState(initialTab);
@@ -42,27 +42,36 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
     }
   };
 
-  const handleSaveInfo = (e) => {
+  const handleSaveInfo = async (e) => {
     e.preventDefault();
-    const updatedUser = {
-      ...currentUser,
-      fullName,
-      phone,
-      city,
-      address,
-      avatar
-    };
+    setErrorMessage('');
 
-    if (onUpdateUser) {
-      onUpdateUser(updatedUser);
+    try {
+      const updatedUser = {
+        fullName,
+        phone,
+        city,
+        address,
+        avatar
+      };
+
+      const result = await updateUserApi(currentUser.id, updatedUser);
+      if (onUpdateUser) {
+        onUpdateUser(result);
+      }
+
+      setSuccessMessage('تم تحديث بيانات حسابك الشخصية بنجاح! ✨');
+    } catch (err) {
+      setErrorMessage(err.message || 'فشل تحديث البيانات. يرجى المحاولة مرة أخرى.');
     }
 
-    setSuccessMessage('تم تحديث بيانات حسابك الشخصية وصورتك بنجاح! ✨');
-    setTimeout(() => setSuccessMessage(''), 4000);
+    setTimeout(() => { setSuccessMessage(''); setErrorMessage(''); }, 4000);
   };
 
-  const handleSavePassword = (e) => {
+  const handleSavePassword = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
+
     if (!newPassword || newPassword.length < 6) {
       setErrorMessage('كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل');
       return;
@@ -72,12 +81,17 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
       return;
     }
 
-    setErrorMessage('');
-    setSuccessMessage('تم تغيير كلمة المرور بنجاح! 🔒');
-    setCurrentPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
-    setTimeout(() => setSuccessMessage(''), 4000);
+    try {
+      await updateUserApi(currentUser.id, { password: newPassword });
+      setSuccessMessage('تم تغيير كلمة المرور بنجاح! 🔒');
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (err) {
+      setErrorMessage(err.message || 'فشل تغيير كلمة المرور');
+    }
+
+    setTimeout(() => { setSuccessMessage(''); setErrorMessage(''); }, 4000);
   };
 
   return (

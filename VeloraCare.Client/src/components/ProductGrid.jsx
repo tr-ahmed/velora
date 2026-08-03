@@ -185,6 +185,15 @@ export default function ProductGrid({
                       وفرت {product.originalPrice - product.price} ج.م 🔥
                     </div>
                   )}
+
+                  {/* Wavy bottom transition — product image */}
+                  <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none">
+                    <svg className="relative block w-full h-6 sm:h-8 text-[#FFFFFF]" viewBox="0 0 1200 160" preserveAspectRatio="none">
+                      <path d="M0,70 C150,140 350,10 550,95 C750,180 950,20 1200,85 L1200,160 L0,160 Z" fill="currentColor" opacity="0.55" />
+                      <path d="M0,95 C200,165 450,35 650,105 C850,175 1050,50 1200,110 L1200,160 L0,160 Z" fill="currentColor" />
+                      <path d="M0,95 C200,165 450,35 650,105 C850,175 1050,50 1200,110" fill="none" stroke="#C5A059" strokeWidth="4" opacity="0.6" />
+                    </svg>
+                  </div>
                 </div>
 
                 {/* ---- BODY ---- */}

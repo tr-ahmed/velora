@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { X, Sparkles, Check, ArrowRight, ArrowLeft, RefreshCw, ShoppingBag } from 'lucide-react';
-import { PRODUCTS } from '../data/products';
 
-export default function SkinRoutineQuiz({ onClose, onAddRoutineToCart }) {
+export default function SkinRoutineQuiz({ onClose, onAddRoutineToCart, products = [] }) {
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState({
     skinType: '',
@@ -33,7 +32,19 @@ export default function SkinRoutineQuiz({ onClose, onAddRoutineToCart }) {
     setAnswers({ ...answers, [key]: value });
   };
 
-  const recommendedProducts = PRODUCTS.slice(0, 3); // 3-step routine
+  // 3-step routine from the real API products (cleanser → toner → serum)
+  const recommendedProducts = (() => {
+    if (!products || products.length === 0) return [];
+    const findFirst = (pred) => products.find(pred);
+    const cleanser = findFirst(p => p.category === 'cleansers') || products[0];
+    const toner = findFirst(p => p.category === 'toners') || products.find(p => p.id !== cleanser.id);
+    const serum = findFirst(p => p.category === 'serums') || products.find(p => p.id !== cleanser.id && p.id !== (toner && toner.id));
+    return [cleanser, toner, serum].filter(Boolean).slice(0, 3);
+  })();
+
+  const routineTotal = recommendedProducts.reduce((s, p) => s + (p.price || 0), 0);
+  const routineOriginal = recommendedProducts.reduce((s, p) => s + (p.originalPrice || p.price || 0), 0);
+  const routineDiscounted = Math.round(routineTotal * 0.8);
 
   const handleAddAll = () => {
     onAddRoutineToCart(recommendedProducts);
@@ -194,6 +205,9 @@ export default function SkinRoutineQuiz({ onClose, onAddRoutineToCart }) {
             </p>
 
             {/* Recommended Products Bundle */}
+            {recommendedProducts.length === 0 ? (
+              <p className="text-xs text-gray-400 py-4">جاري تحميل المنتجات... أعد المحاولة بعد قليل ✨</p>
+            ) : (
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 my-6">
               {recommendedProducts.map((p, index) => (
                 <div key={p.id} className="bg-[#143529] p-3 rounded-2xl border border-[#C5A059]/40 text-right">
@@ -206,17 +220,19 @@ export default function SkinRoutineQuiz({ onClose, onAddRoutineToCart }) {
                 </div>
               ))}
             </div>
+            )}
 
             {/* Special Discount offer */}
             <div className="p-3 bg-[#C5A059]/20 border border-[#C5A059] rounded-2xl text-xs text-[#EAD096] flex items-center justify-between">
               <span>وفري 20% عند شراء الروتين الكامل الآن</span>
-              <span className="font-extrabold text-white text-sm">مجموع المجموعة: 1550 ج.م (بدلاً من 1950 ج.م)</span>
+              <span className="font-extrabold text-white text-sm">{routineDiscounted} ج.م (بدلاً من {routineOriginal} ج.م)</span>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <button
                 onClick={handleAddAll}
-                className="btn-primary flex-1 py-3 text-sm flex items-center justify-center gap-2"
+                disabled={recommendedProducts.length === 0}
+                className="btn-primary flex-1 py-3 text-sm flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>إضافة الروتين الكامل للسلة بخصم 20%</span>

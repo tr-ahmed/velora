@@ -33,11 +33,11 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<VeloraDbContext>();
     try
     {
-        dbContext.Database.EnsureCreated();
+        dbContext.Database.Migrate();
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"DB Initialization Note: {ex.Message}");
+        Console.WriteLine($"DB Migration Note: {ex.Message}");
     }
     DbInitializer.Initialize(dbContext);
 }

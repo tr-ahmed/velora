@@ -6,183 +6,302 @@ public static class DbInitializer
 {
     public static void Initialize(VeloraDbContext context)
     {
-        if (context.Products.Any()) return;
-
-        var categories = new List<Category>
+        // ALWAYS seed default Admin user if missing
+        if (!context.Users.Any(u => u.Email == "admin@velora.com"))
         {
-            new Category { Code = "all", Name = "كافة التشكيلات", Icon = "✨" },
-            new Category { Code = "serum", Name = "السيروم والإكسير", Icon = "🧪" },
-            new Category { Code = "moisturizer", Name = "الترطيب الفاخر", Icon = "🧴" },
-            new Category { Code = "oils", Name = "زيوت البشرة الزمردية", Icon = "🌿" },
-            new Category { Code = "candles", Name = "شموع الاسترخاء الملكية", Icon = "🕯️" }
-        };
-        context.Categories.AddRange(categories);
-
-        var products = new List<Product>
-        {
-            new Product
-            {
-                Name = "سيروم الزمرد لإعادة إحياء الشباب",
-                Tagline = "إكسير نباتي مكثف لإعادة مرونة ونضارة البشرة الفورية",
-                Description = "تركيبة فاخرة تمزج بين زيت الزمرد النادر وحمض الهيالورونيك الثلاثي ومستخلصات الشاي الأخضر العضوي لإعادة تحفيز الكولاجين الطبيعي وتنعيم الخطوط الدقيقة.",
-                Price = 650,
-                OriginalPrice = 780,
-                Category = "serum",
-                Image = "/images/serum.png",
-                Badge = "الأكثر مبيعاً 👑",
-                Rating = 4.9,
-                ReviewsCount = 124,
-                Stock = 45,
-                Ingredients = "زيت الزمرد المستخلص ناهيك عن حمض الهيالورونيك، فيتامين C، مستخلص الورد الجوري العضوي، والببتيدات النباتية.",
-                Benefits = "ترطيب عميق يدوم 72 ساعة، تحفيز الكولاجين، إشراقة وتوحيد لون البشرة، حماية من التجاعيد المبكرة.",
-                HowToUse = "ضعي 3 إلى 4 قطرات على بشرة نظيفة وجافة صباحاً ومساءً مع تدليك ناعم بحركات دائرية لأعلى.",
-                Volume = "30ml",
-                SkinType = "جميع أنواع البشرة (بما فيها الحساسة)"
-            },
-            new Product
-            {
-                Name = "كريم الترطيب الزمردي الفاخر",
-                Tagline = "ترطيب ملكي مخملي بحمض الهيالورونيك وزبدة الشيا العضوية",
-                Description = "كريم فاخر خفيف الوزن ينغمس داخل خلايا البشرة ليمنحها نعومة المخمل وترطيباً مكثفاً بدون أي أثر زيتي. يحمي البشرة من العوامل الجوية الضارة.",
-                Price = 520,
-                OriginalPrice = 620,
-                Category = "moisturizer",
-                Image = "/images/cream.png",
-                Badge = "عناية فائقة 🌿",
-                Rating = 4.8,
-                ReviewsCount = 89,
-                Stock = 30,
-                Ingredients = "زبدة الشيا العضوية، مستخلص الصبار النقي، فيتامين E، زيت الجوجوبا السائل، وسيراميد نباتي مكثف.",
-                Benefits = "ترميم حاجز البشرة الواقي، نعومة مخملية فورية، تهدئة الاحمرار، وحماية من الجفاف الشديد.",
-                HowToUse = "يوزع قدر مناسب على الوجه والرقبة بعد السيروم صباحاً ومساءً مع الطبطبة الخفيفة.",
-                Volume = "50ml",
-                SkinType = "البشرة الجافة والعادية والمختلطة"
-            },
-            new Product
-            {
-                Name = "زيت فيلورا الذهبي للوجه والرقبة",
-                Tagline = "قطرات من الذهب والنباتات النادرة لإشراقة ملكية أخاذة",
-                Description = "مزيج ساحر من 7 زيوت بكر معصورة على البارد ومزودة ببريق الذهب العضوي. يغذي خلايا البشرة ويمنحك إشراقة متوهجة كالذهب.",
-                Price = 780,
-                OriginalPrice = 900,
-                Category = "oils",
-                Image = "/images/glow_oil.png",
-                Badge = "إصدار محدود ✨",
-                Rating = 5.0,
-                ReviewsCount = 67,
-                Stock = 20,
-                Ingredients = "زيت الارجان البكر، زيت الأرجان المعصور بارداً، رقائق الذهب النقي، زيت اللوز الحلو، وزيت اللافندر العطري.",
-                Benefits = "إشراقة متوهجة فورية، تغذية مكثفة للبشرة الباهتة، تجديد الخلايا أثناء النوم.",
-                HowToUse = "يستخدم مساءً قبل النوم: ضعي قطرتين على كف اليد وربتي بلطف على الوجه والرقبة.",
-                Volume = "50ml",
-                SkinType = "جميع أنواع البشرة"
-            },
-            new Product
-            {
-                Name = "شمعة VELORA العطرية بالزيوت الزمردية",
-                Tagline = "عبر عبير اللافندر واللافندر الفاخر لأجواء استرخاء ملكية",
-                Description = "مصنوعة من شمع الصويا العضوي 100% المحقون بزيوت عطريّة نادرة تمنح غرفتك عبق الاسترخاء والهدوء النفسي.",
-                Price = 390,
-                OriginalPrice = 450,
-                Category = "candles",
-                Image = "/images/candle.png",
-                Badge = "استرخاء 🕯️",
-                Rating = 4.7,
-                ReviewsCount = 42,
-                Stock = 15,
-                Ingredients = "شمع صويا طبيعي 100%، فتيل قطني نقي، زيوت لافندر وخشب الصندل الزمردي العضوية.",
-                Benefits = "تهدئة الأعصاب وتحسين المزاج، إخفاء الطاقات السلبية، وإشاعة عبير ملكي يدوم لساعات.",
-                HowToUse = "أشعلي الفتيل لمدة ساعة على الأقل في كل استخدام لضمان ذوبان الشمع بالتساوي.",
-                Volume = "250g",
-                SkinType = "مناسب لأجواء المنزل والسبا"
-            }
-        };
-        context.Products.AddRange(products);
-        context.SaveChanges();
-
-        var coupons = new List<Coupon>
-        {
-            new Coupon { Code = "VELORA15", DiscountPercentage = 15, IsActive = true },
-            new Coupon { Code = "SUMMER20", DiscountPercentage = 20, IsActive = true }
-        };
-        context.Coupons.AddRange(coupons);
-
-        var users = new List<User>
-        {
-            new User
+            context.Users.Add(new User
             {
                 FullName = "مدير نظام VELORA",
                 Email = "admin@velora.com",
                 PasswordHash = "Admin123!",
                 Role = "Admin"
-            }
-        };
-        context.Users.AddRange(users);
-
-        var random = new Random(42);
-        var customerNames = new[] { "مريم الجندي", "أحمد محمود", "سارة فؤاد", "نورة الشراكي", "ياسمين عبده", "خالد إبراهيم", "هدى سمير", "عمر حسن", "فاطمة الزهراء", "محمد عبد الله", "ريم سعيد", "كريم مصطفى", "دانا عبد الرحمن", "طارق ناصر", "نادين حسين", "إسماعيل عادل" };
-        var cities = new[] { "القاهرة", "القاهرة", "القاهرة", "القاهرة", "الإسكندرية", "الإسكندرية", "الجيزة", "الجيزة", "المنصورة", "المنصورة", "طنطا", "طنطا", "الشرقية", "أسيوط", "الأقصر", "أسوان" };
-        var statuses = new[] { "تم التوصيل", "تم التوصيل", "تم التوصيل", "تم التوصيل", "تم الشحن", "جاري التجهيز", "جاري التجهيز", "قيد الانتظار", "ملغي" };
-        var paymentMethods = new[] { "cod", "card", "vodafone", "cod", "card", "cod", "vodafone", "cod", "card" };
-
-        var orders = new List<Order>();
-        var orderDate = DateTime.UtcNow.AddDays(-30);
-
-        for (int i = 0; i < 28; i++)
-        {
-            orderDate = orderDate.AddHours(random.Next(4, 36));
-
-            var productIndex = random.Next(0, 4);
-            var qty1 = random.Next(1, 3);
-            var qty2 = random.Next(0, 3);
-            var p1 = products[productIndex];
-            var p2 = products[(productIndex + 1) % 4];
-
-            var items = new List<OrderItem>
-            {
-                new OrderItem { ProductId = p1.Id, ProductName = p1.Name, Quantity = qty1, UnitPrice = p1.Price, TotalPrice = p1.Price * qty1 }
-            };
-            if (qty2 > 0)
-            {
-                items.Add(new OrderItem { ProductId = p2.Id, ProductName = p2.Name, Quantity = qty2, UnitPrice = p2.Price, TotalPrice = p2.Price * qty2 });
-            }
-
-            var subtotal = items.Sum(it => it.TotalPrice);
-            var shippingFee = subtotal >= 1000 ? 0 : 60;
-            var customerIdx = i % customerNames.Length;
-
-            orders.Add(new Order
-            {
-                OrderNumber = $"VEL-EG-{random.Next(100000, 999999)}",
-                FullName = customerNames[customerIdx],
-                Phone = $"01{random.Next(10, 12)}{random.Next(10000000, 99999999)}",
-                City = cities[customerIdx],
-                Address = $"شارع {random.Next(1, 50)}، الحي {random.Next(1, 15)}",
-                Subtotal = subtotal,
-                ShippingFee = shippingFee,
-                Total = subtotal + shippingFee,
-                Status = statuses[random.Next(0, statuses.Length)],
-                PaymentMethod = paymentMethods[random.Next(0, paymentMethods.Length)],
-                CreatedAt = orderDate,
-                Items = items
             });
+            context.SaveChanges();
         }
 
-        context.Orders.AddRange(orders);
-
-        if (!context.Offers.Any())
+        // Seed Purifying Cleanser category if missing
+        if (!context.Categories.Any(c => c.Code == "cleansers"))
         {
-            context.Offers.Add(new Offer
+            context.Categories.Add(new Category
             {
-                Title = "عروض الفلاش السريعة ✨",
-                Subtitle = "خصم ملكي حصري 15% على كافة السيرومات والزيوت الزمردية في مصر",
-                CouponCode = "VELORA15",
-                DiscountPercentage = 15,
-                EndTime = DateTime.UtcNow.AddDays(2),
-                IsActive = true
+                Code = "cleansers",
+                Name = "منظفات وتنظيف البشرة",
+                Icon = "💧",
+                Description = "غسولات ومنظفات لطيفة تنظف البشرة بعمق دون تجريدها من رطوبتها"
             });
+            context.SaveChanges();
         }
 
-        context.SaveChanges();
+        // Seed Toners category if missing
+        if (!context.Categories.Any(c => c.Code == "toners"))
+        {
+            context.Categories.Add(new Category
+            {
+                Code = "toners",
+                Name = "تونرات التوازن والنضارة",
+                Icon = "💦",
+                Description = "تونرات تعيد للبشرة توازنها وترطيبها وتهيئها لامتصاص باقي خطوات العناية"
+            });
+            context.SaveChanges();
+        }
+
+        // Seed Serums category if missing
+        if (!context.Categories.Any(c => c.Code == "serums"))
+        {
+            context.Categories.Add(new Category
+            {
+                Code = "serums",
+                Name = "سيروم وإكسير النضارة",
+                Icon = "✨",
+                Description = "تركيزات فعالة تعالج البشرة وتمنحها الإشراقة والترطيب العميق"
+            });
+            context.SaveChanges();
+        }
+
+        // Seed Body Splash category if missing
+        if (!context.Categories.Any(c => c.Code == "body"))
+        {
+            context.Categories.Add(new Category
+            {
+                Code = "body",
+                Name = "بخاخات الجسم والعطور",
+                Icon = "🌸",
+                Description = "بادي سبلاش خفيف بروائح فاخرة تدوم حتى 12 ساعة للاستخدام اليومي"
+            });
+            context.SaveChanges();
+        }
+
+        // Seed Bundles category if missing
+        if (!context.Categories.Any(c => c.Code == "bundles"))
+        {
+            context.Categories.Add(new Category
+            {
+                Code = "bundles",
+                Name = "باندلات وعروض",
+                Icon = "🎁",
+                Description = "باقات مجموعة من منتجات VELORA بسعر مميز"
+            });
+            context.SaveChanges();
+        }
+
+        // Seed Purifying Cleanser product if missing (rename legacy name if present)
+        var legacyCleanser = context.Products.FirstOrDefault(p => p.Name == "Velora Care Purifying Cleanser");
+        if (legacyCleanser != null)
+        {
+            legacyCleanser.Name = "غسول للبشره الدهنيه والمختلطه";
+            context.SaveChanges();
+        }
+
+        if (!context.Products.Any(p => p.Name == "غسول للبشره الدهنيه والمختلطه"))
+        {
+            context.Products.Add(new Product
+            {
+                Name = "غسول للبشره الدهنيه والمختلطه",
+                Tagline = "بشرة نظيفة، متوازنة، ومشرقة... تبدأ من أول غسلة. ✨",
+                Description = "امنحي بشرتك العناية التي تستحقها مع Velora Care Purifying Cleanser، غسول يومي يجمع بين التنظيف العميق والعناية الفعالة دون أن يسبب جفافًا أو إحساسًا بالشد.\n\nتركيبته الذكية تعمل على إزالة الأوساخ، الزيوت الزائدة، بقايا المكياج وواقي الشمس، مع المساعدة على تنظيف المسام وتقليل مظهر الرؤوس السوداء والحبوب، ليترك بشرتك ناعمة، منتعشة وأكثر صفاءً بعد كل استخدام.\n\nبفضل احتوائه على Niacinamide وSalicylic Acid وZinc PCA، يساعد الغسول على التحكم في لمعان البشرة، تحسين مظهر المسام، ودعم توحيد لون البشرة. كما يعزز Hyaluronic Acid وAllantoin ترطيب البشرة وتهدئتها، لتحصلي على تنظيف عميق دون فقدان رطوبتها الطبيعية.",
+                Price = 250m,
+                OriginalPrice = 360m,
+                Category = "cleansers",
+                Image = "/images/cleanser.jpg",
+                Badge = "خصم 30%",
+                Rating = 5.0,
+                ReviewsCount = 12,
+                Stock = 60,
+                Ingredients = "Niacinamide لتوحيد اللون وتقليل مظهر المسام.\nSalicylic Acid لتنظيف المسام وتقليل الحبوب والرؤوس السوداء.\nZinc PCA للتحكم في إفراز الدهون.\nHyaluronic Acid لترطيب البشرة ومنع الجفاف.\nAllantoin لتهدئة البشرة وتقليل الاحمرار.\nمع منظفات لطيفة مثل Decyl Glucoside لتنظيف فعال بدون تجريد البشرة من رطوبتها.",
+                Benefits = "ينظف البشرة بعمق دون تجفيفها.\nيساعد على تقليل الحبوب والرؤوس السوداء.\nيوازن إفراز الدهون ويقلل اللمعان.\nيمنح البشرة ترطيبًا وانتعاشًا يدومان طوال اليوم.\nيهدئ البشرة ويتركها أكثر نعومة ونقاءً.\nمناسب للاستخدام اليومي صباحًا ومساءً.",
+                HowToUse = "استخدمي الغسول يوميًا صباحًا ومساءً على بشرة مبللة، دلكي بلطف بحركات دائرية ثم اشطفي جيدًا بالماء الفاتر.",
+                Volume = "150ml",
+                SkinType = "جميع أنواع البشرة"
+            });
+            context.SaveChanges();
+        }
+
+        // Seed Purifying & Hydrating Toner product if missing (rename legacy name if present)
+        var legacyToner = context.Products.FirstOrDefault(p => p.Name == "Velora Care Purifying & Hydrating Toner");
+        if (legacyToner != null)
+        {
+            legacyToner.Name = "Cica toner";
+            context.SaveChanges();
+        }
+
+        if (!context.Products.Any(p => p.Name == "Cica toner"))
+        {
+            context.Products.Add(new Product
+            {
+                Name = "Cica toner",
+                Tagline = "Because healthy skin starts with the right balance.",
+                Description = "امنحي بشرتك الانتعاش والعناية التي تستحقها مع تونر Velora Care المصمم ليكون أكثر من مجرد تونر... بل خطوة يومية تعيد لبشرتك توازنها، ترطيبها، ونضارتها الطبيعية.\n\nتركيبته المتطورة تجمع بين مكونات فعالة تعمل معًا لتنظيف البشرة بلطف من بقايا الشوائب والدهون، مع الحفاظ على حاجز البشرة الطبيعي دون التسبب في الجفاف.\n\nالنتيجة؟ بشرة أنقى، أكثر توازنًا، بملمس ناعم، ومظهر صحي ومشرق من أول استخدام، ومع الاستمرار ستلاحظين مسامًا أنعم، ودهونًا أقل، وبشرة أكثر صفاءً واستعدادًا لاستقبال باقي خطوات العناية.",
+                Price = 250m,
+                OriginalPrice = 350m,
+                Category = "toners",
+                Image = "/images/toner.png",
+                Badge = "خصم 28%",
+                Rating = 5.0,
+                ReviewsCount = 8,
+                Stock = 50,
+                Ingredients = "Niacinamide: لتوحيد اللون ودعم حاجز البشرة.\nSalicylic Acid: لتنظيف المسام وتقليل الرؤوس السوداء والحبوب.\nCentella Asiatica Extract: لتهدئة البشرة وتقليل الاحمرار.\nHyaluronic Acid: لترطيب عميق يمنح البشرة مظهرًا ممتلئًا ونضرًا.\nTea Tree Oil: للمساعدة في مقاومة البكتيريا المسببة للحبوب.\nZinc PCA: للتحكم في إفراز الدهون وتقليل اللمعان.\nAllantoin: لتهدئة البشرة ومنحها نعومة وراحة.",
+                Benefits = "ينظف المسام بعمق ويقلل تراكم الزيوت بفضل Salicylic Acid.\nيساعد على تهدئة البشرة وتقليل الاحمرار بفضل Centella Asiatica وAllantoin.\nيمنح البشرة ترطيبًا يدوم بفضل Hyaluronic Acid وBetaine.\nيدعم توحيد لون البشرة ويمنحها إشراقة صحية مع Niacinamide.\nيساعد على تقليل مظهر المسام والتحكم في اللمعان.\nيساهم في الحد من ظهور الحبوب بفضل Tea Tree Oil وZinc PCA.\nيهيئ البشرة لامتصاص السيروم والكريمات بشكل أفضل، ليحقق روتين العناية أفضل نتائجه.",
+                HowToUse = "بعد تنظيف البشرة، ضعي كمية مناسبة من التونر على قطنة نظيفة وامسحي بها وجهك وعنقك بلطف، ثم انتظري حتى يجف قبل تطبيق السيروم والمرطب. استخدميه يوميًا صباحًا ومساءً.",
+                Volume = "200ml",
+                SkinType = "البشرة الدهنية والمختلطة والمعرضة للحبوب"
+            });
+            context.SaveChanges();
+        }
+
+        // Seed Hydro Glow Serum product if missing
+        if (!context.Products.Any(p => p.Name == "Hydro Glow serum"))
+        {
+            context.Products.Add(new Product
+            {
+                Name = "Hydro Glow serum",
+                Tagline = "ترطيب عميق ولمعان يشبه الفيلر لبشرة ناعمة ومشرقة 🤍",
+                Description = "سيروم Hydro Glow يجمع بين أعمق مرطبات البشرة وأقوى مكونات الإشراقة في تركيبة واحدة، ليمنحكِ بشرة ممتلئة، ناعمة، ومشرقة بمظهر صحي.\n\nحمض الهيالورونيك يمنح ترطيبًا عميقًا وامتلاءً يشبه الفيلر، بينما يعمل Niacinamide على تحسين ملمس البشرة وشد المسام، بينما يفتح Alpha Arbutin البقع الداكنة ويوحد لون البشرة، ويعمل فيتامين E كمضاد قوي للأكسدة يحمي البشرة من الشوارد الحرة.\n\nمع الاستخدام المنتظم ستحصلين على ترطيب يدوم طويلاً، وبشرة ناعمة، مشرقة، وصحية المظهر من أول أسبوع.",
+                Price = 330m,
+                OriginalPrice = 450m,
+                Category = "serums",
+                Image = "/images/hydro_glow.png",
+                Badge = "خصم 26%",
+                Rating = 5.0,
+                ReviewsCount = 15,
+                Stock = 45,
+                Ingredients = "Hyaluronic Acid: ترطيب عميق وامتلاء بمظهر الفيلر ولمعان صحي.\nNiacinamide: مسام أدق وملمس بشرة أكثر نعومة.\nAlpha Arbutin: يفتح البقع الداكنة ويوحد لون البشرة.\nVitamin E: مضاد قوي للأكسدة يحمي البشرة من الشوارد الحرة.",
+                Benefits = "يمنح ترطيبًا عميقًا وامتلاءً يشبه الفيلر.\nيحسّن ملمس البشرة ويدق مظهر المسام.\nيفتح البقع الداكنة ويوحد لون البشرة.\nيحمي البشرة من الأكسدة والشوارد الحرة.\nيترك البشرة ناعمة، مشرقة، وصحية طوال اليوم.",
+                HowToUse = "ضعي 3-4 قطرات صباحًا ومساءً على بشرة نظيفة قبل المرطب، ودلكي بلطف بحركات دائرية حتى الامتصاص الكامل.",
+                Volume = "30ml",
+                SkinType = "جميع أنواع البشرة"
+            });
+            context.SaveChanges();
+        }
+
+        // Seed Velora Bloom body splash if missing
+        if (!context.Products.Any(p => p.Name == "Velora Bloom"))
+        {
+            context.Products.Add(new Product
+            {
+                Name = "Velora Bloom",
+                Tagline = "نفحات منعشة وهوائية بلمسة نهائية نظيفة وأنيقة ✨",
+                Description = "بادي سبلاش خفيف بنفحات منعشة وهوائية تنتهي بلمسة نظيفة وأنيقة.\n\nخفيف، منعش، وجذاب بلا مجهود — العطر اليومي المثالي لإحساس فاخر وناعم يليق بكِ في كل لحظة.\n\nتركيبته خفيفة وآمنة على البشرة للاستخدام اليومي، تمنحكِ ثقة وأنوثة راقية من أول رشة.",
+                Price = 350m,
+                OriginalPrice = 490m,
+                Category = "body",
+                Image = "/images/bloom.png",
+                Badge = "خصم 28%",
+                Rating = 5.0,
+                ReviewsCount = 9,
+                Stock = 40,
+                Ingredients = "نفحات منعشة وهوائية.\nلمسة نهائية نظيفة وأنيقة.\nتركيبة خفيفة وآمنة على البشرة للاستخدام اليومي.\nنفحات عطر تدوم حتى 12 ساعة.",
+                Benefits = "رائحة تدوم طويلاً بفوحان قوي وواضح.\nتوليفة فريدة أنيقة لتجربة أنثوية راقية.\nخفيف وآمن على البشرة للاستخدام اليومي.\nانتعاش ونعومة وثقة حتى 12 ساعة.",
+                HowToUse = "رشي البادي سبلاش على مناطق النبض (الرقبة، الرسغين، وخلف الأذنين) من مسافة 15 سم، أو على الجسم بالكامل بعد الاستحمام لانتعاش يدوم طوال اليوم.",
+                Volume = "200ml",
+                SkinType = "جميع أنواع البشرة"
+            });
+            context.SaveChanges();
+        }
+
+        // Seed Velora Velvet body splash if missing
+        if (!context.Products.Any(p => p.Name == "Velora Velvet"))
+        {
+            context.Products.Add(new Product
+            {
+                Name = "Velora Velvet",
+                Tagline = "فانيليا دافئة بلمسة ناعمة وجذابة تليق بكِ كل يوم 🤍",
+                Description = "عطر فانيليا دافئ بملمس حسي ناعم، كريمي ويسبب الإدمان، أنثوي بلا مجهود.\n\nعطر توقيع مميز يمنحكِ إحساسًا بالأناقة والدفء والراحة لا يُنسى.\n\nتركيبة خفيفة وآمنة على البشرة، تناسب الاستخدام اليومي وتمنحكِ إحساسًا بالفخامة والثقة طوال اليوم.",
+                Price = 350m,
+                OriginalPrice = 490m,
+                Category = "body",
+                Image = "/images/velvet.png",
+                Badge = "خصم 28%",
+                Rating = 5.0,
+                ReviewsCount = 11,
+                Stock = 40,
+                Ingredients = "فانيليا دافئة بلمسة حسية ناعمة.\nقوام كريمي جذاب وأنثوي.\nتركيبة خفيفة وآمنة على البشرة للاستخدام اليومي.\nنفحات عطر تدوم حتى 12 ساعة.",
+                Benefits = "رائحة تدوم طويلاً بفوحان قوي وواضح.\nتوليفة فريدة أنيقة لتجربة أنثوية راقية.\nخفيف وآمن على البشرة للاستخدام اليومي.\nانتعاش ونعومة وثقة حتى 12 ساعة.",
+                HowToUse = "رشي البادي سبلاش على مناطق النبض (الرقبة، الرسغين، وخلف الأذنين) من مسافة 15 سم، أو على الجسم بالكامل بعد الاستحمام لانتعاش يدوم طوال اليوم.",
+                Volume = "200ml",
+                SkinType = "جميع أنواع البشرة"
+            });
+            context.SaveChanges();
+        }
+
+        // Seed VELORA Bundle product if missing
+        if (!context.Products.Any(p => p.Name == "باندل VELORA"))
+        {
+            context.Products.Add(new Product
+            {
+                Name = "باندل VELORA",
+                Tagline = "ثلاثي روتين العناية الكامل — غسول + تونر + سيروم ✨",
+                Description = "باندل VELORA يجمع لكِ ثلاثي روتين البشرة المثالي في باقة واحدة اقتصادية:\n\n• غسول للبشره الدهنيه والمختلطه — تنظيف عميق دون تجفيف\n• Cica toner — توازن وترطيب وتهيئة البشرة\n• Hydro Glow serum — ترطيب عميق وإشراقة تشبه الفيلر\n\nاشتري الثلاثة معًا بسعر الباندل المميز، ووفّري وابدئي روتينًا كاملاً لبشرة نظيفة، متوازنة، ومشرقة ✨",
+                Price = 830m,
+                OriginalPrice = 1050m,
+                Category = "bundles",
+                Image = "/images/bundle.jpg",
+                Badge = "خصم 21%",
+                Rating = 5.0,
+                ReviewsCount = 6,
+                Stock = 25,
+                Ingredients = "غسول للبشره الدهنيه والمختلطه (150ml).\nCica toner (200ml).\nHydro Glow serum (30ml).",
+                Benefits = "روتين عناية كامل في باقة واحدة بسعر مميز.\nتنظيف عميق وتوازن وترطيب وإشراقة معًا.\nتوفر مقابل شراء كل منتج على حدة.\nبشرة نظيفة، متوازنة، ومشرقة من أول أسبوع.",
+                HowToUse = "ابدئي بالغسول على بشرة مبللة صباحًا ومساءً، ثم مرري التونر على قطنة، وانتهي ببضع قطرات من السيروم قبل المرطب.",
+                Volume = "3 قطع",
+                SkinType = "جميع أنواع البشرة"
+            });
+            context.SaveChanges();
+        }
+
+        // Seed Hero slides with new product images if empty
+        if (!context.HeroSlides.Any())
+        {
+            context.HeroSlides.AddRange(
+                new HeroSlide
+                {
+                    Badge = "عرض الباندل المميز 🎁",
+                    TitleHighlight = "روتين كامل",
+                    TitleRest = "بسعر مميز",
+                    Description = "ثلاثي VELORA الكامل — غسول، تونر، وسيروم في باقة واحدة اقتصادية مع خصم يصل إلى 21%.",
+                    ProductImage = "/images/bundle.jpg",
+                    ProductTitle = "باندل VELORA",
+                    ProductSub = "غسول + تونر + سيروم",
+                    Rating = "★ 5.0",
+                    MiniCardImage = "/images/hydro_glow.png",
+                    MiniCardTitle = "Hydro Glow serum",
+                    MiniCardOffer = "خصم 26% اليوم",
+                    Active = true,
+                    DisplayOrder = 0
+                },
+                new HeroSlide
+                {
+                    Badge = "ترطيب يشبه الفيلر ✨",
+                    TitleHighlight = "إشراقة",
+                    TitleRest = "ونعومة فورية",
+                    Description = "سيروم الهيالورونيك والإشراقة — ترطيب عميق، مسام أدق، وتوحيد مذهل للون البشرة مع Niacinamide وAlpha Arbutin.",
+                    ProductImage = "/images/hydro_glow.png",
+                    ProductTitle = "Hydro Glow serum",
+                    ProductSub = "ترطيب عميق وإشراقة",
+                    Rating = "★ 5.0",
+                    MiniCardImage = "/images/toner.png",
+                    MiniCardTitle = "Cica toner",
+                    MiniCardOffer = "خصم 28% اليوم",
+                    Active = true,
+                    DisplayOrder = 1
+                },
+                new HeroSlide
+                {
+                    Badge = "توازن وترطيب 💦",
+                    TitleHighlight = "بشرة",
+                    TitleRest = "متوازنة ونضرة",
+                    Description = "تونر Cica يوازن بشرتك ويهدئها ويهيئها لامتصاص السيروم والكريمات — سر الروتين الصحي بفضل Centella Asiatica.",
+                    ProductImage = "/images/toner.png",
+                    ProductTitle = "Cica toner",
+                    ProductSub = "توازن وترطيب ونضارة",
+                    Rating = "★ 5.0",
+                    MiniCardImage = "/images/cleanser.jpg",
+                    MiniCardTitle = "الغسول المنظف",
+                    MiniCardOffer = "خصم 30% اليوم",
+                    Active = true,
+                    DisplayOrder = 2
+                }
+            );
+            context.SaveChanges();
+        }
     }
 }

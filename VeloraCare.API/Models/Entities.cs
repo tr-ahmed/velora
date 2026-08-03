@@ -29,6 +29,7 @@ public class Category
     public string Code { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Icon { get; set; } = "✨";
+    public string? Description { get; set; }
 }
 
 public class Order
@@ -70,6 +71,7 @@ public class User
     public string Phone { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
+    public string? Avatar { get; set; }
 }
 
 public class Coupon

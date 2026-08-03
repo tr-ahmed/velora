@@ -67,7 +67,8 @@ public class UsersController : ControllerBase
             user.Role,
             user.Phone,
             user.City,
-            user.Address
+            user.Address,
+            user.Avatar
         });
     }
 
@@ -83,6 +84,7 @@ public class UsersController : ControllerBase
         user.Phone = dto.Phone ?? user.Phone;
         user.City = dto.City ?? user.City;
         user.Address = dto.Address ?? user.Address;
+        user.Avatar = dto.Avatar ?? user.Avatar;
 
         if (!string.IsNullOrWhiteSpace(dto.Password))
             user.PasswordHash = dto.Password;
@@ -97,7 +99,8 @@ public class UsersController : ControllerBase
             user.Role,
             user.Phone,
             user.City,
-            user.Address
+            user.Address,
+            user.Avatar
         });
     }
 
@@ -150,6 +153,7 @@ public class UpdateUserDto
     public string? Phone { get; set; }
     public string? City { get; set; }
     public string? Address { get; set; }
+    public string? Avatar { get; set; }
 }
 
 public class UpdateRoleDto

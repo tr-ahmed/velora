@@ -56,70 +56,55 @@ export default function App() {
 
   const [currentUser, setCurrentUser] = useState(null);
 
-  // Dynamic Hero Slides & Settings State
-  const [heroSlides, setHeroSlides] = useState(() => {
-    try {
-      const saved = localStorage.getItem('velora_hero_slides');
-      return saved ? JSON.parse(saved) : [
-        {
-          id: 1,
-          badge: 'المتجر الملكي الأول للعناية العضوية 👑',
-          titleHighlight: 'إكسير النضارة',
-          titleRest: 'الزمردية والجمال الفاخر',
-          description: 'اكتشفي تشكيلة VELORA CARE المستخلصة من أنقى العناصر النباتية وزيوت الزمرد العضوية. تركيبة دقيقة تمنحك إشراقة شبابية فورية ولمسة مخملية تليق بأناقتك.',
-          productImage: '/images/serum.png',
-          productTitle: 'سيروم الزمرد لإعادة إحياء الشباب',
-          productSub: 'إكسير نباتي مكثف لإشراقة ملكية',
-          rating: '★ 4.9',
-          miniCardImage: '/images/cream.png',
-          miniCardTitle: 'كريم الترطيب الفاخر',
-          miniCardOffer: 'خصم 15% اليوم فقط',
-          active: true
-        },
-        {
-          id: 2,
-          badge: 'ترطيب ملكي مخملي 🧴',
-          titleHighlight: 'حماية وتنعيم',
-          titleRest: 'يدوم 72 ساعة فائقة',
-          description: 'كريم فاخر غني بزبدة الشيا العضوية والسيراميد النباتي وسيروم الزمرد المعصور بارداً لإصلاح حاجز البشرة الواقي ومنحها ملمس المخمل الحريري.',
-          productImage: '/images/cream.png',
-          productTitle: 'كريم الترطيب الزمردي الفاخر',
-          productSub: 'ترطيب عميق وسيراميد نباتي',
-          rating: '★ 4.8',
-          miniCardImage: '/images/glow_oil.png',
-          miniCardTitle: 'زيت فيلورا الذهبي',
-          miniCardOffer: 'إشراقة الذهب النقي',
-          active: true
-        },
-        {
-          id: 3,
-          badge: 'إصدار محدود بالذهب ✨',
-          titleHighlight: 'قطرات الذهب',
-          titleRest: 'وإشراقة ملكية متوهجة',
-          description: 'مزيج ساحر من 7 زيوت بكر نادرة محقونة برقائق الذهب العضوي النقي. يغذي خلايا البشرة العميق ويمنحك إشراقة متوهجة كالجمال الإمبراطوري.',
-          productImage: '/images/glow_oil.png',
-          productTitle: 'زيت فيلورا الذهبي للوجه والرقبة',
-          productSub: 'تغذية بالذهب والنباتات النادرة',
-          rating: '★ 5.0',
-          miniCardImage: '/images/candle.png',
-          miniCardTitle: 'شمعة الاسترخاء',
-          miniCardOffer: 'عبير اللافندر الملكي',
-          active: true
-        }
-      ];
-    } catch (e) {
-      return [];
+  const [heroSlides, setHeroSlides] = useState([
+    {
+      id: 1,
+      badge: 'المتجر الملكي الأول للعناية العضوية 👑',
+      titleHighlight: 'إكسير النضارة',
+      titleRest: 'الزمردية والجمال الفاخر',
+      description: 'اكتشفي تشكيلة VELORA CARE المستخلصة من أنقى العناصر النباتية وزيوت الزمرد العضوية. تركيبة دقيقة تمنحك إشراقة شبابية فورية ولمسة مخملية تليق بأناقتك.',
+      productImage: '/images/serum.png',
+      productTitle: 'سيروم الزمرد لإعادة إحياء الشباب',
+      productSub: 'إكسير نباتي مكثف لإشراقة ملكية',
+      rating: '★ 4.9',
+      miniCardImage: '/images/cream.png',
+      miniCardTitle: 'كريم الترطيب الفاخر',
+      miniCardOffer: 'خصم 15% اليوم فقط',
+      active: true
+    },
+    {
+      id: 2,
+      badge: 'ترطيب ملكي مخملي 🧴',
+      titleHighlight: 'حماية وتنعيم',
+      titleRest: 'يدوم 72 ساعة فائقة',
+      description: 'كريم فاخر غني بزبدة الشيا العضوية والسيراميد النباتي وسيروم الزمرد المعصور بارداً لإصلاح حاجز البشرة الواقي ومنحها ملمس المخمل الحريري.',
+      productImage: '/images/cream.png',
+      productTitle: 'كريم الترطيب الزمردي الفاخر',
+      productSub: 'ترطيب عميق وسيراميد نباتي',
+      rating: '★ 4.8',
+      miniCardImage: '/images/glow_oil.png',
+      miniCardTitle: 'زيت فيلورا الذهبي',
+      miniCardOffer: 'إشراقة الذهب النقي',
+      active: true
+    },
+    {
+      id: 3,
+      badge: 'إصدار محدود بالذهب ✨',
+      titleHighlight: 'قطرات الذهب',
+      titleRest: 'وإشراقة ملكية متوهجة',
+      description: 'مزيج ساحر من 7 زيوت بكر نادرة محقونة برقائق الذهب العضوي النقي. يغذي خلايا البشرة العميق ويمنحك إشراقة متوهجة كالجمال الإمبراطوري.',
+      productImage: '/images/glow_oil.png',
+      productTitle: 'زيت فيلورا الذهبي للوجه والرقبة',
+      productSub: 'تغذية بالذهب والنباتات النادرة',
+      rating: '★ 5.0',
+      miniCardImage: '/images/candle.png',
+      miniCardTitle: 'شمعة الاسترخاء',
+      miniCardOffer: 'عبير اللافندر الملكي',
+      active: true
     }
-  });
+  ]);
 
-  const [heroSettings, setHeroSettings] = useState(() => {
-    try {
-      const saved = localStorage.getItem('velora_hero_settings');
-      return saved ? JSON.parse(saved) : { autoPlay: true, autoPlayInterval: 5.5, showTrustHighlights: true };
-    } catch (e) {
-      return { autoPlay: true, autoPlayInterval: 5.5, showTrustHighlights: true };
-    }
-  });
+  const [heroSettings, setHeroSettings] = useState({ autoPlay: true, autoPlayInterval: 5.5, showTrustHighlights: true });
 
   const [offers, setOffers] = useState([]);
 
@@ -132,19 +117,11 @@ export default function App() {
         const settings = await fetchHeroSettingsApi();
         if (settings) setHeroSettings(settings);
       } catch (err) {
-        console.warn('Hero API Load Fallback:', err);
+        console.warn('Hero API load failed:', err);
       }
     }
     loadHeroData();
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem('velora_hero_slides', JSON.stringify(heroSlides));
-  }, [heroSlides]);
-
-  useEffect(() => {
-    localStorage.setItem('velora_hero_settings', JSON.stringify(heroSettings));
-  }, [heroSettings]);
 
   useEffect(() => {
     try {
@@ -175,10 +152,14 @@ export default function App() {
     return () => window.removeEventListener('hashchange', checkAdminRoute);
   }, [currentUser]);
 
-  // Load products from API / Local fallback
   const loadProducts = async () => {
-    const data = await fetchProductsFromApi(selectedCategory);
-    setProducts(data);
+    try {
+      const category = selectedCategory === 'offers' ? 'all' : selectedCategory;
+      const data = await fetchProductsFromApi(category);
+      setProducts(data);
+    } catch (err) {
+      console.warn('Failed to load products:', err);
+    }
   };
 
   useEffect(() => {
@@ -440,6 +421,7 @@ export default function App() {
 
       {isQuizOpen && (
         <SkinRoutineQuiz
+          products={products}
           onClose={() => setIsQuizOpen(false)}
           onAddRoutineToCart={handleAddRoutineToCart}
         />

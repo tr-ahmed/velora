@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Heart, ShoppingBag, Trash2, ArrowLeft, Star, Check } from 'lucide-react';
-import { PRODUCTS } from '../data/products';
+import { fetchProductsFromApi } from '../services/api';
 
 export default function WishlistPage({ wishlist, onToggleWishlist, onAddToCart, onExploreClick, cartItems = [] }) {
-  const wishlistedProducts = PRODUCTS.filter(p => wishlist.includes(p.id));
+  const [allProducts, setAllProducts] = useState([]);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const data = await fetchProductsFromApi('all');
+        setAllProducts(data);
+      } catch (err) {
+        console.warn('Failed to load products for wishlist:', err);
+      }
+    }
+    load();
+  }, []);
+
+  const wishlistedProducts = allProducts.filter(p => wishlist.includes(p.id));
 
   const handleAddAllToCart = () => {
     wishlistedProducts.forEach(p => onAddToCart(p, 1));
@@ -11,7 +25,7 @@ export default function WishlistPage({ wishlist, onToggleWishlist, onAddToCart, 
 
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto space-y-8">
-      
+
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-6 border-b border-[#C5A059]/30 gap-4">
         <div>
           <span className="text-xs uppercase tracking-widest text-[#987834] font-bold">مجموعتكِ المحفوظة</span>
@@ -68,15 +82,13 @@ export default function WishlistPage({ wishlist, onToggleWishlist, onAddToCart, 
                     className="w-full h-full object-cover"
                   />
 
-                  {/* In Cart Badge Indicator */}
                   {isInCart && (
                     <div className="absolute bottom-3 right-3 z-20 bg-[#0D221A]/95 text-[#EAD096] border border-[#C5A059] text-xs font-extrabold px-3 py-1 rounded-full shadow-xl flex items-center gap-1 backdrop-blur-md animate-popIn">
                       <Check className="w-3.5 h-3.5 text-emerald-400 stroke-[3]" />
                       <span>في السلة {cartQty > 1 ? `(${cartQty})` : ''}</span>
                     </div>
                   )}
-                  
-                  {/* Remove button */}
+
                   <button
                     onClick={() => onToggleWishlist(product.id)}
                     className="absolute top-3 left-3 w-8 h-8 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform"

@@ -158,6 +158,24 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
               <span>آمن ومؤثر</span>
             </div>
           </div>
+
+          {/* Two CTA Buttons — in the middle below the text (stacked vertically) */}
+          <div className="flex flex-col gap-3 w-full max-w-xs mx-auto">
+            <button
+              onClick={onExploreClick}
+              className="btn-primary w-full py-4 text-sm justify-center shadow-xl"
+            >
+              <span>تسوقي الآن</span>
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={onOpenQuiz}
+              className="btn-secondary w-full py-4 text-sm justify-center"
+            >
+              <Sparkles className="w-4 h-4 text-[#C5A059]" />
+              <span>اختبر روتين بشرتك</span>
+            </button>
+          </div>
         </div>
 
         {/* Bottom sticky CTA panel */}
@@ -199,10 +217,10 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
             </div>
           )}
 
-          {/* Product mini info bar */}
+          {/* Product mini info bar — hidden, keeps its space */}
           <div
             key={`info-${slide.id}`}
-            className="animate-slideUp flex items-center gap-3 mb-4 p-3 rounded-2xl bg-[#0D221A]/80 backdrop-blur-xl border border-[#C5A059]/30"
+            className="invisible animate-slideUp flex items-center gap-3 mb-4 p-3 rounded-2xl bg-[#0D221A]/80 backdrop-blur-xl border border-[#C5A059]/30"
           >
             <div className="w-12 h-12 rounded-xl overflow-hidden border border-[#C5A059]/40 flex-shrink-0">
               <img src={slide.productImage} alt={slide.productTitle} className="w-full h-full object-cover" />
@@ -219,25 +237,17 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
             </button>
           </div>
 
-          {/* Two CTA Buttons */}
-          <div className="flex gap-3">
-            <button
-              onClick={onExploreClick}
-              className="btn-primary flex-1 py-4 text-sm justify-center"
-            >
-              <span>تسوقي الآن</span>
-              <ArrowLeft className="w-4 h-4" />
-            </button>
-            <button
-              onClick={onOpenQuiz}
-              className="btn-secondary flex-shrink-0 px-5 py-4 text-sm justify-center"
-            >
-              <Sparkles className="w-4 h-4 text-[#C5A059]" />
-            </button>
-          </div>
-
           {/* Safe area spacer for bottom nav */}
           <div className="h-16" />
+        </div>
+
+        {/* Wavy bottom transition — mobile */}
+        <div className="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-10 pointer-events-none">
+          <svg className="relative block w-full h-16 sm:h-24 text-[#FAF8F5]" viewBox="0 0 1200 160" preserveAspectRatio="none">
+            <path d="M0,40 C150,140 350,-40 550,90 C750,220 950,10 1200,80 L1200,160 L0,160 Z" fill="currentColor" opacity="0.45" />
+            <path d="M0,80 C200,170 450,10 650,110 C850,210 1050,40 1200,120 L1200,160 L0,160 Z" fill="currentColor" />
+            <path d="M0,80 C200,170 450,10 650,110 C850,210 1050,40 1200,120" fill="none" stroke="#C5A059" strokeWidth="3" opacity="0.8" />
+          </svg>
         </div>
       </div>
 

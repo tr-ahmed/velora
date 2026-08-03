@@ -31,6 +31,20 @@ public class CategoriesController : ControllerBase
         return Ok(category);
     }
 
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateCategoryDto dto)
+    {
+        var existing = await _db.Categories.FindAsync(id);
+        if (existing == null) return NotFound();
+
+        if (!string.IsNullOrWhiteSpace(dto.Code)) existing.Code = dto.Code;
+        if (!string.IsNullOrWhiteSpace(dto.Name)) existing.Name = dto.Name;
+        if (!string.IsNullOrWhiteSpace(dto.Icon)) existing.Icon = dto.Icon;
+        if (dto.Description != null) existing.Description = dto.Description;
+        await _db.SaveChangesAsync();
+        return Ok(existing);
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -41,4 +55,12 @@ public class CategoriesController : ControllerBase
         await _db.SaveChangesAsync();
         return NoContent();
     }
+}
+
+public class UpdateCategoryDto
+{
+    public string? Code { get; set; }
+    public string? Name { get; set; }
+    public string? Icon { get; set; }
+    public string? Description { get; set; }
 }
