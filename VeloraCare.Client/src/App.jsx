@@ -48,7 +48,14 @@ export default function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isAdminView, setIsAdminView] = useState(false);
 
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('velora_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
+    }
+  });
 
   const [heroSlides, setHeroSlides] = useState([
     {
@@ -116,6 +123,19 @@ export default function App() {
     }
     loadHeroData();
   }, []);
+
+  // Persist Current User
+  useEffect(() => {
+    try {
+      if (currentUser) {
+        localStorage.setItem('velora_user', JSON.stringify(currentUser));
+      } else {
+        localStorage.removeItem('velora_user');
+      }
+    } catch (e) {
+      console.warn('LocalStorage save failed for user');
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     try {
