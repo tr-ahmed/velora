@@ -105,7 +105,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
                 <input
                   type="text"
                   required
-                  placeholder="أدخلي اسمك الكريم"
+                  placeholder="أدخلي اسمك"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all"

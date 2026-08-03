@@ -257,7 +257,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                   <input
                     type="text"
                     required
-                    placeholder="أدخلي اسمك الكريم"
+                    placeholder="أدخلي اسمك"
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                     className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#DFE6DB] transition-all"
