@@ -15,15 +15,7 @@ export default function Footer({ onOpenQuiz, setActiveTab, onOpenInfoModal }) {
   };
 
   return (
-    <footer className="relative bg-[#0A1913] text-gray-300 pt-20 pb-8 print:hidden mt-20">
-      {/* Top Wave */}
-      <div className="absolute top-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none rotate-180 transform -translate-y-[99%]">
-        <svg className="relative block w-full h-16 sm:h-24 text-[#0A1913]" viewBox="0 0 1200 160" preserveAspectRatio="none">
-          <path d="M0,80 C200,170 450,10 650,110 C850,210 1050,40 1200,120 L1200,160 L0,160 Z" fill="currentColor" />
-          <path d="M0,80 C200,170 450,10 650,110 C850,210 1050,40 1200,120" fill="none" stroke="#C5A059" strokeWidth="3" opacity="0.6" />
-        </svg>
-      </div>
-
+    <footer className="bg-[#0A1913] text-gray-300 border-t-2 border-[#C5A059]/40 pt-16 pb-8 print:hidden mt-20">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         
 
