@@ -42,7 +42,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const discountAmount = appliedCoupon ? Math.round((subtotal * appliedCoupon.discountPercentage) / 100) : 0;
   const discountedSubtotal = Math.max(0, subtotal - discountAmount);
-  const shippingFee = discountedSubtotal >= 1000 ? 0 : 60;
+  const shippingFee = subtotal === 0 ? 0 : 60;
   const total = discountedSubtotal + shippingFee;
 
   const handleApplyCoupon = async (e) => {
@@ -224,7 +224,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                   )}
                   <div className="flex justify-between">
                     <span>الشحن والتوصيل:</span>
-                    <span>{shippingFee === 0 ? 'مجاني' : `${shippingFee} ج.م`}</span>
+                    <span>{shippingFee === 0 ? '-' : `${shippingFee} ج.م`}</span>
                   </div>
                   <div className="flex justify-between text-base font-extrabold text-[#EAD096] pt-2 border-t border-[#C5A059]/20 font-serif">
                     <span>المجموع النهائي:</span>
@@ -438,7 +438,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                 </div>
                 <div className="flex justify-between text-gray-300 text-[11px]">
                   <span>الشحن والتوصيل:</span>
-                  <span>{completedOrder.shippingFee === 0 ? 'مجاني' : `${completedOrder.shippingFee} ج.م`}</span>
+                  <span>{completedOrder.shippingFee === 0 ? '-' : `${completedOrder.shippingFee} ج.م`}</span>
                 </div>
                 <div className="flex justify-between text-[#EAD096] font-extrabold text-base pt-2 border-t border-[#C5A059]/20 font-serif">
                   <span>الإجمالي:</span>

@@ -12,12 +12,8 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
   if (!isOpen) return null;
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const freeShippingThreshold = 1000;
-  const progressPercent = Math.min(100, (subtotal / freeShippingThreshold) * 100);
-  const amountNeededForFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
-
   const discountAmount = Math.round((subtotal * discountPercent) / 100);
-  const shippingFee = subtotal >= freeShippingThreshold || subtotal === 0 ? 0 : 60;
+  const shippingFee = subtotal === 0 ? 0 : 60;
   const total = subtotal - discountAmount + shippingFee;
 
   const handleApplyCoupon = async (e) => {
@@ -72,27 +68,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
           </div>
         </div>
 
-        {/* Shipping progress */}
-        <div className="flex-shrink-0 mx-4 mb-3 p-3 rounded-2xl bg-[#F7F5F0] border border-[#C5A059]/20">
-          <div className="flex justify-between items-center text-xs font-bold text-[#0D221A] mb-1.5">
-            <span className="text-[#987834] font-extrabold">{Math.round(progressPercent)}%</span>
-            <span>
-              {amountNeededForFreeShipping === 0 ? (
-                <span className="text-emerald-700 flex items-center gap-1">
-                  <Sparkles className="w-3.5 h-3.5" /> شحن مجاني 🎉
-                </span>
-              ) : (
-                <span>متبقي {amountNeededForFreeShipping} ج.م للشحن المجاني</span>
-              )}
-            </span>
-          </div>
-          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-[#C5A059] to-[#0D221A] transition-all duration-500 rounded-full"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-        </div>
+
 
         {/* Scrollable items */}
         <div className="flex-1 overflow-y-auto px-4 space-y-3 pb-3" style={{ overscrollBehavior: 'contain' }}>
@@ -194,7 +170,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
               )}
               <div className="flex justify-between">
                 <span>رسوم الشحن:</span>
-                <span>{shippingFee === 0 ? <strong className="text-emerald-700">مجاني</strong> : `${shippingFee} ج.م`}</span>
+                <span>{shippingFee === 0 ? '-' : `${shippingFee} ج.م`}</span>
               </div>
               <div className="flex justify-between text-sm font-bold text-[#0D221A] pt-2 border-t border-gray-100">
                 <span>المجموع الكلي:</span>
@@ -241,27 +217,6 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
           </button>
         </div>
 
-        {/* Shipping Progress */}
-        <div className="bg-[#F7F5F0] p-4 border-b border-[#C5A059]/20 flex-shrink-0">
-          <div className="flex justify-between items-center text-xs font-bold text-[#0D221A] mb-1.5">
-            <span>
-              {amountNeededForFreeShipping === 0 ? (
-                <span className="text-emerald-700 font-extrabold flex items-center gap-1">
-                  <Sparkles className="w-3.5 h-3.5" /> تهانينا! شحن مجاني
-                </span>
-              ) : (
-                `متبقي ${amountNeededForFreeShipping} ج.م للشحن المجاني`
-              )}
-            </span>
-            <span className="text-[#987834]">{Math.round(progressPercent)}%</span>
-          </div>
-          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-[#C5A059] to-[#0D221A] transition-all duration-500 rounded-full"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-        </div>
 
         {/* Items */}
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
@@ -351,7 +306,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
               )}
               <div className="flex justify-between">
                 <span>رسوم الشحن:</span>
-                <span>{shippingFee === 0 ? <strong className="text-emerald-700">مجاني</strong> : `${shippingFee} ج.م`}</span>
+                <span>{shippingFee === 0 ? '-' : `${shippingFee} ج.م`}</span>
               </div>
               <div className="flex justify-between text-base font-extrabold text-[#0D221A] pt-2 border-t font-serif">
                 <span>المجموع الكلي:</span>

@@ -176,7 +176,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                 </span>
               )}
               <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                شامل الضريبة | شحن مجاني فوق 1000 ج.م
+                شامل الضريبة | الشحن لجميع المحافظات
               </span>
             </div>
 
