@@ -532,6 +532,7 @@ export default function App() {
         wishlistCount={wishlist.length}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenQuiz={() => setIsQuizOpen(true)}
+        onOpenTrackOrder={() => setIsTrackOrderOpen(true)}
         currentUser={currentUser}
         onOpenAuthModal={() => setIsAuthModalOpen(true)}
         onOpenAdminDashboard={() => setIsAdminView(true)}

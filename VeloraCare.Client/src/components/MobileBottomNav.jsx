@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Home, ShoppingBag, Sparkles, Heart, ShoppingCart, User, ShieldCheck, LogOut, X, Store, ChevronRight } from 'lucide-react';
+import { Home, ShoppingBag, Sparkles, Heart, ShoppingCart, User, ShieldCheck, LogOut, X, Store, ChevronRight, Truck } from 'lucide-react';
 
 export default function MobileBottomNav({
   activeTab,
   setActiveTab,
   cartCount,
   wishlistCount,
-  onOpenCart,
   onOpenQuiz,
+  onOpenTrackOrder,
   currentUser,
   onOpenAuthModal,
   onOpenAdminDashboard,
@@ -21,11 +21,7 @@ export default function MobileBottomNav({
     } else if (tabId === 'quiz') {
       onOpenQuiz();
     } else if (tabId === 'profile') {
-      if (currentUser) {
-        setIsProfileMenuOpen(true);
-      } else {
-        onOpenAuthModal();
-      }
+      setIsProfileMenuOpen(true);
     } else {
       setActiveTab(tabId);
     }
@@ -137,11 +133,11 @@ export default function MobileBottomNav({
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-[#143529] text-[#EAD096] border border-[#C5A059] flex items-center justify-center font-bold text-lg font-serif">
-                  {currentUser?.fullName?.charAt(0) || 'U'}
+                  {currentUser ? (currentUser.fullName?.charAt(0) || 'U') : <User className="w-5 h-5" />}
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-[#0D221A]">{currentUser?.fullName}</h3>
-                  <span className="text-[10px] text-[#987834] font-semibold">{currentUser?.email}</span>
+                  <h3 className="font-bold text-sm text-[#0D221A]">{currentUser ? currentUser.fullName : 'زائر كريم'}</h3>
+                  <span className="text-[10px] text-[#987834] font-semibold">{currentUser ? currentUser.email : 'تسوق ممتع!'}</span>
                 </div>
               </div>
               <button
@@ -154,36 +150,61 @@ export default function MobileBottomNav({
 
             <div className="space-y-2 pt-1 text-xs">
               <button
-                onClick={() => { setIsProfileMenuOpen(false); setActiveTab('profile'); }}
-                className="w-full p-3 rounded-2xl bg-[#E6EDE4] hover:bg-[#F0EBE1] border border-gray-200 flex items-center justify-between font-bold text-[#0D221A] transition-colors"
+                onClick={() => { setIsProfileMenuOpen(false); onOpenTrackOrder(); }}
+                className="w-full p-3 rounded-2xl bg-[#C5A059]/10 hover:bg-[#C5A059]/20 border border-[#C5A059]/30 flex items-center justify-between font-bold text-[#0D221A] transition-colors shadow-sm mt-2"
               >
                 <div className="flex items-center gap-2.5">
-                  <User className="w-4 h-4 text-[#C5A059]" />
-                  <span>تعديل الملف الشخصي والعنوان</span>
+                  <Truck className="w-4 h-4 text-[#C5A059]" />
+                  <span>تتبع طلبك كزائر</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-gray-400 rotate-180" />
               </button>
 
-              {currentUser?.role === 'Admin' && (
+              {!currentUser ? (
                 <button
-                  onClick={() => { setIsProfileMenuOpen(false); onOpenAdminDashboard(); }}
-                  className="w-full p-3 rounded-2xl bg-[#0D221A] text-[#EAD096] border border-[#C5A059] flex items-center justify-between font-bold transition-all shadow-md"
+                  onClick={() => { setIsProfileMenuOpen(false); onOpenAuthModal(); }}
+                  className="w-full p-3 mt-4 rounded-2xl bg-[#0D221A] text-[#EAD096] border border-[#C5A059] flex items-center justify-between font-bold transition-all shadow-md"
                 >
                   <div className="flex items-center gap-2.5">
-                    <ShieldCheck className="w-4 h-4 text-[#C5A059]" />
-                    <span>لوحة إدارة VELORA (الأدمن) 👑</span>
+                    <User className="w-4 h-4 text-[#C5A059]" />
+                    <span>تسجيل الدخول / إنشاء حساب</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-[#C5A059] rotate-180" />
                 </button>
-              )}
+              ) : (
+                <>
+                  <button
+                    onClick={() => { setIsProfileMenuOpen(false); setActiveTab('profile'); }}
+                    className="w-full p-3 rounded-2xl bg-[#E6EDE4] hover:bg-[#F0EBE1] border border-gray-200 flex items-center justify-between font-bold text-[#0D221A] transition-colors"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <User className="w-4 h-4 text-[#C5A059]" />
+                      <span>تعديل الملف الشخصي والعنوان</span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-gray-400 rotate-180" />
+                  </button>
 
-              <button
-                onClick={() => { setIsProfileMenuOpen(false); onLogout(); }}
-                className="w-full p-3 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 flex items-center gap-2.5 font-bold transition-colors"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>تسجيل الخروج من الحساب</span>
-              </button>
+                  {currentUser?.role === 'Admin' && (
+                    <button
+                      onClick={() => { setIsProfileMenuOpen(false); onOpenAdminDashboard(); }}
+                      className="w-full p-3 rounded-2xl bg-[#0D221A] text-[#EAD096] border border-[#C5A059] flex items-center justify-between font-bold transition-all shadow-md"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <ShieldCheck className="w-4 h-4 text-[#C5A059]" />
+                        <span>لوحة إدارة VELORA (الأدمن) 👑</span>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-[#C5A059] rotate-180" />
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() => { setIsProfileMenuOpen(false); onLogout(); }}
+                    className="w-full p-3 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 flex items-center gap-2.5 font-bold transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>تسجيل الخروج من الحساب</span>
+                  </button>
+                </>
+              )}
             </div>
 
           </div>
