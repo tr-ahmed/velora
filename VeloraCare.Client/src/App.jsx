@@ -29,15 +29,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileSearchExpanded, setIsMobileSearchExpanded] = useState(false);
   const [infoModalType, setInfoModalType] = useState(null);
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: 'سيروم الزمرد لإعادة إحياء الشباب',
-      price: 650,
-      image: '/images/serum.png',
-      quantity: 1
-    }
-  ]);
+  const [cartItems, setCartItems] = useState([]);
   
   // Persistent Wishlist from localStorage
   const [wishlist, setWishlist] = useState(() => {
