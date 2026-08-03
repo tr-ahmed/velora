@@ -70,7 +70,7 @@ export default function InfoModal({ isOpen, onClose, contentType }) {
   const activeContent = contentMap[contentType] || contentMap.faq;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-[999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
       <div className="bg-white rounded-3xl p-5 sm:p-6 max-w-lg w-full border-2 border-[#C5A059] shadow-2xl space-y-4 max-h-[88vh] sm:max-h-[90vh] overflow-y-auto relative animate-popIn">
 
 

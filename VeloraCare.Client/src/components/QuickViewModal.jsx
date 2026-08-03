@@ -107,7 +107,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn print:hidden"
+      className="fixed inset-0 z-[999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn print:hidden"
       onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       

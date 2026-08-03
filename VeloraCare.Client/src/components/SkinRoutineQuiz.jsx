@@ -52,7 +52,7 @@ export default function SkinRoutineQuiz({ onClose, onAddRoutineToCart, products 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-[999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
       <div className="relative w-full max-w-2xl bg-[#0D221A] text-white rounded-3xl p-5 md:p-10 border-2 border-[#C5A059] shadow-2xl overflow-hidden max-h-[88vh] sm:max-h-[90vh] overflow-y-auto animate-popIn">
 
 
@@ -213,7 +213,7 @@ export default function SkinRoutineQuiz({ onClose, onAddRoutineToCart, products 
                 <div key={p.id} className="bg-[#143529] p-3 rounded-2xl border border-[#C5A059]/40 text-right">
                   <span className="text-[10px] text-[#C5A059] font-bold">الخطوة {index + 1}</span>
                   <div className="w-full h-24 my-2 rounded-xl overflow-hidden">
-                    <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                    <img src={p.image} alt={p.name} className="w-full h-full object-contain p-1" />
                   </div>
                   <h4 className="text-xs font-bold text-white line-clamp-1">{p.name}</h4>
                   <p className="text-[11px] text-[#C5A059] font-bold mt-1">{p.price} ج.م</p>

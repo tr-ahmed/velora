@@ -123,7 +123,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-[999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
       
       <div className="relative w-full max-w-4xl bg-white border-2 rounded-3xl border-[#C5A059] shadow-2xl flex flex-col animate-popIn"
            style={{ maxHeight: '88svh' }}>

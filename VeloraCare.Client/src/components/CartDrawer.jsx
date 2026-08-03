@@ -34,7 +34,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn" aria-modal="true" role="dialog">
+    <div className="fixed inset-0 z-[999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn" aria-modal="true" role="dialog">
       
       {/* Backdrop click */}
       <div

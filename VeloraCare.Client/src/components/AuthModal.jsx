@@ -57,7 +57,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
+    <div className="fixed inset-0 z-[999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
       
       <div
         className="relative w-full max-w-md bg-[#0D221A] text-white border-2 border-[#C5A059] rounded-3xl shadow-2xl overflow-hidden overflow-y-auto animate-popIn"
