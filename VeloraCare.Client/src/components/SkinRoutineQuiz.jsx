@@ -212,8 +212,8 @@ export default function SkinRoutineQuiz({ onClose, onAddRoutineToCart, products 
               {recommendedProducts.map((p, index) => (
                 <div key={p.id} className="bg-[#143529] p-3 rounded-2xl border border-[#C5A059]/40 text-right">
                   <span className="text-[10px] text-[#C5A059] font-bold">الخطوة {index + 1}</span>
-                  <div className="w-full h-24 my-2 rounded-xl overflow-hidden">
-                    <img src={p.image} alt={p.name} className="w-full h-full object-contain p-1" />
+                  <div className="w-full h-28 my-2 rounded-xl overflow-hidden flex items-center justify-center bg-white/5">
+                    <img src={p.image} alt={p.name} className="w-full h-full object-cover object-center scale-110 transition-transform duration-500 hover:scale-125" />
                   </div>
                   <h4 className="text-xs font-bold text-white line-clamp-1">{p.name}</h4>
                   <p className="text-[11px] text-[#C5A059] font-bold mt-1">{p.price} ج.م</p>
