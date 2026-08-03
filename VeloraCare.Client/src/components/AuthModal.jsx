@@ -209,13 +209,6 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
 
         {/* Footer Links */}
         <div className="px-5 sm:px-8 mt-5 pb-4 pt-4 border-t border-[#C5A059]/20 text-center">
-          <button
-            type="button"
-            onClick={handleFillAdminDemo}
-            className="text-[11px] text-[#C5A059] hover:underline font-bold"
-          >
-            دخول كـ مدير النظام (Admin Demo)
-          </button>
 
           <div className="mt-4">
             <button

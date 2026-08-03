@@ -62,21 +62,6 @@ export default function Testimonials() {
           ))}
         </div>
 
-        {/* Guarantee Banner */}
-        <div className="mt-16 bg-gradient-to-r from-[#143529] via-[#1E4D3C] to-[#143529] rounded-3xl p-8 border border-[#C5A059]/40 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-right">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-[#C5A059]/20 border border-[#C5A059] text-[#C5A059] flex items-center justify-center flex-shrink-0">
-              <Award className="w-8 h-8" />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-[#EAD096] font-serif">ضمان VELORA للنضارة الفاخرة</h3>
-              <p className="text-xs text-gray-300 font-light">إن لم تلاحظي الفرق في إشراقة بشرتك خلال 14 يوماً، يمكنكِ استرجاع المبلغ بالكامل دون أسئلة.</p>
-            </div>
-          </div>
-          <button className="btn-primary text-xs whitespace-nowrap">
-            جربي التشكيلة بدون مخاطرة
-          </button>
-        </div>
 
       </div>
     </section>

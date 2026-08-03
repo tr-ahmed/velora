@@ -18,7 +18,7 @@ export default function OfferFormModal({ isOpen, onClose, offer, onSave }) {
       setIsActive(offer.isActive ?? true);
     } else {
       setTitle('عروض الفلاش السريعة ✨');
-      setSubtitle('خصم ملكي حصري 15% على كافة السيرومات والزيوت الزمردية في مصر');
+      setSubtitle('عرض ملكي حصري على كافة السيرومات والزيوت الزمردية في مصر');
       setCouponCode('VELORA15');
       setDiscountPercentage(15);
       setHoursValid(48);
@@ -84,7 +84,7 @@ export default function OfferFormModal({ isOpen, onClose, offer, onSave }) {
             <input
               type="text"
               required
-              placeholder="مثال: خصم ملكي 15% على السيروم والزيوت الزمردية"
+              placeholder="مثال: عرض ملكي على السيروم والزيوت الزمردية"
               value={subtitle}
               onChange={(e) => setSubtitle(e.target.value)}
               className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none"

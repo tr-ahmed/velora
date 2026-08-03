@@ -13,7 +13,7 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
     rating: '★ 4.9',
     productImage: '/images/serum.png',
     miniCardTitle: 'كريم الترطيب الفاخر',
-    miniCardOffer: 'خصم 15% اليوم فقط',
+    miniCardOffer: 'منتجات طبيعية 100%',
     miniCardImage: '/images/cream.png',
     active: true
   });
@@ -269,7 +269,7 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
                 <label className="block font-medium text-gray-600 mb-1">العرض أو الشارة</label>
                 <input
                   type="text"
-                  placeholder="خصم 15% اليوم فقط"
+                  placeholder="منتجات طبيعية 100%"
                   value={formData.miniCardOffer}
                   onChange={(e) => setFormData({ ...formData, miniCardOffer: e.target.value })}
                   className="w-full px-3 py-1.5 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none text-xs bg-white"

@@ -71,7 +71,7 @@ export default function App() {
       rating: '★ 4.9',
       miniCardImage: '/images/cream.png',
       miniCardTitle: 'كريم الترطيب الفاخر',
-      miniCardOffer: 'خصم 15% اليوم فقط',
+      miniCardOffer: 'منتجات طبيعية 100%',
       active: true
     },
     {

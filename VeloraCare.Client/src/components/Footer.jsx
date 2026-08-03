@@ -23,7 +23,7 @@ export default function Footer({ onOpenQuiz, setActiveTab, onOpenInfoModal }) {
           <div className="lg:col-span-7 space-y-2 text-right">
             <span className="text-xs text-[#C5A059] font-bold uppercase tracking-wider">انضمي لمجتمع ملكات VELORA</span>
             <h3 className="text-2xl md:text-3xl font-bold font-serif text-[#EAD096]">
-              احصلي على خصم 15% على أول طلب لكِ ✦
+              كوني أول من يعلم بجديد VELORA ✦
             </h3>
             <p className="text-xs md:text-sm text-gray-300 font-light">
               اشتركي في النشرة البريدية لتصلك أحدث نصائح النضارة والعروض الحصرية قبل الجميع.
@@ -34,7 +34,7 @@ export default function Footer({ onOpenQuiz, setActiveTab, onOpenInfoModal }) {
             {subscribed ? (
               <div className="flex items-center gap-2 p-4 bg-[#C5A059]/20 border border-[#C5A059] rounded-2xl text-[#EAD096] text-xs font-bold">
                 <CheckCircle className="w-5 h-5 text-emerald-400" />
-                <span>شكراً لاشتراكك! كود الخصم الخاص بك هو VELORA15</span>
+                <span>شكراً لاشتراكك! سنبقيكِ على إطلاع بكل جديد</span>
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="flex gap-2">
