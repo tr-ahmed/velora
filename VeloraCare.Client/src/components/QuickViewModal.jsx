@@ -142,7 +142,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
             />
             {product.badge && (
               <span className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-gradient-to-r from-[#C5A059] via-[#D4AF37] to-[#987834] text-[#0D221A] font-extrabold text-[10px] sm:text-xs px-3 py-1 rounded-full shadow-md">
-                {product.badge}
+                {isEn ? (product.badgeEn || product.badge) : product.badge}
               </span>
             )}
           </div>
@@ -166,7 +166,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
               <h2 className="text-lg sm:text-2xl font-bold font-serif text-[#0D221A] leading-snug">
                 {isEn ? (product.nameEn || product.name) : product.name}
               </h2>
-              <p className="text-xs text-[#987834] font-semibold mt-0.5">{product.tagline}</p>
+              <p className="text-xs text-[#987834] font-semibold mt-0.5">{isEn ? (product.taglineEn || product.tagline) : product.tagline}</p>
             </div>
 
             <div className="flex items-baseline gap-3 py-2 border-y border-gray-100 flex-wrap">
@@ -236,7 +236,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                     <Droplet className="w-3.5 h-3.5 text-emerald-600" />
                     {isEn ? 'Organic Emerald Ingredients 🌿' : 'المكونات العضوية الزمردية 🌿'}
                   </span>
-                  <p className="text-gray-600 font-light">{product.ingredients || (isEn ? 'Organic Emerald Oil, Triple Hyaluronic Acid, Green Tea Extract, Virgin Jojoba Oil.' : 'زيت الزمرد العضوي، حمض الهيالورونيك الثلاثي، خلاصة الشاي الأخضر، وزيت جوجوبا بكر.')}</p>
+                  <p className="text-gray-600 font-light">{isEn ? (product.ingredientsEn || product.ingredients || 'Organic Emerald Oil, Triple Hyaluronic Acid, Green Tea Extract, Virgin Jojoba Oil.') : (product.ingredients || 'زيت الزمرد العضوي، حمض الهيالورونيك الثلاثي، خلاصة الشاي الأخضر، وزيت جوجوبا بكر.')}</p>
                 </div>
               </div>
             )}
@@ -249,7 +249,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                     <Clock className="w-3.5 h-3.5 text-[#C5A059]" />
                     {isEn ? 'Optimal Usage ✨' : 'طريقة الاستخدام المثلى ✨'}
                   </span>
-                  <p className="text-gray-600 font-light">{product.howToUse || (isEn ? 'Apply 3-4 drops on clean, dry skin morning and night. Massage gently in circular motions until fully absorbed.' : 'ضعي 3-4 قطرات على بشرة نظيفة وجافة صباحاً ومساءً. دلكي بحركات دائرية لطيفة حتى تمام الامتصاص.')}</p>
+                  <p className="text-gray-600 font-light">{isEn ? (product.howToUseEn || product.howToUse || 'Apply 3-4 drops on clean, dry skin morning and night. Massage gently in circular motions until fully absorbed.') : (product.howToUse || 'ضعي 3-4 قطرات على بشرة نظيفة وجافة صباحاً ومساءً. دلكي بحركات دائرية لطيفة حتى تمام الامتصاص.')}</p>
                 </div>
               </div>
             )}

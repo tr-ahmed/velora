@@ -106,8 +106,8 @@ export default function WishlistPage({ wishlist, onToggleWishlist, onAddToCart, 
                       <Star className="w-3.5 h-3.5 text-[#C5A059] fill-[#C5A059]" />
                       <span className="text-xs text-gray-500 font-bold">{product.rating}</span>
                     </div>
-                    <h3 className="font-bold text-[#0D221A] text-base leading-snug">{product.name}</h3>
-                    <p className="text-xs text-gray-500 line-clamp-1 mt-1 font-light">{product.tagline}</p>
+                    <h3 className="font-bold text-[#0D221A] text-base leading-snug">{isEn ? (product.nameEn || product.name) : product.name}</h3>
+                    <p className="text-xs text-gray-500 line-clamp-1 mt-1 font-light">{isEn ? (product.taglineEn || product.tagline) : product.tagline}</p>
                   </div>
 
                   <div className="flex items-center justify-between mb-4">
