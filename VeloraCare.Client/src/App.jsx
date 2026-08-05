@@ -54,6 +54,13 @@ export default function App() {
   const [isAdminView, setIsAdminView] = useState(false);
   const [storeSettings, setStoreSettings] = useState(null);
 
+  // Allow admin login via URL hash
+  useEffect(() => {
+    if (window.location.hash === '#admin' || window.location.search.includes('admin=true')) {
+      setIsAuthModalOpen(true);
+    }
+  }, []);
+
   const [currentUser, setCurrentUser] = useState(() => {
     try {
       const saved = localStorage.getItem('velora_user');
