@@ -19,6 +19,7 @@ import {
   fetchCategoriesApi, saveCategoryApi, deleteCategoryApi,
   saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi,
   fetchUsersApi, updateUserRoleApi, deleteUserApi, updateUserApi,
+  fetchAdminReviewsApi, deleteReviewApi, toggleReviewApprovalApi,
   fetchStoreSettingsApi, updateStoreSettingsApi
 } from '../../services/api';
 import { EGYPT_GOVERNORATES } from '../../data/governorates';
@@ -126,6 +127,51 @@ export default function AdminDashboard({
   const [isSavingSettings, setIsSavingSettings] = useState(false);
   const [lastOrdersCount, setLastOrdersCount] = useState(0);
 
+  // Reviews Management State
+  const [reviews, setReviews] = useState([]);
+  const [reviewStats, setReviewStats] = useState({
+    totalReviews: 0,
+    pendingReviews: 0,
+    approvedReviews: 0,
+    averageRating: 0,
+    ratingDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+  });
+  const [reviewSearchQuery, setReviewSearchQuery] = useState('');
+  const [reviewStatusFilter, setReviewStatusFilter] = useState('all');
+  const [reviewProductFilter, setReviewProductFilter] = useState('all');
+  const [reviewsPage, setReviewsPage] = useState(1);
+  const reviewsPerPage = 8;
+
+  useEffect(() => { setReviewsPage(1); }, [reviewSearchQuery, reviewStatusFilter, reviewProductFilter]);
+
+  const handleToggleReviewApproval = async (id) => {
+    const review = reviews.find(r => r.id === id);
+    if (!review) return;
+    await toggleReviewApprovalApi(id, !review.isApproved);
+    setReviews(prev => prev.map(r => r.id === id ? { ...r, isApproved: !r.isApproved } : r));
+    setReviewStats(prev => ({
+      ...prev,
+      pendingReviews: prev.pendingReviews + (review.isApproved ? 1 : -1),
+      approvedReviews: prev.approvedReviews + (review.isApproved ? -1 : 1)
+    }));
+  };
+
+  const handleDeleteReview = async (id) => {
+    if (!confirm('هل أنت متأكد من حذف هذا التقييم نهائياً؟')) return;
+    const review = reviews.find(r => r.id === id);
+    await deleteReviewApi(id);
+    setReviews(prev => prev.filter(r => r.id !== id));
+    if (review) {
+      setReviewStats(prev => ({
+        ...prev,
+        totalReviews: prev.totalReviews - 1,
+        approvedReviews: review.isApproved ? prev.approvedReviews - 1 : prev.approvedReviews,
+        pendingReviews: review.isApproved ? prev.pendingReviews : prev.pendingReviews - 1,
+        averageRating: 0
+      }));
+    }
+  };
+
   // Store Settings Action
   const handleSaveStoreSettings = async (e) => {
     e.preventDefault();
@@ -201,7 +247,7 @@ export default function AdminDashboard({
   const loadData = async () => {
     setLoading(true);
     try {
-      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, usersRes, categoriesRes, settingsRes] = await Promise.all([
+      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, usersRes, categoriesRes, settingsRes, reviewsRes] = await Promise.all([
         fetchDashboardStatsApi(),
         fetchAnalyticsReportsApi(),
         fetchProductsFromApi('all'),
@@ -209,7 +255,8 @@ export default function AdminDashboard({
         fetchCouponsApi(),
         fetchUsersApi(),
         fetchCategoriesApi(),
-        fetchStoreSettingsApi()
+        fetchStoreSettingsApi(),
+        fetchAdminReviewsApi()
       ]);
       setStats(statsRes || { totalRevenue: 0, totalOrders: 0, totalProducts: 0, totalCustomers: 0, activeCoupons: 0, recentOrders: [] });
       setAnalytics(analyticsRes || { generatedAt: new Date().toISOString(), totalRevenue: 0, totalOrders: 0, averageOrderValue: 0, customerSatisfactionRate: '0%', conversionRate: '0%', salesByCity: [], salesByCategory: [], ordersByStatus: [], topProducts: [] });
@@ -218,6 +265,10 @@ export default function AdminDashboard({
       setCoupons(Array.isArray(couponsRes) ? couponsRes : []);
       setUsers(Array.isArray(usersRes) ? usersRes : []);
       setCategories(Array.isArray(categoriesRes) ? categoriesRes : []);
+      if (reviewsRes) {
+        setReviews(Array.isArray(reviewsRes.reviews) ? reviewsRes.reviews : []);
+        if (reviewsRes.stats) setReviewStats(reviewsRes.stats);
+      }
       if (settingsRes) setStoreSettings(settingsRes);
       if (statsRes?.totalOrders) setLastOrdersCount(statsRes.totalOrders);
     } catch (err) {
@@ -676,6 +727,23 @@ export default function AdminDashboard({
     ]);
     exportToExcel('سجل_العملاء_فيلورا', headers, rows);
   };
+
+  const filteredReviews = reviews.filter(r => {
+    const q = reviewSearchQuery.trim().toLowerCase();
+    const matchSearch = !q ||
+      r.userName?.toLowerCase().includes(q) ||
+      r.comment?.toLowerCase().includes(q) ||
+      r.productName?.toLowerCase().includes(q);
+    const matchStatus = reviewStatusFilter === 'all' ||
+      (reviewStatusFilter === 'approved' ? r.isApproved : !r.isApproved);
+    const matchProduct = reviewProductFilter === 'all' || r.productId === reviewProductFilter;
+    return matchSearch && matchStatus && matchProduct;
+  });
+  const reviewTotalPages = Math.ceil(filteredReviews.length / reviewsPerPage);
+  const paginatedReviews = filteredReviews.slice(
+    (reviewsPage - 1) * reviewsPerPage,
+    reviewsPage * reviewsPerPage
+  );
 
   // Merged Nav Items (Combined Overview, Hero Manager & Full Reports)
   const navItems = [
@@ -2428,9 +2496,184 @@ export default function AdminDashboard({
           </div>
         )}
 
+        {/* TAB 7: REVIEWS MANAGEMENT */}
+        {activeTab === 'reviews' && (
+          <div className="bg-white rounded-3xl p-5 sm:p-8 border border-[#C5A059]/30 shadow-md space-y-6 animate-fadeIn">
+
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-100 pb-4">
+              <div>
+                <h2 className="text-xl font-bold font-serif text-[#0D221A] flex items-center gap-2">
+                  <span>إدارة التقييمات والآراء</span>
+                  <Star className="w-5 h-5 text-[#C5A059] fill-[#C5A059]" />
+                </h2>
+                <p className="text-xs text-gray-500 font-light mt-1">
+                  راجعي ووافقي أو أخفي أو احذفي تقييمات العميلات — وكلها بتنعكس على تقييم المنتج في المتجر
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className={`px-3 py-1.5 rounded-full text-[10px] font-extrabold border ${reviewStats.pendingReviews > 0 ? 'bg-amber-50 text-amber-700 border-amber-300' : 'bg-emerald-50 text-emerald-700 border-emerald-300'}`}>
+                  {reviewStats.pendingReviews > 0 ? `${reviewStats.pendingReviews} بانتظار الموافقة ⏳` : 'كل التقييمات موافق عليها ✓'}
+                </div>
+              </div>
+            </div>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="rounded-2xl p-4 bg-[#0D221A] text-white border border-[#C5A059]/40">
+                <p className="text-[10px] text-[#EAD096] font-bold">إجمالي التقييمات</p>
+                <p className="text-2xl font-extrabold font-serif mt-1">{reviewStats.totalReviews}</p>
+              </div>
+              <div className="rounded-2xl p-4 bg-white border border-gray-200">
+                <p className="text-[10px] text-gray-500 font-bold">تمت الموافقة</p>
+                <p className="text-2xl font-extrabold font-serif mt-1 text-emerald-700">{reviewStats.approvedReviews}</p>
+              </div>
+              <div className="rounded-2xl p-4 bg-white border border-gray-200">
+                <p className="text-[10px] text-gray-500 font-bold">بانتظار المراجعة</p>
+                <p className="text-2xl font-extrabold font-serif mt-1 text-amber-600">{reviewStats.pendingReviews}</p>
+              </div>
+              <div className="rounded-2xl p-4 bg-gradient-to-br from-[#C5A059]/15 to-transparent border border-[#C5A059]/30">
+                <p className="text-[10px] text-gray-600 font-bold">متوسط التقييم العام</p>
+                <p className="text-2xl font-extrabold font-serif mt-1 text-[#987834]">
+                  {reviewStats.averageRating || '—'} <span className="text-xs">★</span>
+                </p>
+              </div>
+            </div>
+
+            {/* Rating Distribution */}
+            <div className="rounded-2xl border border-gray-100 p-4 sm:p-5">
+              <h4 className="text-sm font-bold text-[#0D221A] mb-3">توزيع النجوم</h4>
+              <div className="space-y-1.5">
+                {[5, 4, 3, 2, 1].map((star) => {
+                  const count = reviewStats.ratingDistribution?.[star] || 0;
+                  const total = reviewStats.totalReviews || 1;
+                  const pct = Math.round((count / total) * 100);
+                  return (
+                    <div key={star} className="flex items-center gap-2 text-xs">
+                      <span className="w-7 font-bold text-gray-600 flex items-center gap-0.5">{star} <Star className="w-3 h-3 text-[#C5A059] fill-[#C5A059]" /></span>
+                      <div className="flex-1 h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-[#EAD096] to-[#C5A059] rounded-full transition-all" style={{ width: `${pct}%` }} />
+                      </div>
+                      <span className="w-8 text-left text-gray-500 font-medium">{count}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Filters */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <div className="relative flex-1">
+                <Search className="w-4 h-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={reviewSearchQuery}
+                  onChange={(e) => setReviewSearchQuery(e.target.value)}
+                  placeholder="ابحثي بالاسم، التعليق، أو المنتج..."
+                  className="w-full p-2.5 pr-10 rounded-xl border border-gray-300 focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] text-sm"
+                />
+              </div>
+              <select
+                value={reviewStatusFilter}
+                onChange={(e) => setReviewStatusFilter(e.target.value)}
+                className="p-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] text-sm"
+              >
+                <option value="all">كل الحالات</option>
+                <option value="approved">موافق عليها ✓</option>
+                <option value="pending">بانتظار الموافقة</option>
+              </select>
+              <select
+                value={reviewProductFilter}
+                onChange={(e) => setReviewProductFilter(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+                className="p-2.5 rounded-xl border border-gray-300 focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] text-sm"
+              >
+                <option value="all">كل المنتجات</option>
+                {products.map(p => (
+                  <option key={p.id} value={p.id}>{p.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Reviews List */}
+            {paginatedReviews.length === 0 ? (
+              <div className="text-center py-12 bg-[#E6EDE4] rounded-2xl border border-dashed border-gray-300 p-6">
+                <Star className="w-10 h-10 text-[#C5A059] mx-auto opacity-50 mb-2" />
+                <h4 className="font-bold text-gray-700 text-sm">لا توجد تقييمات مطابقة</h4>
+                <p className="text-xs text-gray-500 mt-1">جرّبي تغيير الفلاتر أو الانتظار حتى تضيف العميلات تقييمات جديدة.</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {paginatedReviews.map((review) => (
+                  <div key={review.id} className={`rounded-2xl p-4 border transition-all ${review.isApproved ? 'bg-[#0D221A] border-[#C5A059]/40' : 'bg-amber-50 border-amber-300'}`}>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className={`w-9 h-9 rounded-full flex items-center justify-center font-extrabold flex-shrink-0 ${review.isApproved ? 'bg-gradient-to-br from-[#EAD096] to-[#C5A059] text-[#0D221A]' : 'bg-amber-200 text-amber-800'}`}>
+                          {review.userName?.charAt(0) || '؟'}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className={`text-xs font-extrabold ${review.isApproved ? 'text-white' : 'text-amber-900'}`}>{review.userName}</span>
+                            <span className="flex items-center gap-0.5">
+                              {[...Array(5)].map((_, i) => (
+                                <Star key={i} className={`w-3 h-3 ${i < review.rating ? 'text-[#C5A059] fill-[#C5A059]' : 'text-gray-600'}`} />
+                              ))}
+                            </span>
+                          </div>
+                          <p className={`text-[11px] ${review.isApproved ? 'text-[#EAD096]' : 'text-amber-700'} font-bold truncate`}>
+                            {review.productName} • {new Date(review.createdAt).toLocaleDateString('ar-EG')}
+                          </p>
+                        </div>
+                      </div>
+
+                      <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0 border ${
+                        review.isApproved
+                          ? 'bg-emerald-900/50 text-emerald-300 border-emerald-500/40'
+                          : 'bg-amber-200 text-amber-800 border-amber-400'
+                      }`}>
+                        {review.isApproved ? 'منشور في المتجر 🟢' : 'مخفي / بانتظار الموافقة ⏳'}
+                      </span>
+                    </div>
+
+                    <p className={`mt-3 text-xs leading-relaxed rounded-xl p-3 ${review.isApproved ? 'bg-[#143529] text-gray-300' : 'bg-white text-gray-700'}`}>
+                      "{review.comment}"
+                    </p>
+
+                    <div className="mt-3 flex items-center justify-between gap-2">
+                      <button
+                        onClick={() => handleToggleReviewApproval(review.id)}
+                        className={`text-[11px] px-3 py-1.5 rounded-xl font-bold border transition-all ${
+                          review.isApproved
+                            ? 'bg-transparent text-amber-300 border-amber-500/40 hover:bg-amber-900/40'
+                            : 'bg-emerald-700 text-white border-emerald-500 hover:bg-emerald-600'
+                        }`}
+                      >
+                        {review.isApproved ? 'إخفاء التقييم 🙈' : 'موافقة ونشر ✓'}
+                      </button>
+                      <button
+                        onClick={() => handleDeleteReview(review.id)}
+                        className="text-[11px] px-3 py-1.5 rounded-xl font-bold text-rose-400 border border-rose-500/40 hover:bg-rose-950 transition-all flex items-center gap-1"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                        حذف نهائي
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <Pagination
+              currentPage={reviewsPage}
+              totalPages={reviewTotalPages}
+              onPageChange={setReviewsPage}
+              totalItems={filteredReviews.length}
+              itemsPerPage={reviewsPerPage}
+            />
+          </div>
+        )}
+
         {/* TAB 8: STORE SETTINGS */}
-        {activeTab === 'settings' && (
-          <div className="bg-white rounded-3xl border border-[#C5A059]/30 p-4 sm:p-6 shadow-sm space-y-6 animate-fadeIn">
+        {activeTab === 'settings' && (          <div className="bg-white rounded-3xl border border-[#C5A059]/30 p-4 sm:p-6 shadow-sm space-y-6 animate-fadeIn">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-100 pb-4">
               <div>
                 <h3 className="text-lg sm:text-xl font-bold font-serif text-[#0D221A]">إعدادات المتجر العامة ⚙️</h3>
@@ -2618,7 +2861,7 @@ export default function AdminDashboard({
       />
 
       {/* Native Android Mobile App Dock for Admin Dashboard */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0D221A]/95 backdrop-blur-xl border-t border-[#C5A059]/40 shadow-2xl px-1.5 py-2 flex justify-around items-center text-white print:hidden">
+      <div className="admin-dock lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0D221A]/95 backdrop-blur-xl border-t border-[#C5A059]/40 shadow-2xl px-2 py-2 flex items-center justify-start gap-1 text-white print:hidden">
         <button
           onClick={() => setActiveTab('overview')}
           className={`flex flex-col items-center justify-center gap-1 transition-all duration-200 active:scale-90 ${
@@ -2691,6 +2934,20 @@ export default function AdminDashboard({
         </button>
 
         <button
+          onClick={() => setActiveTab('categories')}
+          className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 active:scale-90 ${
+            activeTab === 'categories' ? 'text-[#EAD096]' : 'text-gray-400'
+          }`}
+        >
+          <div className={`p-1.5 rounded-2xl relative transition-all ${
+            activeTab === 'categories' ? 'bg-[#C5A059]/20 text-[#EAD096] border border-[#C5A059]/40' : ''
+          }`}>
+            <Layers className="w-5 h-5 text-[#C5A059]" />
+          </div>
+          <span className="text-[10px] font-bold">التصنيفات</span>
+        </button>
+
+        <button
           onClick={() => setActiveTab('customers')}
           className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 active:scale-90 ${
             activeTab === 'customers' ? 'text-[#EAD096]' : 'text-gray-400'
@@ -2730,6 +2987,25 @@ export default function AdminDashboard({
             <Tag className="w-5 h-5" />
           </div>
           <span className="text-[10px] font-bold">الأكواد</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('reviews')}
+          className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 active:scale-90 ${
+            activeTab === 'reviews' ? 'text-[#EAD096]' : 'text-gray-400'
+          }`}
+        >
+          <div className={`p-1.5 rounded-2xl relative transition-all ${
+            activeTab === 'reviews' ? 'bg-[#C5A059]/20 text-[#EAD096] border border-[#C5A059]/40' : ''
+          }`}>
+            <Star className="w-5 h-5 text-[#C5A059]" />
+            {reviewStats.pendingReviews > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-amber-500 text-white text-[9px] font-extrabold rounded-full flex items-center justify-center border border-[#0D221A]">
+                {reviewStats.pendingReviews}
+              </span>
+            )}
+          </div>
+          <span className="text-[10px] font-bold">التقييمات</span>
         </button>
 
         <button

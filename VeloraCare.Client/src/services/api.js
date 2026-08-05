@@ -248,6 +248,28 @@ export async function submitReviewApi(reviewData) {
   return await res.json();
 }
 
+export async function fetchAdminReviewsApi() {
+  const res = await fetch(`${API_BASE_URL}/reviews/admin`);
+  if (!res.ok) throw new Error('Admin reviews fetch failed');
+  return await res.json();
+}
+
+export async function deleteReviewApi(id) {
+  const res = await fetch(`${API_BASE_URL}/reviews/${id}`, { method: 'DELETE' });
+  if (!res.ok) throw new Error('Review delete failed');
+  return await res.json();
+}
+
+export async function toggleReviewApprovalApi(id, isApproved) {
+  const res = await fetch(`${API_BASE_URL}/reviews/${id}/approval`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ isApproved })
+  });
+  if (!res.ok) throw new Error('Review approval toggle failed');
+  return await res.json();
+}
+
 // Dynamic Hero Slides & Settings API
 export async function fetchHeroSlidesApi() {
   const res = await fetch(`${API_BASE_URL}/hero/slides`);

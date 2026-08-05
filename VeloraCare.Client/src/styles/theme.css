@@ -313,6 +313,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
+   ADMIN MOBILE DOCK — scrollable nav
+   ============================================ */
+
+.admin-dock {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.admin-dock::-webkit-scrollbar {
+  display: none;
+}
+.admin-dock > button {
+  flex-shrink: 0;
+  min-width: 56px;
+}
+
+/* ============================================
    PRINT
    ============================================ */
 

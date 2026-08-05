@@ -19,13 +19,13 @@ public class ReviewsController : ControllerBase
     [HttpGet("product/{productId}")]
     public async Task<IActionResult> GetByProduct(int productId)
     {
-        var reviews = await _db.Reviews
-            .Where(r => r.ProductId == productId)
-            .OrderByDescending(r => r.CreatedAt)
-            .ToListAsync();
-
         var product = await _db.Products.FindAsync(productId);
         if (product == null) return NotFound(new { message = "المنتج غير موجود" });
+
+        var reviews = await _db.Reviews
+            .Where(r => r.ProductId == productId && r.IsApproved)
+            .OrderByDescending(r => r.CreatedAt)
+            .ToListAsync();
 
         var avgRating = reviews.Any() ? Math.Round(reviews.Average(r => r.Rating), 1) : 0;
 
@@ -35,6 +35,73 @@ public class ReviewsController : ControllerBase
             totalReviews = reviews.Count,
             averageRating = avgRating
         });
+    }
+
+    [HttpGet("admin")]
+    public async Task<IActionResult> GetAdminAll()
+    {
+        var reviews = await _db.Reviews
+            .OrderByDescending(r => r.CreatedAt)
+            .ToListAsync();
+
+        var productIds = reviews.Select(r => r.ProductId).Distinct().ToList();
+        var products = await _db.Products
+            .Where(p => productIds.Contains(p.Id))
+            .ToDictionaryAsync(p => p.Id, p => p.Name);
+
+        var ratingDistribution = Enumerable.Range(1, 5).ToDictionary(
+            i => i,
+            i => reviews.Count(r => r.Rating == i));
+
+        return Ok(new
+        {
+            reviews = reviews.Select(r => new
+            {
+                r.Id,
+                r.ProductId,
+                productName = products.TryGetValue(r.ProductId, out var name) ? name : "منتج محذوف",
+                r.UserId,
+                r.UserName,
+                r.Rating,
+                r.Comment,
+                r.IsApproved,
+                r.CreatedAt
+            }),
+            stats = new
+            {
+                totalReviews = reviews.Count,
+                pendingReviews = reviews.Count(r => !r.IsApproved),
+                approvedReviews = reviews.Count(r => r.IsApproved),
+                averageRating = reviews.Any() ? Math.Round(reviews.Average(r => r.Rating), 1) : 0,
+                ratingDistribution
+            }
+        });
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var review = await _db.Reviews.FindAsync(id);
+        if (review == null) return NotFound(new { message = "التقييم غير موجود" });
+
+        _db.Reviews.Remove(review);
+        await _db.SaveChangesAsync();
+        await RecomputeProductRating(review.ProductId);
+
+        return Ok(new { message = "تم حذف التقييم" });
+    }
+
+    [HttpPatch("{id}/approval")]
+    public async Task<IActionResult> ToggleApproval(int id, [FromBody] ToggleApprovalDto dto)
+    {
+        var review = await _db.Reviews.FindAsync(id);
+        if (review == null) return NotFound(new { message = "التقييم غير موجود" });
+
+        review.IsApproved = dto.IsApproved;
+        await _db.SaveChangesAsync();
+        await RecomputeProductRating(review.ProductId);
+
+        return Ok(review);
     }
 
     [HttpPost]
@@ -53,18 +120,29 @@ public class ReviewsController : ControllerBase
             UserName = dto.UserName,
             Rating = dto.Rating,
             Comment = dto.Comment,
+            IsApproved = true,
             CreatedAt = DateTime.UtcNow
         };
 
         _db.Reviews.Add(review);
         await _db.SaveChangesAsync();
-
-        var allReviews = await _db.Reviews.Where(r => r.ProductId == dto.ProductId).ToListAsync();
-        product.ReviewsCount = allReviews.Count;
-        product.Rating = Math.Round(allReviews.Average(r => r.Rating), 1);
-        await _db.SaveChangesAsync();
+        await RecomputeProductRating(review.ProductId);
 
         return Ok(review);
+    }
+
+    private async Task RecomputeProductRating(int productId)
+    {
+        var product = await _db.Products.FindAsync(productId);
+        if (product == null) return;
+
+        var approvedReviews = await _db.Reviews
+            .Where(r => r.ProductId == productId && r.IsApproved)
+            .ToListAsync();
+
+        product.ReviewsCount = approvedReviews.Count;
+        product.Rating = approvedReviews.Any() ? Math.Round(approvedReviews.Average(r => r.Rating), 1) : 0;
+        await _db.SaveChangesAsync();
     }
 }
 
@@ -75,4 +153,9 @@ public class CreateReviewDto
     public string UserName { get; set; } = string.Empty;
     public int Rating { get; set; }
     public string Comment { get; set; } = string.Empty;
+}
+
+public class ToggleApprovalDto
+{
+    public bool IsApproved { get; set; }
 }
