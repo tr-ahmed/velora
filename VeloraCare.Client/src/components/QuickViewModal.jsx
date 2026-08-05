@@ -219,11 +219,11 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                 {product.benefits && (
                   <div className="bg-[#DFE6DB] p-2.5 rounded-xl border border-[#C5A059]/30 mt-1">
                     <span className="font-bold text-[#0D221A] block mb-0.5">{isEn ? 'Key Benefits:' : 'الفوائد الرئيسية:'}</span>
-                    <p className="text-gray-700 font-light text-[11px]">{product.benefits}</p>
+                    <p className="text-gray-700 font-light text-[11px]">{isEn ? (product.benefitsEn || product.benefits) : product.benefits}</p>
                   </div>
                 )}
                 <div className="flex items-center gap-3 text-[11px] text-gray-500">
-                  <span>{isEn ? 'Skin Type:' : 'نوع البشرة:'} <strong className="text-[#0D221A]">{product.skinType || (isEn ? 'All Skin Types' : 'جميع أنواع البشرة')}</strong></span>
+                  <span>{isEn ? 'Skin Type:' : 'نوع البشرة:'} <strong className="text-[#0D221A]">{isEn ? (product.skinTypeEn || product.skinType || 'All Skin Types') : (product.skinType || 'جميع أنواع البشرة')}</strong></span>
                 </div>
               </div>
             )}
