@@ -4,23 +4,31 @@ public class Product
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
+    public string NameEn { get; set; } = string.Empty;
     public string Tagline { get; set; } = string.Empty;
+    public string TaglineEn { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
+    public string DescriptionEn { get; set; } = string.Empty;
     public decimal Price { get; set; }
     public decimal? OriginalPrice { get; set; }
     public string Category { get; set; } = string.Empty;
     public string Image { get; set; } = string.Empty;
     public string? Badge { get; set; }
+    public string? BadgeEn { get; set; }
     public double Rating { get; set; } = 5.0;
     public int ReviewsCount { get; set; } = 48;
     public int Stock { get; set; } = 50;
 
     // Full detailed fields
     public string Ingredients { get; set; } = string.Empty;
+    public string IngredientsEn { get; set; } = string.Empty;
     public string Benefits { get; set; } = string.Empty;
+    public string BenefitsEn { get; set; } = string.Empty;
     public string HowToUse { get; set; } = string.Empty;
+    public string HowToUseEn { get; set; } = string.Empty;
     public string Volume { get; set; } = "50ml";
     public string SkinType { get; set; } = "جميع أنواع البشرة";
+    public string SkinTypeEn { get; set; } = "All Skin Types";
 }
 
 public class Category
@@ -28,8 +36,10 @@ public class Category
     public int Id { get; set; }
     public string Code { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
+    public string NameEn { get; set; } = string.Empty;
     public string Icon { get; set; } = "✨";
     public string? Description { get; set; }
+    public string? DescriptionEn { get; set; }
 }
 
 public class Order
@@ -97,16 +107,30 @@ public class HeroSlide
 {
     public int Id { get; set; }
     public string Badge { get; set; } = string.Empty;
+    public string BadgeEn { get; set; } = string.Empty;
     public string TitleHighlight { get; set; } = string.Empty;
+    public string TitleHighlightEn { get; set; } = string.Empty;
     public string TitleRest { get; set; } = string.Empty;
+    public string TitleRestEn { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public string ProductImage { get; set; } = string.Empty;
+    public string DescriptionEn { get; set; } = string.Empty;
+    
+    // Feature Product Card Data
     public string ProductTitle { get; set; } = string.Empty;
+    public string ProductTitleEn { get; set; } = string.Empty;
     public string ProductSub { get; set; } = string.Empty;
-    public string Rating { get; set; } = "★ 5.0";
-    public string MiniCardImage { get; set; } = string.Empty;
+    public string ProductSubEn { get; set; } = string.Empty;
+    public string ProductImage { get; set; } = string.Empty;
+    public double Rating { get; set; }
+    
+    // Bottom Mini Cards Data (Assuming single mini card per slide for simplicity in current design)
     public string MiniCardTitle { get; set; } = string.Empty;
+    public string MiniCardTitleEn { get; set; } = string.Empty;
     public string MiniCardOffer { get; set; } = string.Empty;
+    public string MiniCardOfferEn { get; set; } = string.Empty;
+    public string MiniCardImage { get; set; } = string.Empty;
+    
+    // Control
     public bool Active { get; set; } = true;
     public int DisplayOrder { get; set; } = 0;
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Home, ShoppingBag, Sparkles, Heart, ShoppingCart, User, ShieldCheck, LogOut, X, Store, ChevronRight, Truck } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function MobileBottomNav({
   activeTab,
@@ -13,6 +14,8 @@ export default function MobileBottomNav({
   onOpenAdminDashboard,
   onLogout
 }) {
+  const { t, i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
   const handleTabClick = (tabId) => {
@@ -28,12 +31,12 @@ export default function MobileBottomNav({
   };
 
   const tabs = [
-    { id: 'home', icon: Home, label: 'الرئيسية' },
-    { id: 'products', icon: ShoppingBag, label: 'المتجر' },
-    { id: 'cart', icon: ShoppingCart, label: 'سلّتي', badge: cartCount },
-    { id: 'quiz', isFAB: true, icon: Sparkles, label: 'الروتين' },
-    { id: 'wishlist', icon: Heart, label: 'مفضلتي', badge: wishlistCount },
-    { id: 'profile', icon: User, label: currentUser ? (currentUser.fullName?.split(' ')[0] || 'حسابي') : 'حسابي' },
+    { id: 'home', icon: Home, label: t('home', 'الرئيسية') },
+    { id: 'products', icon: ShoppingBag, label: t('products', 'المتجر') },
+    { id: 'cart', icon: ShoppingCart, label: t('cart', 'سلّتي'), badge: cartCount },
+    { id: 'quiz', isFAB: true, icon: Sparkles, label: isEn ? 'Quiz' : 'الروتين' },
+    { id: 'wishlist', icon: Heart, label: isEn ? 'Wishlist' : 'مفضلتي', badge: wishlistCount },
+    { id: 'profile', icon: User, label: currentUser ? (currentUser.fullName?.split(' ')[0] || (isEn ? 'Account' : 'حسابي')) : (isEn ? 'Account' : 'حسابي') },
   ];
 
   return (
@@ -127,7 +130,7 @@ export default function MobileBottomNav({
 
       {/* ==================== PROFILE DRAWER MENU ==================== */}
       {isProfileMenuOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/80 backdrop-blur-md animate-fadeIn" dir="rtl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/80 backdrop-blur-md animate-fadeIn" dir={isEn ? 'ltr' : 'rtl'}>
           <div className="bg-white rounded-3xl p-6 max-w-sm w-full border-2 border-[#C5A059] shadow-2xl space-y-4 animate-popIn">
             
             <div className="flex items-center justify-between border-b pb-3">
@@ -136,8 +139,8 @@ export default function MobileBottomNav({
                   {currentUser ? (currentUser.fullName?.charAt(0) || 'U') : <User className="w-5 h-5" />}
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-[#0D221A]">{currentUser ? currentUser.fullName : 'زائر كريم'}</h3>
-                  <span className="text-[10px] text-[#987834] font-semibold">{currentUser ? currentUser.email : 'تسوق ممتع!'}</span>
+                  <h3 className="font-bold text-sm text-[#0D221A]">{currentUser ? currentUser.fullName : (isEn ? 'Welcome Guest' : 'زائر كريم')}</h3>
+                  <span className="text-[10px] text-[#987834] font-semibold">{currentUser ? currentUser.email : (isEn ? 'Enjoy shopping!' : 'تسوق ممتع!')}</span>
                 </div>
               </div>
               <button
@@ -155,9 +158,9 @@ export default function MobileBottomNav({
               >
                 <div className="flex items-center gap-2.5">
                   <Truck className="w-4 h-4 text-[#C5A059]" />
-                  <span>تتبع طلبك كزائر</span>
+                  <span>{isEn ? 'Track Guest Order' : 'تتبع طلبك كزائر'}</span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-gray-400 rotate-180" />
+                <ChevronRight className={`w-4 h-4 text-gray-400 ${isEn ? '' : 'rotate-180'}`} />
               </button>
 
               {!currentUser ? (
@@ -167,7 +170,7 @@ export default function MobileBottomNav({
                 >
                   <div className="flex items-center gap-2.5">
                     <User className="w-4 h-4 text-[#C5A059]" />
-                    <span>تسجيل الدخول / إنشاء حساب</span>
+                    <span>{isEn ? 'Login / Register' : 'تسجيل الدخول / إنشاء حساب'}</span>
                   </div>
                 </button>
               ) : (
@@ -178,9 +181,9 @@ export default function MobileBottomNav({
                   >
                     <div className="flex items-center gap-2.5">
                       <User className="w-4 h-4 text-[#C5A059]" />
-                      <span>تعديل الملف الشخصي والعنوان</span>
+                      <span>{isEn ? 'Edit Profile & Address' : 'تعديل الملف الشخصي والعنوان'}</span>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-gray-400 rotate-180" />
+                    <ChevronRight className={`w-4 h-4 text-gray-400 ${isEn ? '' : 'rotate-180'}`} />
                   </button>
 
                   {currentUser?.role === 'Admin' && (
@@ -190,9 +193,9 @@ export default function MobileBottomNav({
                     >
                       <div className="flex items-center gap-2.5">
                         <ShieldCheck className="w-4 h-4 text-[#C5A059]" />
-                        <span>لوحة إدارة VELORA (الأدمن) 👑</span>
+                        <span>{isEn ? 'VELORA Admin Dashboard 👑' : 'لوحة إدارة VELORA (الأدمن) 👑'}</span>
                       </div>
-                      <ChevronRight className="w-4 h-4 text-[#C5A059] rotate-180" />
+                      <ChevronRight className={`w-4 h-4 text-[#C5A059] ${isEn ? '' : 'rotate-180'}`} />
                     </button>
                   )}
 
@@ -201,7 +204,7 @@ export default function MobileBottomNav({
                     className="w-full p-3 rounded-2xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 flex items-center gap-2.5 font-bold transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
-                    <span>تسجيل الخروج من الحساب</span>
+                    <span>{isEn ? 'Logout' : 'تسجيل الخروج من الحساب'}</span>
                   </button>
                 </>
               )}

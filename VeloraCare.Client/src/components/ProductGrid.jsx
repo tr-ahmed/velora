@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Eye, Heart, Star, Check, Search, X, Sparkles } from 'lucide-react';
 import Pagination from './Pagination';
+import { useTranslation } from 'react-i18next';
 
 export default function ProductGrid({ 
   products = [], 
@@ -20,6 +21,8 @@ export default function ProductGrid({
   const [wishlistToast, setWishlistToast] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+  const { t, i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
 
   const filteredProducts = products.filter(p => {
     const matchCat = selectedCategory === 'all' || 
@@ -58,7 +61,9 @@ export default function ProductGrid({
     onToggleWishlist(productId);
     const isNowWishlisted = !wishlist.includes(productId);
     setWishlistToast({
-      message: isNowWishlisted ? `تمت الإضافة للمفضلة ❤️` : `تمت الإزالة من المفضلة`,
+      message: isNowWishlisted 
+        ? (isEn ? 'Added to Wishlist ❤️' : 'تمت الإضافة للمفضلة ❤️')
+        : (isEn ? 'Removed from Wishlist' : 'تمت الإزالة من المفضلة'),
       isAdded: isNowWishlisted
     });
     setTimeout(() => setWishlistToast(null), 2200);
@@ -81,7 +86,7 @@ export default function ProductGrid({
           <div className="flex items-center gap-2">
             <Search className="w-4 h-4 text-[#C5A059] flex-shrink-0" />
             <p className="text-xs font-bold">
-              نتائج: <span className="text-[#EAD096]">"{searchQuery}"</span> ({filteredProducts.length})
+              {isEn ? 'Results:' : 'نتائج:'} <span className="text-[#EAD096]">"{searchQuery}"</span> ({filteredProducts.length})
             </p>
           </div>
           {onClearSearch && (
@@ -99,11 +104,11 @@ export default function ProductGrid({
       {filteredProducts.length === 0 && (
         <div className="text-center py-16 bg-white rounded-3xl border border-[#C5A059]/30 p-8 space-y-4">
           <Search className="w-12 h-12 text-[#C5A059] mx-auto opacity-50" />
-          <h3 className="text-lg font-bold text-[#0D221A]">لم نجد أي نتائج</h3>
-          <p className="text-xs text-gray-500">جربي البحث بكلمات أخرى مثل "سيروم" أو "كريم".</p>
+          <h3 className="text-lg font-bold text-[#0D221A]">{isEn ? 'No results found' : 'لم نجد أي نتائج'}</h3>
+          <p className="text-xs text-gray-500">{isEn ? 'Try searching with different keywords like "serum" or "cream".' : 'جربي البحث بكلمات أخرى مثل "سيروم" أو "كريم".'}</p>
           {onClearSearch && (
             <button onClick={onClearSearch} className="btn-primary text-xs py-2.5 px-6">
-              عرض جميع المستحضرات
+              {isEn ? 'View all products' : 'عرض جميع المستحضرات'}
             </button>
           )}
         </div>
@@ -140,9 +145,9 @@ export default function ProductGrid({
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0D221A]/60 via-transparent to-transparent" />
 
                   {/* Badge */}
-                  {product.badge && (
+                  {(isEn ? (product.badgeEn || product.badge) : product.badge) && (
                     <span className="absolute top-2.5 right-2.5 z-10 bg-gradient-to-r from-[#C5A059] to-[#D4AF37] text-[#0D221A] text-[9px] sm:text-[11px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full shadow-md pointer-events-none max-w-[90px] sm:max-w-none truncate">
-                      {product.badge}
+                      {isEn ? (product.badgeEn || product.badge) : product.badge}
                     </span>
                   )}
 
@@ -155,7 +160,7 @@ export default function ProductGrid({
                         ? 'bg-rose-600 text-white border-2 border-white'
                         : 'bg-white/90 backdrop-blur-md text-rose-500 border border-[#C5A059]/30 sm:opacity-0 sm:group-hover:opacity-100'
                     }`}
-                    aria-label="إضافة للمفضلة"
+                    aria-label={isEn ? 'Add to wishlist' : 'إضافة للمفضلة'}
                   >
                     <Heart className={`w-4 h-4 sm:w-4.5 sm:h-4.5 ${isWishlisted ? 'fill-white' : ''}`} />
                   </button>
@@ -168,7 +173,7 @@ export default function ProductGrid({
                       className="btn-primary text-xs py-2 px-5 shadow-2xl flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform pointer-events-auto"
                     >
                       <Eye className="w-4 h-4" />
-                      <span>معاينة</span>
+                      <span>{isEn ? 'Quick View' : 'معاينة'}</span>
                     </button>
                   </div>
 
@@ -176,14 +181,14 @@ export default function ProductGrid({
                   {isInCart && (
                     <div className="absolute bottom-2.5 right-2.5 z-20 bg-[#0D221A]/95 text-[#EAD096] border border-[#C5A059] text-[9px] sm:text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-xl flex items-center gap-1 backdrop-blur-md animate-popIn">
                       <Check className="w-3 h-3 text-emerald-400 stroke-[3]" />
-                      <span>في السلة {cartQty > 1 ? `(${cartQty})` : ''}</span>
+                      <span>{isEn ? 'In Cart' : 'في السلة'} {cartQty > 1 ? `(${cartQty})` : ''}</span>
                     </div>
                   )}
 
                   {/* Discount badge */}
                   {product.originalPrice && product.originalPrice > product.price && !isInCart && (
                     <div className="absolute bottom-2.5 left-2.5 bg-gradient-to-r from-emerald-800 to-emerald-700 border border-emerald-400 text-white text-[9px] sm:text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-md">
-                      وفرت {product.originalPrice - product.price} ج.م 🔥
+                      {isEn ? 'Save' : 'وفرت'} {product.originalPrice - product.price} {t('currency', 'ج.م')} 🔥
                     </div>
                   )}
 
@@ -214,12 +219,12 @@ export default function ProductGrid({
 
                   {/* Name */}
                   <h3 className="text-xs sm:text-sm font-extrabold text-[#0D221A] leading-snug line-clamp-2 group-hover:text-[#987834] transition-colors">
-                    {product.name}
+                    {isEn ? (product.nameEn || product.name) : product.name}
                   </h3>
 
                   {/* Tagline — hidden on very small mobile */}
                   <p className="hidden sm:block text-xs text-gray-500 font-light line-clamp-1">
-                    {product.tagline}
+                    {isEn ? (product.taglineEn || product.tagline) : product.tagline}
                   </p>
 
                   {/* ---- FOOTER ---- */}
@@ -227,11 +232,11 @@ export default function ProductGrid({
                     {/* Price */}
                     <div className="flex flex-col">
                       <span className="text-sm sm:text-base font-extrabold text-[#0D221A] font-serif leading-none">
-                        {product.price} <span className="text-[10px] font-normal text-gray-500">ج.م</span>
+                        {product.price} <span className="text-[10px] font-normal text-gray-500">{t('currency', 'ج.م')}</span>
                       </span>
                       {product.originalPrice && product.originalPrice > product.price && (
                         <span className="text-[10px] text-gray-500 font-light mt-0.5 whitespace-nowrap">
-                          بدلاً من <span className="line-through text-rose-600/80 font-bold">{product.originalPrice} ج.م</span>
+                          {isEn ? 'Instead of' : 'بدلاً من'} <span className="line-through text-rose-600/80 font-bold">{product.originalPrice} {t('currency', 'ج.م')}</span>
                         </span>
                       )}
                     </div>

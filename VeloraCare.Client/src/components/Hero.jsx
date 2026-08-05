@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Sparkles, ArrowLeft, ShieldCheck, Leaf, Award, HeartHandshake, ChevronRight, ChevronLeft } from 'lucide-react';
 import VeloraLogo from './VeloraLogo';
+import { useTranslation } from 'react-i18next';
 
 const DEFAULT_SLIDES = [
   {
@@ -42,9 +43,11 @@ const DEFAULT_SLIDES = [
 ];
 
 export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides, settings }) {
+  const { t, i18n } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const touchStartX = useRef(null);
+  const isEn = i18n.language === 'en';
 
   const activeSlides = (customSlides && customSlides.length > 0)
     ? customSlides.filter(s => s.active !== false)
@@ -120,7 +123,7 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
             className="animate-slideUp inline-flex items-center gap-1.5 mb-3 px-3.5 py-1.5 rounded-full bg-[#143529]/90 border border-[#C5A059]/50 backdrop-blur-md mx-auto shadow-md"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#C5A059]" />
-            <span className="text-[#EAD096] text-[11px] font-extrabold">{slide.badge}</span>
+            <span className="text-[#EAD096] text-[11px] font-extrabold">{isEn ? (slide.badgeEn || slide.badge) : slide.badge}</span>
           </div>
 
           {/* Main Headline */}
@@ -129,10 +132,10 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
             className="animate-slideUp text-[2rem] sm:text-[2.5rem] leading-[1.2] font-extrabold text-white text-center mb-3 font-serif max-w-md mx-auto"
             style={{ animationDelay: '0.05s' }}
           >
-            {slide.titleHighlight}
+            {isEn ? (slide.titleHighlightEn || slide.titleHighlight) : slide.titleHighlight}
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834]">
-              {slide.titleRest}
+              {isEn ? (slide.titleRestEn || slide.titleRest) : slide.titleRest}
             </span>
           </h1>
 
@@ -141,7 +144,7 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
             className="animate-slideUp text-gray-300 text-xs sm:text-sm leading-relaxed line-clamp-3 mb-4 max-w-sm font-light text-center mx-auto"
             style={{ animationDelay: '0.1s' }}
           >
-            {slide.description}
+            {isEn ? (slide.descriptionEn || slide.description) : slide.description}
           </p>
 
           {/* Rating pill & Trust Badges */}
@@ -163,17 +166,17 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
           <div className="flex flex-col gap-3 w-full max-w-xs mx-auto">
             <button
               onClick={onExploreClick}
-              className="btn-primary w-full py-4 text-sm justify-center shadow-xl"
+              className="btn-primary w-full py-4 text-sm justify-center shadow-xl flex items-center gap-2"
             >
-              <span>تسوقي الآن</span>
-              <ArrowLeft className="w-4 h-4" />
+              <span>{isEn ? 'Shop Now' : 'تسوقي الآن'}</span>
+              <ArrowLeft className={`w-4 h-4 ${isEn ? 'rotate-180' : ''}`} />
             </button>
             <button
               onClick={onOpenQuiz}
-              className="btn-secondary w-full py-4 text-sm justify-center"
+              className="btn-secondary w-full py-4 text-sm justify-center flex items-center gap-2"
             >
               <Sparkles className="w-4 h-4 text-[#C5A059]" />
-              <span>اختبر روتين بشرتك</span>
+              <span>{isEn ? 'Take Skin Routine Quiz' : 'اختبر روتين بشرتك'}</span>
             </button>
           </div>
         </div>
@@ -226,14 +229,14 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
               <img src={slide.productImage} alt={slide.productTitle} className="w-full h-full object-cover" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-white text-xs font-extrabold truncate">{slide.productTitle}</p>
-              <p className="text-[#EAD096] text-[11px] truncate">{slide.productSub}</p>
+              <p className="text-white text-xs font-extrabold truncate">{isEn ? (slide.productTitleEn || slide.productTitle) : slide.productTitle}</p>
+              <p className="text-[#EAD096] text-[11px] truncate">{isEn ? (slide.productSubEn || slide.productSub) : slide.productSub}</p>
             </div>
             <button
               onClick={onExploreClick}
               className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-[#EAD096] to-[#C5A059] text-[#0D221A] flex items-center justify-center shadow-lg active:scale-90 transition-transform"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className={`w-4 h-4 ${isEn ? 'rotate-180' : ''}`} />
             </button>
           </div>
 
@@ -292,44 +295,44 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
             <div className="flex items-center justify-center lg:justify-start gap-2">
               <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#143529]/95 border border-[#C5A059]/50 text-[#EAD096] text-xs font-bold shadow-md backdrop-blur-md">
                 <Sparkles className="w-3.5 h-3.5 text-[#C5A059] animate-spin" style={{ animationDuration: '6s' }} />
-                <span>{slide.badge}</span>
+                <span>{isEn ? (slide.badgeEn || slide.badge) : slide.badge}</span>
               </div>
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-snug font-serif tracking-tight">
-              {slide.titleHighlight}{' '}
+              {isEn ? (slide.titleHighlightEn || slide.titleHighlight) : slide.titleHighlight}{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834]">
-                {slide.titleRest}
+                {isEn ? (slide.titleRestEn || slide.titleRest) : slide.titleRest}
               </span>
             </h1>
 
             <p className="text-gray-300 text-base lg:text-lg max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
-              {slide.description}
+              {isEn ? (slide.descriptionEn || slide.description) : slide.description}
             </p>
 
             <div className="flex flex-row items-center justify-center lg:justify-start gap-4 pt-3">
               <button
                 onClick={onExploreClick}
-                className="btn-primary text-base py-3.5 px-8 group"
+                className="btn-primary text-base py-3.5 px-8 group flex items-center gap-2"
               >
-                <span>تسوقي التشكيلة</span>
-                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                <span>{isEn ? 'Shop Collection' : 'تسوقي التشكيلة'}</span>
+                <ArrowLeft className={`w-5 h-5 transition-transform ${isEn ? 'group-hover:translate-x-1 rotate-180' : 'group-hover:-translate-x-1'}`} />
               </button>
               <button
                 onClick={onOpenQuiz}
-                className="btn-secondary text-base py-3.5 px-8"
+                className="btn-secondary text-base py-3.5 px-8 flex items-center gap-2"
               >
                 <Sparkles className="w-4 h-4 text-[#C5A059]" />
-                <span>اختبار الروتين</span>
+                <span>{isEn ? 'Routine Quiz' : 'اختبار الروتين'}</span>
               </button>
             </div>
 
             {showTrustHighlights && (
               <div className="pt-6 border-t border-[#C5A059]/20 grid grid-cols-4 gap-2 text-xs font-semibold text-gray-300">
-                <div className="flex items-center justify-center lg:justify-start gap-1"><Leaf className="w-3.5 h-3.5 text-[#C5A059]" /><span>100% نباتي عضوي</span></div>
-                <div className="flex items-center justify-center lg:justify-start gap-1"><ShieldCheck className="w-3.5 h-3.5 text-[#C5A059]" /><span>آمن ومؤثر</span></div>
-                <div className="flex items-center justify-center lg:justify-start gap-1"><Award className="w-3.5 h-3.5 text-[#C5A059]" /><span>جودة ملكية</span></div>
-                <div className="flex items-center justify-center lg:justify-start gap-1"><HeartHandshake className="w-3.5 h-3.5 text-[#C5A059]" /><span>بدون مواد كيميائية</span></div>
+                <div className="flex items-center justify-center lg:justify-start gap-1"><Leaf className="w-3.5 h-3.5 text-[#C5A059]" /><span>{isEn ? '100% Organic' : '100% نباتي عضوي'}</span></div>
+                <div className="flex items-center justify-center lg:justify-start gap-1"><ShieldCheck className="w-3.5 h-3.5 text-[#C5A059]" /><span>{isEn ? 'Safe & Effective' : 'آمن ومؤثر'}</span></div>
+                <div className="flex items-center justify-center lg:justify-start gap-1"><Award className="w-3.5 h-3.5 text-[#C5A059]" /><span>{isEn ? 'Premium Quality' : 'جودة ملكية'}</span></div>
+                <div className="flex items-center justify-center lg:justify-start gap-1"><HeartHandshake className="w-3.5 h-3.5 text-[#C5A059]" /><span>{isEn ? 'Chemical-Free' : 'بدون مواد كيميائية'}</span></div>
               </div>
             )}
           </div>
@@ -340,13 +343,13 @@ export default function Hero({ onExploreClick, onOpenQuiz, slides: customSlides,
               <div className="relative w-full h-full rounded-2xl overflow-hidden bg-[#0D221A]">
                 <img src={slide.productImage} alt={slide.productTitle} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0D221A] via-transparent to-transparent opacity-60" />
-                <div className="absolute bottom-3 right-3 left-3 p-4 rounded-xl glass-panel-dark border border-[#C5A059]/40 text-right">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-[#C5A059] font-bold">مستحضر ملكي 👑</span>
+                <div className={`absolute bottom-3 ${isEn ? 'left-3' : 'right-3 left-3'} p-4 rounded-xl glass-panel-dark border border-[#C5A059]/40 ${isEn ? 'text-left' : 'text-right'}`}>
+                  <div className="flex items-center justify-between mb-1 gap-4">
+                    <span className="text-xs text-[#C5A059] font-bold">{isEn ? 'Premium Product 👑' : 'مستحضر ملكي 👑'}</span>
                     <span className="text-xs text-emerald-400 font-semibold">★ {slide.rating}</span>
                   </div>
-                  <h4 className="text-sm font-bold text-white">{slide.productTitle}</h4>
-                  <p className="text-[11px] text-gray-300 font-light">{slide.productSub}</p>
+                  <h4 className="text-sm font-bold text-white">{isEn ? (slide.productTitleEn || slide.productTitle) : slide.productTitle}</h4>
+                  <p className="text-[11px] text-gray-300 font-light">{isEn ? (slide.productSubEn || slide.productSub) : slide.productSub}</p>
                 </div>
               </div>
             </div>

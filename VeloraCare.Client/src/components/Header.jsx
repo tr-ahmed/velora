@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Search, Heart, Menu, X, Sparkles, User, ShieldCheck, LogOut, Eye, ArrowLeft, Truck, Phone } from 'lucide-react';
+import { ShoppingBag, Search, Heart, Menu, X, Sparkles, User, ShieldCheck, LogOut, Eye, ArrowLeft, Truck, Phone, Globe } from 'lucide-react';
 import VeloraLogo from './VeloraLogo';
+import { useTranslation } from 'react-i18next';
 
 export default function Header({ 
   cartCount, 
@@ -19,16 +20,23 @@ export default function Header({
   products = [],
   onQuickView
 }) {
+  const { t, i18n } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'ar' : 'en';
+    i18n.changeLanguage(newLang);
+    document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
+  };
+
   const navLinks = [
-    { id: 'home', label: 'الرئيسية' },
-    { id: 'products', label: 'المتجر والمنتجات' },
-    { id: 'quiz', label: 'اختبار روتين البشرة', isSpecial: true },
-    { id: 'about', label: 'قصة VELORA' },
-    { id: 'reviews', label: 'تجارب العميلات' },
+    { id: 'home', label: t('home', 'الرئيسية') },
+    { id: 'products', label: t('products', 'المتجر والمنتجات') },
+    { id: 'quiz', label: t('quiz', 'اختبار روتين البشرة'), isSpecial: true },
+    { id: 'about', label: t('about', 'قصة VELORA') },
+    { id: 'reviews', label: t('reviews', 'تجارب العميلات') },
   ];
 
   const handleNavClick = (id) => {
@@ -109,11 +117,20 @@ export default function Header({
             {/* 3. Action Controls & Search (Left Column) */}
             <div className="flex items-center gap-1 sm:gap-4">
               <button
+                onClick={toggleLanguage}
+                className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#EAD096] bg-[#143529] rounded-full border border-[#C5A059]/40 hover:bg-[#C5A059] hover:text-[#0D221A] transition-colors"
+                title="تغيير اللغة"
+              >
+                <Globe className="w-3.5 h-3.5" />
+                <span>{t('language', 'English')}</span>
+              </button>
+
+              <button
                 onClick={onOpenTrackOrder}
                 className="hidden lg:flex items-center gap-2 px-4 py-2 text-sm font-bold text-[#C5A059] bg-[#C5A059]/10 rounded-full hover:bg-[#C5A059] hover:text-[#0D221A] transition-colors border border-[#C5A059]/30"
               >
                 <Truck className="w-4 h-4" />
-                <span>تتبع طلبك</span>
+                <span>{t('trackOrder', 'تتبع طلبك')}</span>
               </button>
               
               {/* Expandable Live Search Box */}
@@ -236,13 +253,12 @@ export default function Header({
                 </button>
               )}
 
-              {/* Cart Drawer Main CTA Button */}
               <button
                 onClick={onOpenCart}
                 className="hidden sm:flex items-center gap-1.5 bg-gradient-to-r from-[#D4AF37] via-[#C5A059] to-[#987834] text-[#0D221A] px-3.5 py-1.5 rounded-full font-extrabold text-xs shadow-md hover:brightness-110 active:scale-95 border border-[#F3E5AB]/40 transition-all"
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span className="hidden xs:inline">السلة</span>
+                <span className="hidden xs:inline">{t('cart', 'السلة')}</span>
                 {cartCount > 0 && (
                   <span className="w-4 h-4 bg-[#0D221A] text-[#EAD096] text-[10px] font-mono rounded-full flex items-center justify-center">
                     {cartCount}
@@ -282,6 +298,14 @@ export default function Header({
                 </button>
               ))}
 
+              <button
+                onClick={toggleLanguage}
+                className="w-full flex items-center justify-center gap-2 p-3 mt-2 bg-[#143529] rounded-xl border border-[#C5A059]/40 text-[#EAD096] hover:bg-[#C5A059]/20 transition-colors"
+              >
+                <Globe className="w-4 h-4" />
+                <span className="font-bold text-xs">{t('language', 'English')}</span>
+              </button>
+
               <button 
                 onClick={() => {
                   setMobileMenuOpen(false);
@@ -290,7 +314,7 @@ export default function Header({
                 className="w-full flex items-center justify-center gap-2 p-3 mt-2 bg-[#143529] rounded-xl border border-[#C5A059]/40 text-[#EAD096] hover:bg-[#C5A059]/20 transition-colors"
               >
                 <Truck className="w-4 h-4" />
-                <span className="font-bold text-xs">تتبع طلبك كزائر</span>
+                <span className="font-bold text-xs">{t('trackOrder', 'تتبع طلبك')}</span>
               </button>
             </div>
           )}

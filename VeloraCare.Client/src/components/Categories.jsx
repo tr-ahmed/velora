@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { fetchCategoriesApi } from '../services/api';
 import { Sparkles, ChevronDown, Tag } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function Categories({ selectedCategory, onSelectCategory }) {
+  const { t, i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -18,9 +21,9 @@ export default function Categories({ selectedCategory, onSelectCategory }) {
   }, []);
 
   const filterItems = [
-    { code: 'all', name: 'الكل', icon: '✨' },
-    { code: 'offers', name: 'عروض حصرية 🔥', icon: '🔥' },
-    ...categories.map(c => ({ code: c.code, name: c.name, icon: c.icon || '📦' }))
+    { code: 'all', name: isEn ? 'All' : 'الكل', icon: '✨' },
+    { code: 'offers', name: isEn ? 'Exclusive Offers 🔥' : 'عروض حصرية 🔥', icon: '🔥' },
+    ...categories.map(c => ({ code: c.code, name: isEn ? (c.nameEn || c.name) : c.name, icon: c.icon || '📦' }))
   ];
 
   return (
@@ -30,19 +33,33 @@ export default function Categories({ selectedCategory, onSelectCategory }) {
 
         <div className="inline-flex items-center justify-center gap-1.5 px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-[#C5A059]/15 border border-[#C5A059]/40 text-[#987834] text-[10px] sm:text-xs font-bold">
           <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#C5A059]" />
-          <span>تشكيلاتنا الفاخرة</span>
+          <span>{isEn ? 'Premium Collections' : 'تشكيلاتنا الفاخرة'}</span>
         </div>
 
-        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black font-serif tracking-tight leading-tight">
-          <span className="text-[#0D221A]">مجموعات </span>
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C5A059] via-[#D4AF37] to-[#987834] drop-shadow-sm">
-            VELORA
-          </span>
-          <span className="text-[#0D221A]"> العضوية 🌿</span>
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black font-serif tracking-tight leading-tight flex items-center justify-center gap-2 flex-wrap">
+          {isEn ? (
+            <>
+              <span className="text-[#0D221A]">Organic </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C5A059] via-[#D4AF37] to-[#987834] drop-shadow-sm">
+                VELORA
+              </span>
+              <span className="text-[#0D221A]"> Collections 🌿</span>
+            </>
+          ) : (
+            <>
+              <span className="text-[#0D221A]">مجموعات </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C5A059] via-[#D4AF37] to-[#987834] drop-shadow-sm">
+                VELORA
+              </span>
+              <span className="text-[#0D221A]"> العضوية 🌿</span>
+            </>
+          )}
         </h2>
 
         <p className="text-gray-600 text-[11px] sm:text-sm max-w-xl mx-auto font-light leading-relaxed px-2">
-          جميع مستحضراتنا يتم تصنيعها بدقة عالية باستخدام خلاصة المكونات العضوية الزمردية بدون زيوت معدنية أو بارابين.
+          {isEn 
+            ? 'All our products are meticulously crafted using premium organic emerald extracts without mineral oils or parabens.' 
+            : 'جميع مستحضراتنا يتم تصنيعها بدقة عالية باستخدام خلاصة المكونات العضوية الزمردية بدون زيوت معدنية أو بارابين.'}
         </p>
 
       </div>
@@ -53,7 +70,7 @@ export default function Categories({ selectedCategory, onSelectCategory }) {
             value={selectedCategory}
             onChange={(e) => onSelectCategory(e.target.value)}
             className="w-full appearance-none bg-white border border-[#C5A059]/40 text-[#0D221A] font-bold text-xs rounded-2xl px-4 py-3.5 pr-10 focus:outline-none focus:border-[#C5A059] focus:ring-1 focus:ring-[#C5A059]/30 shadow-sm"
-            dir="rtl"
+            dir={isEn ? 'ltr' : 'rtl'}
           >
             {filterItems.map((cat) => (
               <option key={cat.code} value={cat.code}>
@@ -61,7 +78,7 @@ export default function Categories({ selectedCategory, onSelectCategory }) {
               </option>
             ))}
           </select>
-          <ChevronDown className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#C5A059] pointer-events-none" />
+          <ChevronDown className={`absolute ${isEn ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-4 h-4 text-[#C5A059] pointer-events-none`} />
         </div>
       </div>
 
