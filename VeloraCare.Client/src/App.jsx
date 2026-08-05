@@ -17,7 +17,7 @@ import UserProfilePage from './components/UserProfilePage';
 import TrackOrderModal from './components/TrackOrderModal';
 import MobileBottomNav from './components/MobileBottomNav';
 import InfoModal from './components/InfoModal';
-import { Search, X } from 'lucide-react';
+import { Search, X, Sparkles, Settings, Clock, Instagram } from 'lucide-react';
 import { 
   fetchProductsFromApi,
   fetchHeroSlidesApi, fetchHeroSettingsApi, saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi, fetchStoreSettingsApi
@@ -290,12 +290,48 @@ export default function App() {
 
   if (storeSettings?.maintenanceMode && currentUser?.role !== 'Admin') {
     return (
-      <div className="min-h-screen bg-[#0D221A] text-[#EAD096] flex flex-col items-center justify-center p-6 text-center font-serif">
-        <Sparkles className="w-16 h-16 mb-6 text-[#C5A059]" />
-        <h1 className="text-3xl font-bold mb-4">{isEn ? 'Under Maintenance' : 'المتجر تحت الصيانة'}</h1>
-        <p className="text-gray-400 max-w-md">
-          {isEn ? 'We are currently upgrading our systems to serve you better. Please check back soon.' : 'نقوم حالياً بتحديث أنظمتنا لتقديم خدمة أفضل. يرجى زيارتنا لاحقاً.'}
-        </p>
+      <div dir={isEn ? 'ltr' : 'rtl'} className="min-h-screen bg-[#0D221A] text-[#EAD096] flex flex-col items-center justify-center p-6 text-center font-serif relative overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#C5A059] rounded-full blur-[120px] opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-[#987834] rounded-full blur-[120px] opacity-20 animate-pulse" style={{ animationDelay: '2s' }}></div>
+        
+        {/* Glassmorphism Card */}
+        <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-[#C5A059]/30 p-10 sm:p-16 rounded-[2rem] shadow-[0_8px_32px_rgba(0,0,0,0.5)] max-w-2xl w-full mx-auto transform hover:scale-[1.02] transition-transform duration-500">
+          <div className="flex justify-center mb-8 relative">
+            <div className="absolute inset-0 bg-[#C5A059] blur-2xl opacity-20 rounded-full animate-pulse"></div>
+            <Settings className="w-20 h-20 text-[#C5A059] animate-[spin_8s_linear_infinite] relative z-10 drop-shadow-[0_0_15px_rgba(197,160,89,0.5)]" />
+            <Sparkles className="w-8 h-8 text-white absolute top-0 right-1/4 animate-bounce z-20" />
+          </div>
+          
+          <h1 className="text-4xl sm:text-5xl font-black mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834]">
+            {isEn ? 'Imperial Upgrade in Progress' : 'تحديث إمبراطوري قيد التنفيذ'}
+          </h1>
+          
+          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#C5A059] to-transparent mx-auto mb-8 rounded-full"></div>
+          
+          <p className="text-gray-300 text-lg sm:text-xl leading-relaxed max-w-lg mx-auto mb-10 font-light">
+            {isEn 
+              ? 'We are currently weaving pure magic into VELORA CARE to bring you a more luxurious shopping experience. Our sanctuary of beauty will reopen shortly.' 
+              : 'نقوم حالياً بنسج السحر الإمبراطوري لتطوير تجربة تسوق أكثر فخامة ورقي في VELORA CARE. سيعود متجركم للعمل قريباً جداً.'}
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm font-bold tracking-wide">
+            <div className="flex items-center gap-2 bg-[#0D221A]/50 px-6 py-3 rounded-full border border-[#C5A059]/20 shadow-inner">
+              <Clock className="w-4 h-4 text-[#C5A059]" />
+              <span>{isEn ? 'Coming Back Soon' : 'نعود إليكم قريباً'}</span>
+            </div>
+            {storeSettings?.whatsAppNumber && (
+              <a 
+                href={`https://wa.me/${storeSettings.whatsAppNumber}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 bg-gradient-to-r from-[#C5A059] to-[#987834] text-[#0D221A] px-6 py-3 rounded-full shadow-[0_0_20px_rgba(197,160,89,0.3)] hover:shadow-[0_0_30px_rgba(197,160,89,0.6)] transition-all hover:-translate-y-1"
+              >
+                <span>{isEn ? 'Contact Support' : 'تواصل معنا (واتساب)'}</span>
+              </a>
+            )}
+          </div>
+        </div>
       </div>
     );
   }
