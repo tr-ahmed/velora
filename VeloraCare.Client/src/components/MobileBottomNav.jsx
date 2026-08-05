@@ -25,7 +25,11 @@ export default function MobileBottomNav({
     } else if (tabId === 'quiz') {
       onOpenQuiz();
     } else if (tabId === 'profile') {
-      setIsProfileMenuOpen(true);
+      if (!currentUser) {
+        onOpenAuthModal();
+      } else {
+        setIsProfileMenuOpen(true);
+      }
     } else if (tabId === 'track_order') {
       onOpenTrackOrder();
     } else {
