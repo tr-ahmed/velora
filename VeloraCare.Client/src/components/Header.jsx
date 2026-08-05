@@ -72,8 +72,8 @@ export default function Header({
 
   return (
     <>
-      {/* --- MAIN HEADER --- */}
-      <header className="sticky top-0 z-40 w-full bg-[#0D221A]/90 backdrop-blur-xl border-b border-[#C5A059]/30 shadow-xl print:hidden">
+      {/* --- MAIN HEADER (DESKTOP) --- */}
+      <header className="hidden sm:block sticky top-0 z-40 w-full bg-[#0D221A]/90 backdrop-blur-xl border-b border-[#C5A059]/30 shadow-xl print:hidden">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5">
           <div className="flex items-center justify-between gap-4 sm:gap-8">
             
@@ -304,6 +304,62 @@ export default function Header({
           )}
         </nav>
       </header>
+
+      {/* --- MOBILE FLOATING TOP ACTIONS --- */}
+      <div className="sm:hidden fixed top-3 left-3 right-3 z-[60] flex justify-end items-start pointer-events-none print:hidden">
+        <div className="flex flex-col items-end gap-2 pointer-events-auto">
+          {/* Floating Pill */}
+          <div className="flex items-center bg-[#0D221A]/90 backdrop-blur-2xl border border-[#C5A059]/40 rounded-full px-2 py-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+            <button
+              onClick={toggleLanguage}
+              className="p-1.5 text-[#EAD096] hover:text-white transition-colors"
+              title={isEn ? "Switch to Arabic" : "تغيير اللغة"}
+            >
+              <Globe className="w-5 h-5" />
+            </button>
+            <div className="w-[1px] h-6 bg-[#C5A059]/30 mx-1"></div>
+            
+            <form onSubmit={handleSearchSubmit} className="relative flex items-center justify-end w-8 focus-within:w-56 transition-all duration-300 ease-out">
+              <Search className="w-5 h-5 text-[#EAD096] absolute pointer-events-none" style={{ [isEn ? 'left' : 'right']: '4px' }} />
+              <input
+                type="text"
+                placeholder={isSearchFocused ? t('searchPlaceholder', 'ابحثي عن منتج...') : ''}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+                className={`w-full bg-transparent text-white text-xs border-b border-transparent focus:border-[#C5A059] placeholder-gray-400 focus:outline-none transition-all py-1 ${isEn ? 'pl-8 pr-2' : 'pr-8 pl-2'} ${!isSearchFocused && searchQuery.length === 0 ? 'cursor-pointer opacity-0 focus-within:opacity-100' : 'opacity-100'}`}
+              />
+            </form>
+          </div>
+
+          {/* Floating Search Results */}
+          {isSearchFocused && searchQuery.trim().length > 0 && (
+            <div className="w-full min-w-[280px] max-w-[90vw] bg-[#0D221A]/95 backdrop-blur-xl border border-[#C5A059]/40 rounded-3xl p-2 shadow-2xl max-h-72 overflow-y-auto space-y-1">
+              {searchResults.length > 0 ? (
+                searchResults.map((p) => (
+                  <div
+                    key={p.id}
+                    onClick={() => {
+                      onQuickView(p);
+                      setIsSearchFocused(false);
+                    }}
+                    className="flex items-center gap-2 p-2 rounded-xl hover:bg-[#143529] cursor-pointer transition-colors"
+                  >
+                    <img src={p.image} alt={isEn ? p.nameEn : p.name} className="w-8 h-8 rounded-lg object-cover border border-[#C5A059]/30" />
+                    <div className="flex-1 overflow-hidden" dir={isEn ? 'ltr' : 'rtl'}>
+                      <p className="text-xs font-bold text-white truncate text-start">{isEn ? p.nameEn : p.name}</p>
+                      <p className="text-[10px] text-[#C5A059] font-bold text-start">{p.price} {t('currency', 'ج.م')}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-xs text-gray-400 p-3 text-center">{t('noResults', 'لا توجد نتائج مطابقة')}</p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
     </>
   );
 }
