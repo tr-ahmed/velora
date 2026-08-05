@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, ShoppingBag, Trash2, ArrowLeft, Star, Check } from 'lucide-react';
+import { Heart, ShoppingBag, Trash2, ArrowLeft, Star, Check, Sparkles } from 'lucide-react';
 import { fetchProductsFromApi } from '../services/api';
 import { useTranslation } from 'react-i18next';
 
