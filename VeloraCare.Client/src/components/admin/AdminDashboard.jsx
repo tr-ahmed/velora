@@ -21,7 +21,7 @@ import {
   saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi,
   fetchUsersApi, updateUserRoleApi, deleteUserApi, updateUserApi,
   fetchAdminReviewsApi, deleteReviewApi, toggleReviewApprovalApi,
-  fetchStoreSettingsApi, updateStoreSettingsApi
+  fetchStoreSettingsApi, updateStoreSettingsApi, fetchTestimonialsApi
 } from '../../services/api';
 import { EGYPT_GOVERNORATES } from '../../data/governorates';
 
@@ -263,7 +263,7 @@ export default function AdminDashboard({
         fetchCategoriesApi(),
         fetchStoreSettingsApi(),
         fetchAdminReviewsApi(),
-        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5246/api'}/testimonials?activeOnly=false`).then(r => r.ok ? r.json() : [])
+        fetchTestimonialsApi(false).catch(() => [])
       ]);
       setStats(statsRes || { totalRevenue: 0, totalOrders: 0, totalProducts: 0, totalCustomers: 0, activeCoupons: 0, recentOrders: [] });
       setAnalytics(analyticsRes || { generatedAt: new Date().toISOString(), totalRevenue: 0, totalOrders: 0, averageOrderValue: 0, customerSatisfactionRate: '0%', conversionRate: '0%', salesByCity: [], salesByCategory: [], ordersByStatus: [], topProducts: [] });
