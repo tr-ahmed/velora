@@ -25,19 +25,28 @@ export default function MobileBottomNav({
       onOpenQuiz();
     } else if (tabId === 'profile') {
       setIsProfileMenuOpen(true);
+    } else if (tabId === 'track_order') {
+      onOpenTrackOrder();
     } else {
       setActiveTab(tabId);
     }
   };
 
-  const tabs = [
+  const baseTabs = [
     { id: 'home', icon: Home, label: t('home', 'الرئيسية') },
     { id: 'products', icon: ShoppingBag, label: t('products', 'المتجر') },
     { id: 'cart', icon: ShoppingCart, label: t('cart', 'سلّتي'), badge: cartCount },
     { id: 'quiz', isFAB: true, icon: Sparkles, label: isEn ? 'Quiz' : 'الروتين' },
     { id: 'wishlist', icon: Heart, label: isEn ? 'Wishlist' : 'مفضلتي', badge: wishlistCount },
-    { id: 'profile', icon: User, label: currentUser ? (currentUser.fullName?.split(' ')[0] || (isEn ? 'Account' : 'حسابي')) : (isEn ? 'Account' : 'حسابي') },
   ];
+
+  if (!currentUser) {
+    baseTabs.push({ id: 'track_order', icon: Truck, label: isEn ? 'Orders' : 'طلباتي' });
+  }
+
+  baseTabs.push({ id: 'profile', icon: User, label: currentUser ? (currentUser.fullName?.split(' ')[0] || (isEn ? 'Account' : 'حسابي')) : (isEn ? 'Account' : 'حسابي') });
+
+  const tabs = baseTabs;
 
   return (
     <>
