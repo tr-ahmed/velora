@@ -283,7 +283,7 @@ export default function Header({
           }`}
           aria-label="Menu"
         >
-          {isFloatingMenuOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
+          {isFloatingMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
 
         {/* Floating Panel */}
