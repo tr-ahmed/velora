@@ -1,10 +1,14 @@
 import React from 'react';
 import { TESTIMONIALS } from '../data/products';
 import { Star, Quote, Award, Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function Testimonials() {
+  const { t, i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
+
   return (
-    <section className="py-20 bg-[#0D221A] text-white relative overflow-hidden border-t border-[#C5A059]/30">
+    <section className="py-20 bg-[#0D221A] text-white relative overflow-hidden border-t border-[#C5A059]/30" dir={isEn ? 'ltr' : 'rtl'}>
       
       {/* Glow backgrounds */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-[#C5A059]/10 rounded-full blur-3xl pointer-events-none" />
@@ -14,13 +18,15 @@ export default function Testimonials() {
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold flex items-center justify-center gap-1.5">
             <Sparkles className="w-4 h-4" />
-            <span>تجارب حقيقية</span>
+            <span>{isEn ? 'Real Experiences' : 'تجارب حقيقية'}</span>
           </span>
           <h2 className="text-3xl md:text-4xl font-extrabold font-serif text-[#EAD096] mt-2">
-            ماذا تقول ملكات VELORA CARE؟
+            {isEn ? 'What Do VELORA CARE Queens Say?' : 'ماذا تقول ملكات VELORA CARE؟'}
           </h2>
           <p className="text-gray-300 text-sm mt-3 font-light">
-            ثقة أكثر من 15,000 عميلة في كافة محافظات جمهورية مصر العربية يستمتعن بنضارة وإشراقة طبيعية يومية.
+            {isEn 
+              ? 'Trusted by over 15,000 clients across Egypt enjoying a daily natural glow and radiance.'
+              : 'ثقة أكثر من 15,000 عميلة في كافة محافظات جمهورية مصر العربية يستمتعن بنضارة وإشراقة طبيعية يومية.'}
           </p>
         </div>
 
@@ -42,19 +48,19 @@ export default function Testimonials() {
                 </div>
 
                 <p className="text-sm text-gray-200 leading-relaxed font-light mb-6">
-                  "{t.comment}"
+                  "{isEn ? t.commentEn : t.comment}"
                 </p>
               </div>
 
               <div className="pt-4 border-t border-[#C5A059]/20 flex items-center gap-3">
                 <img
                   src={t.avatar}
-                  alt={t.name}
+                  alt={isEn ? t.nameEn : t.name}
                   className="w-11 h-11 rounded-full object-cover border-2 border-[#C5A059]"
                 />
                 <div>
-                  <h4 className="text-xs font-bold text-white">{t.name}</h4>
-                  <p className="text-[10px] text-[#C5A059]">{t.role}</p>
+                  <h4 className="text-xs font-bold text-white">{isEn ? t.nameEn : t.name}</h4>
+                  <p className="text-[10px] text-[#C5A059]">{isEn ? t.roleEn : t.role}</p>
                 </div>
               </div>
 

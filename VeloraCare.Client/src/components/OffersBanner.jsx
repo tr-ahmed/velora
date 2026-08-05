@@ -47,49 +47,49 @@ export default function OffersBanner({ offer, onApplyCoupon }) {
       <div className="relative overflow-hidden rounded-2xl sm:rounded-full bg-gradient-to-r from-[#0C241B]/90 via-[#143529]/90 to-[#0C241B]/90 border border-[#C5A059]/50 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-xl px-3 sm:px-6 py-2 transition-all">
         
         {/* Animated Golden Shimmer Bar */}
-        <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#EAD096] to-transparent animate-pulse" />
+        <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-[#0D221A] to-transparent animate-pulse" />
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2.5 relative z-10">
           
           {/* Title & Promo Badge */}
-          <div className="flex items-center gap-2.5 text-center sm:text-right">
-            
+          <div 
+            className="group flex flex-col items-center gap-1.5 cursor-pointer relative text-center sm:text-start"
+            title={isEn ? 'Click to copy coupon code' : 'انقري لنسخ كود الخصم'}
+          >
             {/* Glowing Icon Orb */}
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#EAD096]/30 via-[#C5A059]/20 to-transparent border border-[#C5A059] text-[#EAD096] flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(197,160,89,0.4)]">
-              <Flame className="w-4 h-4 text-[#EAD096] animate-bounce" />
+            <div className="w-8 h-8 rounded-full bg-white/20 border border-[#0D221A]/20 text-[#0D221A] flex items-center justify-center flex-shrink-0 shadow-sm">
+              <Flame className="w-4 h-4 text-[#0D221A] animate-bounce" />
             </div>
 
             <div>
-              <div className="flex items-center gap-2 justify-center sm:justify-start">
-                <span className="text-xs sm:text-sm font-black text-white font-serif tracking-wide drop-shadow-sm">
-                  {offer.title || 'عروض الفلاش السريعة ✨'}
-                </span>
-                <span className="bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#D4AF37] text-[#0D221A] text-[9.5px] font-black px-2.5 py-0.5 rounded-full uppercase shadow-md tracking-wider">
-                  خصم {offer.discountPercentage || 15}%
-                </span>
+              <div className="flex flex-col items-center sm:items-start gap-1">
+                <h3 className="text-xl sm:text-2xl font-black text-[#0D221A] font-serif leading-tight">
+                  {isEn ? (offer.titleEn || offer.title || 'Flash Offers ✨') : (offer.title || 'عروض الفلاش السريعة ✨')}
+                </h3>
+                <p className="inline-block bg-[#0D221A] text-white px-3 py-1 sm:px-4 sm:py-1.5 rounded-full font-extrabold text-sm sm:text-base tracking-wider mt-1 sm:mt-2 shadow-md">
+                  {isEn ? `Discount ${offer.discountPercentage || 15}%` : `خصم ${offer.discountPercentage || 15}%`}
+                </p>
               </div>
-              <p className="text-[11px] text-[#EAD096]/90 font-light truncate max-w-xs sm:max-w-md hidden md:block">
-                {offer.subtitle || 'خصم ملكي حصري على كافة السيرومات والزيوت الزمردية في مصر'}
+              <p className="text-xs sm:text-sm text-[#0D221A]/80 font-bold max-w-sm mx-auto md:mx-0 mt-2">
+                {isEn ? (offer.subtitleEn || offer.subtitle || 'Exclusive royal discount on all emerald serums and oils in Egypt') : (offer.subtitle || 'خصم ملكي حصري على كافة السيرومات والزيوت الزمردية في مصر')}
               </p>
             </div>
-
           </div>
 
           {/* Timer & Copy Button */}
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center">
             
             {/* Digital Timer Blocks */}
-            <div className="flex items-center gap-1 bg-[#05120D]/90 border border-[#C5A059]/60 px-2.5 py-1 rounded-xl shadow-inner font-mono text-xs text-[#EAD096]" dir="ltr">
-              <Clock className="w-3.5 h-3.5 text-[#C5A059] mr-1" />
-              
-              <div className="bg-[#143529] px-1.5 py-0.5 rounded border border-[#C5A059]/30 font-bold text-white">
+            <div className="flex items-center gap-1 bg-[#05120D]/90 border border-[#0D221A]/20 px-2.5 py-1 rounded-xl shadow-inner font-mono text-xs text-[#EAD096]" dir="ltr">
+              <Clock className="w-3.5 h-3.5 text-[#EAD096] mr-1" />
+              <div className="bg-[#143529] px-1.5 py-0.5 rounded border border-[#EAD096]/20 font-bold text-white">
                 {formatDigit(timeLeft.hours)}
               </div>
-              <span className="text-[#C5A059] font-bold">:</span>
-              <div className="bg-[#143529] px-1.5 py-0.5 rounded border border-[#C5A059]/30 font-bold text-white">
+              <span className="text-[#EAD096] font-bold">:</span>
+              <div className="bg-[#143529] px-1.5 py-0.5 rounded border border-[#EAD096]/20 font-bold text-white">
                 {formatDigit(timeLeft.minutes)}
               </div>
-              <span className="text-[#C5A059] font-bold">:</span>
+              <span className="text-[#EAD096] font-bold">:</span>
               <div className="bg-rose-950/80 text-rose-300 px-1.5 py-0.5 rounded border border-rose-500/40 font-bold animate-pulse">
                 {formatDigit(timeLeft.seconds)}
               </div>
@@ -98,38 +98,34 @@ export default function OffersBanner({ offer, onApplyCoupon }) {
             {/* Luxury Copy Coupon Button */}
             <button
               onClick={handleCopyCode}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition-all duration-300 flex items-center gap-1.5 shadow-[0_4px_16px_rgba(197,160,89,0.35)] active:scale-95 ${
+              className={`px-4 py-2 rounded-xl text-xs font-black transition-all duration-300 flex items-center gap-1.5 shadow-md active:scale-95 ${
                 copied
-                  ? 'bg-emerald-600 text-white border border-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.5)]'
-                  : 'bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#D4AF37] text-[#0D221A] hover:scale-105 hover:brightness-110'
+                  ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                  : 'bg-white text-[#0D221A] hover:bg-white/90'
               }`}
-              title="انقري لنسخ كود الخصم"
             >
               {copied ? (
-                <>
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
-                  <span>تم النسخ!</span>
-                </>
+                <span className="flex items-center gap-1 text-emerald-800 text-[10px] sm:text-xs">
+                  <CheckCircle className="w-3.5 h-3.5" />
+                  <span>{isEn ? 'Copied!' : 'تم النسخ!'}</span>
+                </span>
               ) : (
-                <>
-                  <Tag className="w-3.5 h-3.5" />
-                  <span>كود: {offer.couponCode || 'VELORA15'}</span>
-                  <Copy className="w-3 h-3 opacity-80" />
-                </>
+                <span className="flex items-center gap-1 text-[#0D221A] text-[10px] sm:text-xs group-hover:text-emerald-800 transition-colors">
+                  <Copy className="w-3.5 h-3.5" />
+                  <span>{isEn ? `Code: ${offer.couponCode || 'VELORA15'}` : `كود: ${offer.couponCode || 'VELORA15'}`}</span>
+                </span>
               )}
             </button>
 
             {/* Close button */}
             <button
               onClick={() => setDismissed(true)}
-              className="text-gray-400 hover:text-white p-1 rounded-full hover:bg-white/10 transition-colors"
-              title="إخفاء البنر"
+              className="w-8 h-8 rounded-full bg-white/40 hover:bg-[#0D221A] hover:text-[#EAD096] text-[#0D221A] flex items-center justify-center transition-all shadow-sm"
+              title={isEn ? 'Hide Banner' : 'إخفاء البنر'}
             >
               <X className="w-4 h-4" />
             </button>
-
           </div>
-
         </div>
 
       </div>

@@ -22,8 +22,11 @@ import {
   fetchProductsFromApi,
   fetchHeroSlidesApi, fetchHeroSettingsApi, saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi
 } from './services/api';
+import { useTranslation } from 'react-i18next';
 
 export default function App() {
+  const { t, i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
   const [activeTab, setActiveTab] = useState('home');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [products, setProducts] = useState([]);
@@ -275,7 +278,7 @@ export default function App() {
   }
 
   return (
-    <div dir="rtl" className="min-h-screen flex flex-col bg-[#E6EDE4] text-[#0D221A] pb-16 sm:pb-0">
+    <div dir={isEn ? 'ltr' : 'rtl'} className="min-h-screen flex flex-col bg-[#E6EDE4] text-[#0D221A] pb-16 sm:pb-0">
       
       {/* Header Bar */}
       <Header
@@ -305,7 +308,7 @@ export default function App() {
               ? 'bg-[#0D221A]/95 text-rose-400 border-rose-500/30 hover:bg-rose-950'
               : 'bg-gradient-to-br from-[#143529]/95 to-[#0D221A]/95 text-[#C5A059] border-[#C5A059]/50 hover:border-[#C5A059] hover:brightness-110'
           }`}
-          aria-label="البحث"
+          aria-label={isEn ? 'Search' : 'البحث'}
         >
           {isMobileSearchExpanded ? <X className="w-5 h-5" /> : <Search className="w-5 h-5 stroke-[2.5]" />}
         </button>
@@ -318,7 +321,7 @@ export default function App() {
             <input
               type="text"
               autoFocus
-              placeholder="ابحثي عن منتج..."
+              placeholder={isEn ? 'Search for a product...' : 'ابحثي عن منتج...'}
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
@@ -417,26 +420,26 @@ export default function App() {
 
         {activeTab === 'about' && (
           <section className="py-16 px-6 lg:px-12 max-w-4xl mx-auto space-y-8 text-center">
-            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold">قصة VELORA CARE</span>
+            <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold">{isEn ? 'The VELORA CARE Story' : 'قصة VELORA CARE'}</span>
             <h1 className="text-4xl font-extrabold font-serif text-[#0D221A]">
-              عندما تلتقي الطبيعة النادرة بالفخامة الإمبراطورية
+              {isEn ? 'Where Rare Nature Meets Imperial Luxury' : 'عندما تلتقي الطبيعة النادرة بالفخامة الإمبراطورية'}
             </h1>
             <div className="w-24 h-1 bg-[#C5A059] mx-auto rounded-full" />
             <p className="text-gray-700 leading-relaxed text-base font-light">
-              تأسست VELORA CARE لتعيد تعريف العناية بالبشرة الطبيعية والملكية في مصر. نؤمن بأن كل امرأة تستحق عناية فائقة مستوحاة من أنقى خلاصة النباتات العضوية الزمردية بدون مساومة على النتيجة والجمال.
+              {isEn ? 'VELORA CARE was founded to redefine natural and royal skincare in Egypt. We believe every woman deserves premium care inspired by the purest organic emerald botanicals, without compromising on results and beauty.' : 'تأسست VELORA CARE لتعيد تعريف العناية بالبشرة الطبيعية والملكية في مصر. نؤمن بأن كل امرأة تستحق عناية فائقة مستوحاة من أنقى خلاصة النباتات العضوية الزمردية بدون مساومة على النتيجة والجمال.'}
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 text-right">
+            <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 ${isEn ? 'text-left' : 'text-right'}`}>
               <div className="bg-white p-6 rounded-2xl border border-[#C5A059]/30 shadow-md">
-                <h3 className="font-bold text-[#0D221A] text-lg mb-2">مكونات نادرة 🌿</h3>
-                <p className="text-xs text-gray-600">نستخلص المستحضرات من مزارع عضويّة معتمدة حول العالم لضمان الفاعلية والنقاء.</p>
+                <h3 className="font-bold text-[#0D221A] text-lg mb-2">{isEn ? 'Rare Ingredients 🌿' : 'مكونات نادرة 🌿'}</h3>
+                <p className="text-xs text-gray-600">{isEn ? 'We extract from certified organic farms worldwide to ensure efficacy and purity.' : 'نستخلص المستحضرات من مزارع عضويّة معتمدة حول العالم لضمان الفاعلية والنقاء.'}</p>
               </div>
               <div className="bg-white p-6 rounded-2xl border border-[#C5A059]/30 shadow-md">
-                <h3 className="font-bold text-[#0D221A] text-lg mb-2">تصميم وفاخر ✨</h3>
-                <p className="text-xs text-gray-600">عبوات فاخرة بظلال الزمرد والذهب لتزين طاولتك وتمنحك تجربة سبا يومية.</p>
+                <h3 className="font-bold text-[#0D221A] text-lg mb-2">{isEn ? 'Luxurious Design ✨' : 'تصميم وفاخر ✨'}</h3>
+                <p className="text-xs text-gray-600">{isEn ? 'Luxurious bottles with emerald and gold shades to decorate your vanity and give you a daily spa experience.' : 'عبوات فاخرة بظلال الزمرد والذهب لتزين طاولتك وتمنحك تجربة سبا يومية.'}</p>
               </div>
               <div className="bg-white p-6 rounded-2xl border border-[#C5A059]/30 shadow-md">
-                <h3 className="font-bold text-[#0D221A] text-lg mb-2">نتائج سريرية 👑</h3>
-                <p className="text-xs text-gray-600">جميع المنتجات مختبرة سريرياً وتضمن ترطيب ونضارة ملحوظة من أول استخدام.</p>
+                <h3 className="font-bold text-[#0D221A] text-lg mb-2">{isEn ? 'Clinical Results 👑' : 'نتائج سريرية 👑'}</h3>
+                <p className="text-xs text-gray-600">{isEn ? 'All products are clinically tested to guarantee noticeable hydration and glow from the first use.' : 'جميع المنتجات مختبرة سريرياً وتضمن ترطيب ونضارة ملحوظة من أول استخدام.'}</p>
               </div>
             </div>
           </section>

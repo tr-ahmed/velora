@@ -1,10 +1,10 @@
 export const CATEGORIES = [
-  { id: 'all', name: 'الكل', icon: 'Sparkles' },
-  { id: 'offers', name: 'عروض حصرية 🔥', icon: 'Tag' },
-  { id: 'serums', name: 'سيروم وإكسير النضارة', icon: 'Droplets' },
-  { id: 'creams', name: 'كريمات الترطيب الملكية', icon: 'Heart' },
-  { id: 'oils', name: 'زيوت العناية العضوية', icon: 'Sun' },
-  { id: 'candles', name: 'شموع ومستلزمات الاسترخاء', icon: 'Flame' },
+  { id: 'all', name: 'الكل', nameEn: 'All', icon: 'Sparkles' },
+  { id: 'offers', name: 'عروض حصرية 🔥', nameEn: 'Exclusive Offers 🔥', icon: 'Tag' },
+  { id: 'serums', name: 'سيروم وإكسير النضارة', nameEn: 'Serums & Elixirs', icon: 'Droplets' },
+  { id: 'creams', name: 'كريمات الترطيب الملكية', nameEn: 'Royal Creams', icon: 'Heart' },
+  { id: 'oils', name: 'زيوت العناية العضوية', nameEn: 'Organic Oils', icon: 'Sun' },
+  { id: 'candles', name: 'شموع ومستلزمات الاسترخاء', nameEn: 'Relaxation Candles', icon: 'Flame' },
 ];
 
 export const PRODUCTS = [
@@ -110,27 +110,36 @@ export const TESTIMONIALS = [
   {
     id: 1,
     name: 'سارة فؤاد',
+    nameEn: 'Sarah Fouad',
     role: 'بلوجر عناية بالبشرة - القاهرة',
+    roleEn: 'Skincare Blogger - Cairo',
     avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200',
     comment: 'بجد منتجات ڤيلورا كير غيرت بشرتي ١٨٠ درجة! الغسول تحفة وبينضف من غير ما ينشف الوش خالص، وفرق معايا جداً في النضارة.',
+    commentEn: 'Velora Care products literally changed my skin 180 degrees! The cleanser is amazing and cleans without drying my face at all. Huge difference in glow.',
     rating: 5,
     product: 'Velora Bloom'
   },
   {
     id: 2,
     name: 'مريم الجندي',
+    nameEn: 'Mariam El Gendy',
     role: 'عميلة مميزة - الإسكندرية',
+    roleEn: 'VIP Client - Alexandria',
     avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200',
     comment: 'الباكدچينج لوحده حكاية وشيك جداً، بس الأهم المفعول! التونر ملمسه خفيف وبيدي ترطيب فظيع، والتوصيل كان سريع جداً.',
+    commentEn: 'The packaging alone is a masterpiece and very chic, but the effect is what matters! The toner feels light and gives incredible hydration. Very fast delivery.',
     rating: 5,
     product: 'Velora Velvet'
   },
   {
     id: 3,
     name: 'نورهان عادل',
+    nameEn: 'Nourhan Adel',
     role: 'ميكب أرتيست - المنصورة',
+    roleEn: 'Makeup Artist - Mansoura',
     avatar: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&q=80&w=200',
     comment: 'مجموعة ڤيلورا بقت خطوة أساسية لتهيئة بشرة العرايس قبل الميكب.. بتدي جلوي (Glow) رهيب وترطيب عميق بدون أي لمعة دهنية.',
+    commentEn: 'The Velora set has become an essential step to prep brides\' skin before makeup.. it gives a glowing effect and deep hydration without any oily shine.',
     rating: 5,
     product: 'باندل VELORA'
   }
