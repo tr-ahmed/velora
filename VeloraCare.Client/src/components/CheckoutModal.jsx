@@ -61,7 +61,8 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const discountAmount = appliedCoupon ? Math.round((subtotal * appliedCoupon.discountPercentage) / 100) : 0;
   const discountedSubtotal = Math.max(0, subtotal - discountAmount);
-  const total = discountedSubtotal + shippingFee;
+  const shippingCost = shippingFee === -1 ? 0 : shippingFee;
+  const total = discountedSubtotal + shippingCost;
 
   const handleApplyCoupon = async (e) => {
     e.preventDefault();
@@ -111,7 +112,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
         ...formData,
         items: [...cartItems],
         subtotal,
-        shippingFee,
+        shippingFee: shippingCost,
         total
       });
 
@@ -255,7 +256,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                   )}
                   <div className="flex justify-between text-gray-400">
                     <span>{isEn ? 'Shipping Fee:' : 'الشحن والتوصيل:'}</span>
-                    <span className="font-bold text-[#987834]">{shippingFee > 0 ? `${shippingFee} ج.م` : (isEn ? 'Free' : 'مجانًا')}</span>
+                    <span className="font-bold text-[#987834]">{shippingFee > 0 ? `${shippingFee} ج.م` : shippingFee === -1 ? (isEn ? 'Paid to Courier' : 'يُدفع لشركة الشحن') : (isEn ? 'Free' : 'مجانًا')}</span>
                   </div>
                   <div className="flex justify-between text-base font-extrabold text-[#EAD096] pt-2 border-t border-[#C5A059]/20 font-serif">
                     <span>{isEn ? 'Total:' : 'المجموع النهائي:'}</span>
@@ -472,7 +473,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                 </div>
                 <div className="flex justify-between text-gray-400 text-[11px]">
                   <span>{isEn ? 'Shipping:' : 'الشحن والتوصيل:'}</span>
-                  <span className="font-bold">{completedOrder.shippingFee > 0 ? `${completedOrder.shippingFee} ج.م` : (isEn ? 'Free' : 'مجانًا')}</span>
+                  <span className="font-bold">{completedOrder.shippingFee > 0 ? `${completedOrder.shippingFee} ج.م` : shippingFee === -1 ? (isEn ? 'Paid to Courier' : 'يُدفع لشركة الشحن') : (isEn ? 'Free' : 'مجانًا')}</span>
                 </div>
                 <div className="flex justify-between text-[#EAD096] font-extrabold text-base pt-2 border-t border-[#C5A059]/20 font-serif">
                   <span>{isEn ? 'Total:' : 'الإجمالي:'}</span>

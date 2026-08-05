@@ -2589,16 +2589,33 @@ export default function AdminDashboard({
 
                 {/* Shipping Fee */}
                 <div>
-                  <label className="block text-xs font-bold text-[#0D221A] mb-1">تكلفة الشحن الثابتة (ج.م)</label>
-                  <input
-                    type="number"
-                    required
-                    min="0"
-                    value={storeSettings.shippingFee ?? 0}
-                    onChange={(e) => setStoreSettings(prev => ({ ...prev, shippingFee: Number(e.target.value) }))}
-                    className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] text-sm"
-                  />
-                  <p className="text-[10px] text-gray-500 mt-1">سيتم تطبيق هذه التكلفة على جميع الطلبات تلقائياً في السلة ومرحلة الدفع.</p>
+                  <label className="block text-xs font-bold text-[#0D221A] mb-1">إعدادات الشحن والتوصيل</label>
+                  <select
+                    value={storeSettings.shippingFee > 0 ? "fixed" : storeSettings.shippingFee === -1 ? "-1" : "0"}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === "fixed") setStoreSettings(prev => ({ ...prev, shippingFee: 50 })); // Default 50 for fixed
+                      else setStoreSettings(prev => ({ ...prev, shippingFee: Number(val) }));
+                    }}
+                    className="w-full p-3 mb-2 rounded-xl border border-gray-300 focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] text-sm"
+                  >
+                    <option value="0">شحن مجاني للجميع</option>
+                    <option value="-1">الدفع يتم خلال شركة الشحن (العميل يدفع للمندوب)</option>
+                    <option value="fixed">قيمة شحن ثابتة (ج.م)</option>
+                  </select>
+
+                  {storeSettings.shippingFee > 0 && (
+                    <input
+                      type="number"
+                      required
+                      min="1"
+                      value={storeSettings.shippingFee}
+                      onChange={(e) => setStoreSettings(prev => ({ ...prev, shippingFee: Number(e.target.value) }))}
+                      className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] text-sm"
+                      placeholder="أدخل قيمة الشحن..."
+                    />
+                  )}
+                  <p className="text-[10px] text-gray-500 mt-1">هذا الإعداد سيطبق تلقائياً على سلة المشتريات ومرحلة الدفع لجميع العملاء.</p>
                 </div>
 
                 {/* WhatsApp Number */}
