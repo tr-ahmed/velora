@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, ShoppingBag, Trash2, ArrowLeft, Star, Check } from 'lucide-react';
 import { fetchProductsFromApi } from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 export default function WishlistPage({ wishlist, onToggleWishlist, onAddToCart, onExploreClick, cartItems = [] }) {
+  const { t, i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
   const [allProducts, setAllProducts] = useState([]);
 
   useEffect(() => {
@@ -40,7 +43,7 @@ export default function WishlistPage({ wishlist, onToggleWishlist, onAddToCart, 
 
         {wishlistedProducts.length > 0 && (
           <button
-            onClick={addAllToCart}
+            onClick={handleAddAllToCart}
             className="btn-primary text-xs sm:text-sm py-2.5 px-6 shadow-md flex items-center gap-2"
           >
             <ShoppingBag className="w-4 h-4" />
