@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { User, Phone, MapPin, Mail, Lock, Camera, CheckCircle, ShoppingBag, Clock, ShieldCheck, LogOut, ArrowLeft, Store, Eye, ChevronDown, ChevronUp } from 'lucide-react';
 import { EGYPT_GOVERNORATES } from '../data/governorates';
 import { fetchMyOrdersApi, updateUserApi } from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, onExploreClick, initialTab = 'info' }) {
+  const { t, i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
   const [activeSubTab, setActiveSubTab] = useState(initialTab);
   const [myOrders, setMyOrders] = useState([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
@@ -60,9 +63,9 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
         onUpdateUser(result);
       }
 
-      setSuccessMessage('تم تحديث بيانات حسابك الشخصية بنجاح! ✨');
+      setSuccessMessage(isEn ? 'Personal information updated successfully! ✨' : 'تم تحديث بيانات حسابك الشخصية بنجاح! ✨');
     } catch (err) {
-      setErrorMessage(err.message || 'فشل تحديث البيانات. يرجى المحاولة مرة أخرى.');
+      setErrorMessage(err.message || (isEn ? 'Failed to update. Please try again.' : 'فشل تحديث البيانات. يرجى المحاولة مرة أخرى.'));
     }
 
     setTimeout(() => { setSuccessMessage(''); setErrorMessage(''); }, 4000);
@@ -73,22 +76,22 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
     setErrorMessage('');
 
     if (!newPassword || newPassword.length < 6) {
-      setErrorMessage('كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل');
+      setErrorMessage(isEn ? 'New password must be at least 6 characters long' : 'كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل');
       return;
     }
     if (newPassword !== confirmPassword) {
-      setErrorMessage('كلمتا المرور غير متطابقتين!');
+      setErrorMessage(isEn ? 'Passwords do not match!' : 'كلمتا المرور غير متطابقتين!');
       return;
     }
 
     try {
       await updateUserApi(currentUser.id, { password: newPassword });
-      setSuccessMessage('تم تغيير كلمة المرور بنجاح! 🔒');
+      setSuccessMessage(isEn ? 'Password changed successfully! 🔒' : 'تم تغيير كلمة المرور بنجاح! 🔒');
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
     } catch (err) {
-      setErrorMessage(err.message || 'فشل تغيير كلمة المرور');
+      setErrorMessage(err.message || (isEn ? 'Failed to change password' : 'فشل تغيير كلمة المرور'));
     }
 
     setTimeout(() => { setSuccessMessage(''); setErrorMessage(''); }, 4000);
@@ -116,7 +119,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
                 {/* Upload Image Overlay */}
                 <label className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-white cursor-pointer transition-opacity text-[10px] font-bold">
                   <Camera className="w-5 h-5 text-[#C5A059] mb-1" />
-                  <span>تغيير الصورة</span>
+                  <span>{isEn ? 'Change Photo' : 'تغيير الصورة'}</span>
                   <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
                 </label>
               </div>
@@ -131,9 +134,9 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
             {/* Profile Info Details */}
             <div className="space-y-2 flex-1">
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                <h1 className="text-2xl sm:text-3xl font-extrabold font-serif text-[#EAD096]">{fullName || 'مستخدم VELORA'}</h1>
+                <h1 className="text-2xl sm:text-3xl font-extrabold font-serif text-[#EAD096]">{fullName || (isEn ? 'VELORA User' : 'مستخدم VELORA')}</h1>
                 <span className="px-3 py-0.5 rounded-full bg-[#143529] border border-[#C5A059]/40 text-[#C5A059] text-xs font-bold">
-                  {currentUser?.role === 'Admin' ? 'مدير النظام 👑' : 'عميلة مميزة ✨'}
+                  {currentUser?.role === 'Admin' ? (isEn ? 'System Admin 👑' : 'مدير النظام 👑') : (isEn ? 'VIP Customer ✨' : 'عميلة مميزة ✨')}
                 </span>
               </div>
 
@@ -145,7 +148,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs pt-1 text-gray-400">
                 <span className="flex items-center gap-1">
                   <Phone className="w-3.5 h-3.5 text-[#C5A059]" />
-                  {phone ? <span dir="ltr">{phone}</span> : <span>غير مسجل</span>}
+                  {phone ? <span dir="ltr">{phone}</span> : <span>{isEn ? 'Not registered' : 'غير مسجل'}</span>}
                 </span>
                 <span className="flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5 text-[#C5A059]" />
@@ -160,7 +163,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
               className="px-4 py-2 rounded-full bg-rose-950/80 text-rose-200 border border-rose-500/40 text-xs font-bold hover:bg-rose-900 flex items-center gap-1.5 transition-all self-center sm:self-start"
             >
               <LogOut className="w-3.5 h-3.5 text-rose-400" />
-              <span>تسجيل الخروج</span>
+              <span>{isEn ? 'Log Out' : 'تسجيل الخروج'}</span>
             </button>
 
           </div>
@@ -192,7 +195,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
             }`}
           >
             <User className="w-4 h-4 text-[#C5A059]" />
-            <span>البيانات الشخصية والصورة ✏️</span>
+            <span>{isEn ? 'Personal Info ✏️' : 'البيانات الشخصية والصورة ✏️'}</span>
           </button>
 
           <button
@@ -204,7 +207,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
             }`}
           >
             <ShoppingBag className="w-4 h-4 text-[#C5A059]" />
-            <span>سجل طلباتي ({myOrders.length}) 🛍️</span>
+            <span>{isEn ? `Order History (${myOrders.length}) 🛍️` : `سجل طلباتي (${myOrders.length}) 🛍️`}</span>
           </button>
 
           <button
@@ -216,7 +219,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
             }`}
           >
             <Lock className="w-4 h-4 text-[#C5A059]" />
-            <span>كلمة المرور والأمان 🔒</span>
+            <span>{isEn ? 'Password & Security 🔒' : 'كلمة المرور والأمان 🔒'}</span>
           </button>
         </div>
 
@@ -225,42 +228,44 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
           <form onSubmit={handleSaveInfo} className="bg-white rounded-3xl p-6 sm:p-8 border border-[#C5A059]/30 shadow-sm space-y-6 animate-fadeIn">
             <h3 className="font-bold font-serif text-base text-[#0D221A] border-b border-gray-100 pb-3 flex items-center gap-2">
               <User className="w-4 h-4 text-[#C5A059]" />
-              <span>تعديل البيانات الشخصية وصورة الحساب</span>
+              <span>{isEn ? 'Edit Personal Info & Avatar' : 'تعديل البيانات الشخصية وصورة الحساب'}</span>
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-xs">
               {/* Full Name */}
               <div className="space-y-1.5">
-                <label className="font-bold text-gray-700">الاسم الكامل</label>
+                <label className="font-bold text-gray-700">{isEn ? 'Full Name' : 'الاسم الكامل'}</label>
                 <input
                   type="text"
                   required
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A]"
+                  className={`w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A]`}
+                  dir={isEn ? 'ltr' : 'rtl'}
                 />
               </div>
 
               {/* Phone */}
               <div className="space-y-1.5">
-                <label className="font-bold text-gray-700">رقم الهاتف التواصل</label>
+                <label className="font-bold text-gray-700">{isEn ? 'Contact Phone' : 'رقم الهاتف التواصل'}</label>
                 <input
                   type="tel"
                   required
                   dir="ltr"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-right text-[#0D221A]"
+                  className={`w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A] ${isEn ? 'text-left' : 'text-right'}`}
                 />
               </div>
 
               {/* City / Governorate */}
               <div className="space-y-1.5">
-                <label className="font-bold text-gray-700">المحافظة / المدينة</label>
+                <label className="font-bold text-gray-700">{isEn ? 'Governorate / City' : 'المحافظة / المدينة'}</label>
                 <select
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A]"
+                  className={`w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A]`}
+                  dir={isEn ? 'ltr' : 'rtl'}
                 >
                   {EGYPT_GOVERNORATES.map(c => (
                     <option key={c} value={c} className="text-[#0D221A] bg-white font-bold">{c}</option>
@@ -270,14 +275,15 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
 
               {/* Address */}
               <div className="space-y-1.5 sm:col-span-2">
-                <label className="font-bold text-gray-700">عنوان التوصيل التفصيلي (المنزل/العمل)</label>
+                <label className="font-bold text-gray-700">{isEn ? 'Detailed Delivery Address (Home/Work)' : 'عنوان التوصيل التفصيلي (المنزل/العمل)'}</label>
                 <textarea
                   rows={3}
                   required
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  placeholder="اسم الشارع، رقم العمارة، الشقة، وأي علامة مميزة..."
-                  className="w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A]"
+                  placeholder={isEn ? 'Street name, building no, apartment, etc...' : 'اسم الشارع، رقم العمارة، الشقة، وأي علامة مميزة...'}
+                  className={`w-full bg-[#E6EDE4] border border-gray-300 focus:border-[#C5A059] rounded-2xl p-3 text-xs focus:outline-none font-bold text-[#0D221A]`}
+                  dir={isEn ? 'ltr' : 'rtl'}
                 />
               </div>
             </div>
@@ -287,7 +293,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
                 type="submit"
                 className="btn-primary text-xs py-3 px-8 shadow-md font-bold"
               >
-                حفظ التعديلات والتغييرات 💾
+                {isEn ? 'Save Changes 💾' : 'حفظ التعديلات والتغييرات 💾'}
               </button>
             </div>
           </form>
@@ -299,28 +305,28 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
             <h3 className="font-bold font-serif text-base text-[#0D221A] border-b border-gray-100 pb-3 flex items-center justify-between">
               <span className="flex items-center gap-2">
                 <ShoppingBag className="w-4 h-4 text-[#C5A059]" />
-                <span>سجل طلباتي السابقة وحالتها</span>
+                <span>{isEn ? 'Order History & Status' : 'سجل طلباتي السابقة وحالتها'}</span>
               </span>
-              <span className="text-xs text-gray-500 font-normal">{myOrders.length} طلبات مسجلة</span>
+              <span className="text-xs text-gray-500 font-normal">{myOrders.length} {isEn ? 'Orders placed' : 'طلبات مسجلة'}</span>
             </h3>
 
             {ordersLoading ? (
               <div className="p-12 text-center">
                 <div className="animate-spin w-8 h-8 border-2 border-[#C5A059] border-t-transparent rounded-full mx-auto"></div>
-                <p className="text-xs text-gray-500 mt-2">جاري تحميل طلباتك...</p>
+                <p className="text-xs text-gray-500 mt-2">{isEn ? 'Loading your orders...' : 'جاري تحميل طلباتك...'}</p>
               </div>
             ) : myOrders.length === 0 ? (
               <div className="p-12 text-center space-y-3">
                 <ShoppingBag className="w-10 h-10 text-gray-300 mx-auto" />
-                <p className="text-sm font-bold text-gray-500">لم تقومي بإجراء أية طلبات بعد!</p>
+                <p className="text-sm font-bold text-gray-500">{isEn ? 'You haven\'t placed any orders yet!' : 'لم تقومي بإجراء أية طلبات بعد!'}</p>
                 <button onClick={onExploreClick} className="btn-primary text-xs py-2.5 px-6">
-                  استكشاف المنتجات والتسوق الآن 🛍️
+                  {isEn ? 'Explore Products & Shop Now 🛍️' : 'استكشاف المنتجات والتسوق الآن 🛍️'}
                 </button>
               </div>
             ) : (
               <div className="space-y-4">
                 {myOrders.map((order) => (
-                  <OrderCard key={order.id} order={order} />
+                  <OrderCard key={order.id} order={order} isEn={isEn} />
                 ))}
               </div>
             )}
@@ -332,12 +338,12 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
           <form onSubmit={handleSavePassword} className="bg-white rounded-3xl p-6 sm:p-8 border border-[#C5A059]/30 shadow-sm space-y-5 animate-fadeIn max-w-md mx-auto">
             <h3 className="font-bold font-serif text-base text-[#0D221A] border-b border-gray-100 pb-3 flex items-center gap-2">
               <Lock className="w-4 h-4 text-[#C5A059]" />
-              <span>تغيير كلمة المرور</span>
+              <span>{isEn ? 'Change Password' : 'تغيير كلمة المرور'}</span>
             </h3>
 
             <div className="space-y-4 text-xs">
               <div className="space-y-1.5">
-                <label className="font-bold text-gray-700">كلمة المرور الحالية</label>
+                <label className="font-bold text-gray-700">{isEn ? 'Current Password' : 'كلمة المرور الحالية'}</label>
                 <input
                   type="password"
                   required
@@ -348,7 +354,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
               </div>
 
               <div className="space-y-1.5">
-                <label className="font-bold text-gray-700">كلمة المرور الجديدة</label>
+                <label className="font-bold text-gray-700">{isEn ? 'New Password' : 'كلمة المرور الجديدة'}</label>
                 <input
                   type="password"
                   required
@@ -359,7 +365,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
               </div>
 
               <div className="space-y-1.5">
-                <label className="font-bold text-gray-700">تأكيد كلمة المرور الجديدة</label>
+                <label className="font-bold text-gray-700">{isEn ? 'Confirm New Password' : 'تأكيد كلمة المرور الجديدة'}</label>
                 <input
                   type="password"
                   required
@@ -374,7 +380,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
               type="submit"
               className="btn-primary w-full text-xs py-3 shadow-md font-bold mt-2"
             >
-              تحديث كلمة المرور 🔒
+              {isEn ? 'Update Password 🔒' : 'تحديث كلمة المرور 🔒'}
             </button>
           </form>
         )}
@@ -384,7 +390,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
   );
 }
 
-function OrderCard({ order }) {
+function OrderCard({ order, isEn }) {
   const [expanded, setExpanded] = useState(false);
 
   const statusColors = {
@@ -411,16 +417,16 @@ function OrderCard({ order }) {
         </div>
 
         <span className={`px-3 py-1 rounded-full text-xs font-bold border ${statusColor}`}>
-          {order.status || 'قيد الانتظار'}
+          {isEn ? (order.status === 'مكتمل' ? 'Completed' : order.status === 'ملغي' ? 'Cancelled' : order.status === 'تم الشحن' ? 'Shipped' : order.status === 'جاري التجهيز' ? 'Processing' : 'Pending') : (order.status || 'قيد الانتظار')}
         </span>
       </div>
 
       <div className="flex items-center justify-between text-xs pt-1">
         <span className="text-gray-500">
-          <span className="text-gray-400">الشحن: </span>
+          <span className="text-gray-400">{isEn ? 'Shipping: ' : 'الشحن: '}</span>
           <strong className="text-[#0D221A]">{order.city}</strong>
         </span>
-        <span className="text-[#987834] font-serif text-sm font-bold">{order.total} ج.م</span>
+        <span className="text-[#987834] font-serif text-sm font-bold">{order.total} {isEn ? 'EGP' : 'ج.م'}</span>
       </div>
 
       {order.items && order.items.length > 0 && (
@@ -430,7 +436,7 @@ function OrderCard({ order }) {
             className="flex items-center gap-1 text-[#C5A059] text-xs font-bold hover:underline mt-1"
           >
             {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-            <span>{expanded ? 'إخفاء المنتجات' : `عرض المنتجات (${order.items.length})`}</span>
+            <span>{expanded ? (isEn ? 'Hide Items' : 'إخفاء المنتجات') : (isEn ? `View Items (${order.items.length})` : `عرض المنتجات (${order.items.length})`)}</span>
           </button>
 
           {expanded && (
@@ -443,12 +449,12 @@ function OrderCard({ order }) {
                     </span>
                     <span className="font-bold text-gray-700">{item.productName}</span>
                   </div>
-                  <span className="text-gray-500">{item.unitPrice} ج.م</span>
+                  <span className="text-gray-500">{item.unitPrice} {isEn ? 'EGP' : 'ج.م'}</span>
                 </div>
               ))}
               <div className="flex justify-between text-xs font-bold bg-[#143529]/10 p-2.5 rounded-xl">
-                <span className="text-gray-600">المجموع الكلي</span>
-                <span className="text-[#987834]">{order.total} ج.م</span>
+                <span className="text-gray-600">{isEn ? 'Total' : 'المجموع الكلي'}</span>
+                <span className="text-[#987834]">{order.total} {isEn ? 'EGP' : 'ج.م'}</span>
               </div>
             </div>
           )}

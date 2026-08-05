@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, ShoppingBag, Star, ShieldCheck, Heart, Sparkles, Droplet, Clock, MessageSquare, Send, AlertCircle } from 'lucide-react';
 import { fetchProductReviewsApi, submitReviewApi } from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 function StarRatingInput({ value, onChange }) {
   const [hover, setHover] = useState(0);
@@ -42,6 +43,8 @@ function StarRatingDisplay({ rating, size = 'w-4 h-4' }) {
 }
 
 export default function QuickViewModal({ product, onClose, onAddToCart, onQuickBuy, currentUser, onOpenAuth }) {
+  const { t, i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('overview');
   const [reviews, setReviews] = useState([]);
@@ -70,11 +73,11 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
     e.preventDefault();
     setReviewError('');
     if (myRating === 0) {
-      setReviewError('اختاري تقييم من 1 إلى 5 نجوم');
+      setReviewError(isEn ? 'Please select a rating from 1 to 5 stars' : 'اختاري تقييم من 1 إلى 5 نجوم');
       return;
     }
     if (!myComment.trim()) {
-      setReviewError('اكتبي كومنتار');
+      setReviewError(isEn ? 'Please write a comment' : 'اكتبي كومنتار');
       return;
     }
     setSubmitting(true);
@@ -92,7 +95,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
       setTimeout(() => setReviewSuccess(false), 3000);
       await loadReviews();
     } catch (err) {
-      setReviewError(err.message || 'حدث خطأ أثناء إرسال التقييم');
+      setReviewError(err.message || (isEn ? 'Error submitting review' : 'حدث خطأ أثناء إرسال التقييم'));
     } finally {
       setSubmitting(false);
     }
@@ -156,27 +159,27 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                 <div className="flex items-center gap-1 cursor-pointer" onClick={() => setActiveTab('reviews')}>
                   <StarRatingDisplay rating={product.rating || avgRating} />
                   <span className="text-xs font-bold text-gray-700">{product.rating || avgRating}</span>
-                  <span className="text-[10px] text-gray-400">({totalReviews || product.reviewsCount || 0} تقييم)</span>
+                  <span className="text-[10px] text-gray-400">({totalReviews || product.reviewsCount || 0} {isEn ? 'Reviews' : 'تقييم'})</span>
                 </div>
               </div>
 
               <h2 className="text-lg sm:text-2xl font-bold font-serif text-[#0D221A] leading-snug">
-                {product.name}
+                {isEn ? (product.nameEn || product.name) : product.name}
               </h2>
               <p className="text-xs text-[#987834] font-semibold mt-0.5">{product.tagline}</p>
             </div>
 
             <div className="flex items-baseline gap-3 py-2 border-y border-gray-100 flex-wrap">
               <span className="text-xl sm:text-2xl font-extrabold text-[#0D221A] font-serif">
-                {product.price} <span className="text-xs font-normal">ج.م</span>
+                {product.price} <span className="text-xs font-normal">{isEn ? 'EGP' : 'ج.م'}</span>
               </span>
               {product.originalPrice && product.originalPrice > product.price && (
                 <span className="text-xs sm:text-sm text-gray-500 font-light">
-                  بدلاً من <span className="line-through text-rose-600/80 font-bold">{product.originalPrice} ج.م</span>
+                  {isEn ? 'Instead of' : 'بدلاً من'} <span className="line-through text-rose-600/80 font-bold">{product.originalPrice} {isEn ? 'EGP' : 'ج.م'}</span>
                 </span>
               )}
               <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-                شامل الضريبة | الشحن لجميع المحافظات
+                {isEn ? 'Tax Included | Nationwide Shipping' : 'شامل الضريبة | الشحن لجميع المحافظات'}
               </span>
             </div>
 
@@ -186,41 +189,41 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                 onClick={() => setActiveTab('overview')}
                 className={`flex-1 py-2.5 rounded-lg transition-all active:scale-95 ${activeTab === 'overview' ? 'bg-[#0D221A] text-[#EAD096]' : 'text-gray-600'}`}
               >
-                الوصف
+                {isEn ? 'Overview' : 'الوصف'}
               </button>
               <button
                 onClick={() => setActiveTab('ingredients')}
                 className={`flex-1 py-2.5 rounded-lg transition-all active:scale-95 ${activeTab === 'ingredients' ? 'bg-[#0D221A] text-[#EAD096]' : 'text-gray-600'}`}
               >
-                المكونات
+                {isEn ? 'Ingredients' : 'المكونات'}
               </button>
               <button
                 onClick={() => setActiveTab('howToUse')}
                 className={`flex-1 py-2.5 rounded-lg transition-all active:scale-95 ${activeTab === 'howToUse' ? 'bg-[#0D221A] text-[#EAD096]' : 'text-gray-600'}`}
               >
-                الاستخدام
+                {isEn ? 'How to Use' : 'الاستخدام'}
               </button>
               <button
                 onClick={() => setActiveTab('reviews')}
                 className={`flex-1 py-2.5 rounded-lg transition-all active:scale-95 flex items-center justify-center gap-1 ${activeTab === 'reviews' ? 'bg-[#0D221A] text-[#EAD096]' : 'text-gray-600'}`}
               >
                 <MessageSquare className="w-3 h-3" />
-                آراء
+                {isEn ? 'Reviews' : 'آراء'}
               </button>
             </div>
 
             {/* Tab 1: Overview */}
             {activeTab === 'overview' && (
               <div className="space-y-2 animate-fadeIn text-xs leading-relaxed text-gray-700">
-                <p>{product.description || 'تركيبة فاخرة تمزج بين المكونات العضوية الزمردية والمستخلصات النباتية النادرة لنتائج سريعة ومبهرة.'}</p>
+                <p>{isEn ? (product.descriptionEn || product.description) : (product.description || 'تركيبة فاخرة تمزج بين المكونات العضوية الزمردية والمستخلصات النباتية النادرة لنتائج سريعة ومبهرة.')}</p>
                 {product.benefits && (
                   <div className="bg-[#DFE6DB] p-2.5 rounded-xl border border-[#C5A059]/30 mt-1">
-                    <span className="font-bold text-[#0D221A] block mb-0.5">الفوائد الرئيسية:</span>
+                    <span className="font-bold text-[#0D221A] block mb-0.5">{isEn ? 'Key Benefits:' : 'الفوائد الرئيسية:'}</span>
                     <p className="text-gray-700 font-light text-[11px]">{product.benefits}</p>
                   </div>
                 )}
                 <div className="flex items-center gap-3 text-[11px] text-gray-500">
-                  <span>نوع البشرة: <strong className="text-[#0D221A]">{product.skinType || 'جميع أنواع البشرة'}</strong></span>
+                  <span>{isEn ? 'Skin Type:' : 'نوع البشرة:'} <strong className="text-[#0D221A]">{product.skinType || (isEn ? 'All Skin Types' : 'جميع أنواع البشرة')}</strong></span>
                 </div>
               </div>
             )}
@@ -231,9 +234,9 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                 <div className="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200">
                   <span className="font-bold text-emerald-900 block mb-1 flex items-center gap-1">
                     <Droplet className="w-3.5 h-3.5 text-emerald-600" />
-                    المكونات العضوية الزمردية 🌿
+                    {isEn ? 'Organic Emerald Ingredients 🌿' : 'المكونات العضوية الزمردية 🌿'}
                   </span>
-                  <p className="text-gray-600 font-light">{product.ingredients || 'زيت الزمرد العضوي، حمض الهيالورونيك الثلاثي، خلاصة الشاي الأخضر، وزيت جوجوبا بكر.'}</p>
+                  <p className="text-gray-600 font-light">{product.ingredients || (isEn ? 'Organic Emerald Oil, Triple Hyaluronic Acid, Green Tea Extract, Virgin Jojoba Oil.' : 'زيت الزمرد العضوي، حمض الهيالورونيك الثلاثي، خلاصة الشاي الأخضر، وزيت جوجوبا بكر.')}</p>
                 </div>
               </div>
             )}
@@ -244,9 +247,9 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                 <div className="bg-[#E6EDE4] p-3 rounded-xl border border-gray-200">
                   <span className="font-bold text-[#0D221A] block mb-1 flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5 text-[#C5A059]" />
-                    طريقة الاستخدام المثلى ✨
+                    {isEn ? 'Optimal Usage ✨' : 'طريقة الاستخدام المثلى ✨'}
                   </span>
-                  <p className="text-gray-600 font-light">{product.howToUse || 'ضعي 3-4 قطرات على بشرة نظيفة وجافة صباحاً ومساءً. دلكي بحركات دائرية لطيفة حتى تمام الامتصاص.'}</p>
+                  <p className="text-gray-600 font-light">{product.howToUse || (isEn ? 'Apply 3-4 drops on clean, dry skin morning and night. Massage gently in circular motions until fully absorbed.' : 'ضعي 3-4 قطرات على بشرة نظيفة وجافة صباحاً ومساءً. دلكي بحركات دائرية لطيفة حتى تمام الامتصاص.')}</p>
                 </div>
               </div>
             )}
@@ -256,24 +259,24 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
               <div className="animate-fadeIn space-y-3">
                 {currentUser ? (
                   <form onSubmit={handleSubmitReview} className="bg-[#E6EDE4] p-3 rounded-xl border border-[#C5A059]/30 space-y-2">
-                    <span className="font-bold text-[#0D221A] text-xs block">أضيفي تقييمكِ لمستحضر فيلورا:</span>
+                    <span className="font-bold text-[#0D221A] text-xs block">{isEn ? 'Add your review for this Velora product:' : 'أضيفي تقييمكِ لمستحضر فيلورا:'}</span>
                     <StarRatingInput value={myRating} onChange={setMyRating} />
                     <textarea
                       rows="2"
-                      placeholder="اكتبي رأيك بكل صراحة..."
+                      placeholder={isEn ? 'Write your honest review...' : 'اكتبي رأيك بكل صراحة...'}
                       value={myComment}
                       onChange={(e) => setMyComment(e.target.value)}
                       className="w-full p-2 text-xs rounded-lg border border-gray-300 focus:outline-none focus:border-[#C5A059]"
                     />
                     {reviewError && <p className="text-[10px] text-rose-600 font-bold">{reviewError}</p>}
-                    {reviewSuccess && <p className="text-[10px] text-emerald-600 font-bold">تم نشر تقييمكِ بنجاح! ❤️</p>}
+                    {reviewSuccess && <p className="text-[10px] text-emerald-600 font-bold">{isEn ? 'Review posted successfully! ❤️' : 'تم نشر تقييمكِ بنجاح! ❤️'}</p>}
                     <button
                       type="submit"
                       disabled={submitting}
                       className="w-full py-1.5 rounded-lg bg-[#0D221A] text-[#EAD096] text-xs font-bold hover:bg-[#C5A059] hover:text-[#0D221A] transition-colors flex items-center justify-center gap-1"
                     >
                       <Send className="w-3 h-3" />
-                      <span>{submitting ? 'جاري الإرسال...' : 'إرسال التقييم'}</span>
+                      <span>{submitting ? (isEn ? 'Sending...' : 'جاري الإرسال...') : (isEn ? 'Submit Review' : 'إرسال التقييم')}</span>
                     </button>
                   </form>
                 ) : (
@@ -282,13 +285,13 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                     className="w-full py-2.5 rounded-xl border border-[#C5A059]/40 text-[11px] font-bold text-[#0D221A] hover:bg-[#DFE6DB] transition-colors flex items-center justify-center gap-2"
                   >
                     <MessageSquare className="w-3.5 h-3.5 text-[#C5A059]" />
-                    سجلي دخولك لكتابة تقييم
+                    {isEn ? 'Log in to write a review' : 'سجلي دخولك لكتابة تقييم'}
                   </button>
                 )}
 
                 <div className="space-y-2 max-h-36 overflow-y-auto pr-1">
                   {reviews.length === 0 && (
-                    <p className="text-center text-xs text-gray-400 py-3">لا توجد تقييمات بعد — كوني أول من يقيّم!</p>
+                    <p className="text-center text-xs text-gray-400 py-3">{isEn ? 'No reviews yet — be the first to review!' : 'لا توجد تقييمات بعد — كوني أول من يقيّم!'}</p>
                   )}
                   {reviews.map((review) => (
                     <div key={review.id} className="p-2.5 bg-[#E6EDE4] rounded-xl border border-gray-100 text-right">
@@ -343,10 +346,10 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
                 onClose();
               }}
               className="flex-1 py-3 rounded-2xl font-extrabold text-base bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834] text-[#0D221A] shadow-xl hover:brightness-110 active:scale-[0.98] transition-all"
-              title="شراء سريع"
-              aria-label="شراء سريع"
+              title={isEn ? 'Buy Now' : 'شراء سريع'}
+              aria-label={isEn ? 'Buy Now' : 'شراء سريع'}
             >
-              شراء
+              {isEn ? 'Buy Now' : 'شراء'}
             </button>
 
             {/* Main Add to Cart CTA */}
@@ -355,7 +358,7 @@ export default function QuickViewModal({ product, onClose, onAddToCart, onQuickB
               className="bg-[#0D221A] text-[#EAD096] border border-[#C5A059] rounded-2xl text-xs sm:text-sm font-bold py-3 px-3 sm:px-4 flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
             >
               <ShoppingBag className="w-4 h-4" />
-              <span>سلة ({product.price * quantity} ج.م)</span>
+              <span>{isEn ? 'Cart' : 'سلة'} ({product.price * quantity} {isEn ? 'EGP' : 'ج.م'})</span>
             </button>
 
           </div>

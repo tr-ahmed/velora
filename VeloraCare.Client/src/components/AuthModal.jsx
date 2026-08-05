@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { X, Lock, Mail, User, Sparkles, AlertCircle, Phone, MapPin, Building2 } from 'lucide-react';
 import { loginUserApi, registerUserApi } from '../services/api';
 import { EGYPT_GOVERNORATES } from '../data/governorates';
+import { useTranslation } from 'react-i18next';
 
 export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
+  const { t, i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
   const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -44,7 +47,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
         onClose();
       }
     } catch (err) {
-      setError(err.message || 'حدث خطأ في عملية تسجيل الدخول');
+      setError(err.message || (isEn ? 'An error occurred during login' : 'حدث خطأ في عملية تسجيل الدخول'));
     } finally {
       setLoading(false);
     }
@@ -80,10 +83,10 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
             <Sparkles className="w-6 h-6" />
           </div>
           <h3 className="text-2xl font-bold font-serif text-[#EAD096]">
-            {isRegister ? 'إنشاء حساب جديد في VELORA' : 'تسجيل الدخول إلى VELORA'}
+            {isRegister ? (isEn ? 'Create VELORA Account' : 'إنشاء حساب جديد في VELORA') : (isEn ? 'Log in to VELORA' : 'تسجيل الدخول إلى VELORA')}
           </h3>
           <p className="text-xs text-gray-300">
-            {isRegister ? 'انضمي لعالم الجمال الزمردي والعروض الحصرية' : 'مرحباً بعودتكِ، استمتعي بتجربة تسوق ملكية'}
+            {isRegister ? (isEn ? 'Join the emerald beauty world and get exclusive offers' : 'انضمي لعالم الجمال الزمردي والعروض الحصرية') : (isEn ? 'Welcome back, enjoy a royal shopping experience' : 'مرحباً بعودتكِ، استمتعي بتجربة تسوق ملكية')}
           </p>
         </div>
 
@@ -99,48 +102,49 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
           {/* Field helper function pattern */}
           {isRegister && (
             <div>
-              <label className="block text-xs font-bold text-[#EAD096] mb-1.5">الاسم الكامل *</label>
+              <label className="block text-xs font-bold text-[#EAD096] mb-1.5">{isEn ? 'Full Name *' : 'الاسم الكامل *'}</label>
               <div className="relative">
-                <User className="w-4 h-4 text-[#C5A059] absolute right-4 top-1/2 -translate-y-1/2" />
+                <User className={`w-4 h-4 text-[#C5A059] absolute top-1/2 -translate-y-1/2 ${isEn ? 'left-4' : 'right-4'}`} />
                 <input
                   type="text"
                   required
-                  placeholder="أدخلي اسمك"
+                  placeholder={isEn ? 'Enter your name' : 'أدخلي اسمك'}
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all"
+                  className={`w-full h-12 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all ${isEn ? 'pl-11 pr-4' : 'pr-11 pl-4'}`}
+                  dir={isEn ? 'ltr' : 'rtl'}
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-bold text-[#EAD096] mb-1.5">البريد الإلكتروني *</label>
+            <label className="block text-xs font-bold text-[#EAD096] mb-1.5">{isEn ? 'Email *' : 'البريد الإلكتروني *'}</label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-[#C5A059] absolute right-4 top-1/2 -translate-y-1/2" />
+              <Mail className={`w-4 h-4 text-[#C5A059] absolute top-1/2 -translate-y-1/2 ${isEn ? 'left-4' : 'right-4'}`} />
               <input
                 type="email"
                 required
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all"
+                className={`w-full h-12 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all ${isEn ? 'pl-11 pr-4' : 'pr-11 pl-4'}`}
                 dir="ltr"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-[#EAD096] mb-1.5">كلمة المرور *</label>
+            <label className="block text-xs font-bold text-[#EAD096] mb-1.5">{isEn ? 'Password *' : 'كلمة المرور *'}</label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-[#C5A059] absolute right-4 top-1/2 -translate-y-1/2" />
+              <Lock className={`w-4 h-4 text-[#C5A059] absolute top-1/2 -translate-y-1/2 ${isEn ? 'left-4' : 'right-4'}`} />
               <input
                 type="password"
                 required
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all"
+                className={`w-full h-12 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all ${isEn ? 'pl-11 pr-4' : 'pr-11 pl-4'}`}
               />
             </div>
           </div>
@@ -148,29 +152,30 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
           {isRegister && (
             <>
               <div>
-                <label className="block text-xs font-bold text-[#EAD096] mb-1.5">رقم الموبايل *</label>
+                <label className="block text-xs font-bold text-[#EAD096] mb-1.5">{isEn ? 'Mobile Number *' : 'رقم الموبايل *'}</label>
                 <div className="relative">
-                  <Phone className="w-4 h-4 text-[#C5A059] absolute right-4 top-1/2 -translate-y-1/2" />
+                  <Phone className={`w-4 h-4 text-[#C5A059] absolute top-1/2 -translate-y-1/2 ${isEn ? 'left-4' : 'right-4'}`} />
                   <input
                     type="tel"
                     required
                     placeholder="01XXXXXXXXX"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all"
+                    className={`w-full h-12 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all ${isEn ? 'pl-11 pr-4' : 'pr-11 pl-4'}`}
                     dir="ltr"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#EAD096] mb-1.5">المحافظة *</label>
+                <label className="block text-xs font-bold text-[#EAD096] mb-1.5">{isEn ? 'Governorate *' : 'المحافظة *'}</label>
                 <div className="relative">
-                  <Building2 className="w-4 h-4 text-[#C5A059] absolute right-4 top-1/2 -translate-y-1/2" />
+                  <Building2 className={`w-4 h-4 text-[#C5A059] absolute top-1/2 -translate-y-1/2 ${isEn ? 'left-4' : 'right-4'}`} />
                   <select
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] appearance-none"
+                    className={`w-full h-12 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] appearance-none ${isEn ? 'pl-11 pr-4' : 'pr-11 pl-4'}`}
+                    dir={isEn ? 'ltr' : 'rtl'}
                   >
                     {EGYPT_GOVERNORATES.map(c => (
                       <option key={c} value={c} className="text-[#0D221A] bg-white font-bold">{c}</option>
@@ -180,16 +185,17 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#EAD096] mb-1.5">العنوان التفصيلي *</label>
+                <label className="block text-xs font-bold text-[#EAD096] mb-1.5">{isEn ? 'Detailed Address *' : 'العنوان التفصيلي *'}</label>
                 <div className="relative">
-                  <MapPin className="w-4 h-4 text-[#C5A059] absolute right-4 top-3.5" />
+                  <MapPin className={`w-4 h-4 text-[#C5A059] absolute top-3.5 ${isEn ? 'left-4' : 'right-4'}`} />
                   <input
                     type="text"
                     required
-                    placeholder="المنطقة، الشارع، رقم العمارة أو الشقة"
+                    placeholder={isEn ? 'Area, street, building or apartment no.' : 'المنطقة، الشارع، رقم العمارة أو الشقة'}
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    className="w-full h-12 pr-11 pl-4 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all"
+                    className={`w-full h-12 bg-[#143529] border border-[#C5A059]/40 rounded-2xl text-sm text-white focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/20 transition-all ${isEn ? 'pl-11 pr-4' : 'pr-11 pl-4'}`}
+                    dir={isEn ? 'ltr' : 'rtl'}
                   />
                 </div>
               </div>
@@ -201,7 +207,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
             disabled={loading}
             className="btn-primary w-full py-4 text-base mt-3 font-bold shadow-lg"
           >
-            {loading ? 'جاري التحقق...' : isRegister ? 'إنشاء حساب جديد' : 'تسجيل الدخول'}
+            {loading ? (isEn ? 'Verifying...' : 'جاري التحقق...') : isRegister ? (isEn ? 'Create Account' : 'إنشاء حساب جديد') : (isEn ? 'Login' : 'تسجيل الدخول')}
           </button>
 
         </form>
@@ -216,7 +222,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
               onClick={() => { resetForm(); setIsRegister(!isRegister); }}
               className="text-sm text-gray-300 hover:text-white font-medium"
             >
-              {isRegister ? 'لديكِ حساب بالفعل؟ تسجيل الدخول' : 'ليس لديكِ حساب؟ انشئي حساباً جديداً'}
+              {isRegister ? (isEn ? 'Already have an account? Log in' : 'لديكِ حساب بالفعل؟ تسجيل الدخول') : (isEn ? "Don't have an account? Create one" : 'ليس لديكِ حساب؟ انشئي حساباً جديداً')}
             </button>
           </div>
         </div>

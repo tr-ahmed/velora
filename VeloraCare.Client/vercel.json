@@ -1,4 +1,5 @@
 {
+  "name": "velora-care-client",
   "rewrites": [
     {
       "source": "/api/:path*",

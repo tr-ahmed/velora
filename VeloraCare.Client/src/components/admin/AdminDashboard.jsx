@@ -5,6 +5,7 @@ import {
   BarChart3, PieChart, TrendingUp, Download, MapPin, Layers, Printer, ChevronLeft,
   Search, FileSpreadsheet, Calendar, CreditCard, AlertTriangle, ArrowUpRight, ArrowDownRight, Eye, EyeOff, Store, ArrowUp, ArrowDown
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import ProductFormModal from './ProductFormModal';
 import CouponFormModal from './CouponFormModal';
 import CategoryFormModal from './CategoryFormModal';
@@ -56,6 +57,8 @@ export default function AdminDashboard({
   heroSettings = {},
   setHeroSettings
 }) {
+  const { t, i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'hero' | 'orders' | 'products' | 'customers' | 'coupons'
   const [mobileAdminMenuOpen, setMobileAdminMenuOpen] = useState(false);
   const [stats, setStats] = useState({
@@ -568,15 +571,15 @@ export default function AdminDashboard({
 
   // Merged Nav Items (Combined Overview, Hero Manager & Full Reports)
   const navItems = [
-    { id: 'overview', label: 'الرئيسية والتقارير الشاملة 📊', icon: <BarChart3 className="w-4 h-4 text-[#C5A059]" /> },
-    { id: 'offers', label: `عروض الفلاش 🔥 (${offers.length})`, icon: <Sparkles className="w-4 h-4 text-[#C5A059]" /> },
-    { id: 'hero', label: `إدارة الهيرو والسلايدر 🌟 (${heroSlides.length})`, icon: <Sparkles className="w-4 h-4 text-[#C5A059]" /> },
-    { id: 'orders', label: `إدارة الطلبات (${orders.length})`, icon: <ShoppingBag className="w-4 h-4" /> },
-    { id: 'products', label: `المنتجات والمخزون (${products.length})`, icon: <Package className="w-4 h-4" /> },
-    { id: 'categories', label: `التصنيفات (${categories.length})`, icon: <Layers className="w-4 h-4 text-[#C5A059]" /> },
-    { id: 'customers', label: `سجل العملاء (${customerDatabase.length})`, icon: <Users className="w-4 h-4" /> },
-    { id: 'users', label: `إدارة المستخدمين (${users.length})`, icon: <User className="w-4 h-4" /> },
-    { id: 'coupons', label: `الأكواد والعروض (${coupons.length})`, icon: <Tag className="w-4 h-4" /> }
+    { id: 'overview', label: isEn ? 'Overview & Reports 📊' : 'الرئيسية والتقارير الشاملة 📊', icon: <BarChart3 className="w-4 h-4 text-[#C5A059]" /> },
+    { id: 'offers', label: isEn ? `Flash Offers 🔥 (${offers.length})` : `عروض الفلاش 🔥 (${offers.length})`, icon: <Sparkles className="w-4 h-4 text-[#C5A059]" /> },
+    { id: 'hero', label: isEn ? `Hero Manager 🌟 (${heroSlides.length})` : `إدارة الهيرو والسلايدر 🌟 (${heroSlides.length})`, icon: <Sparkles className="w-4 h-4 text-[#C5A059]" /> },
+    { id: 'orders', label: isEn ? `Orders (${orders.length})` : `إدارة الطلبات (${orders.length})`, icon: <ShoppingBag className="w-4 h-4" /> },
+    { id: 'products', label: isEn ? `Products & Inventory (${products.length})` : `المنتجات والمخزون (${products.length})`, icon: <Package className="w-4 h-4" /> },
+    { id: 'categories', label: isEn ? `Categories (${categories.length})` : `التصنيفات (${categories.length})`, icon: <Layers className="w-4 h-4 text-[#C5A059]" /> },
+    { id: 'customers', label: isEn ? `Customers (${customerDatabase.length})` : `سجل العملاء (${customerDatabase.length})`, icon: <Users className="w-4 h-4" /> },
+    { id: 'users', label: isEn ? `Users Management (${users.length})` : `إدارة المستخدمين (${users.length})`, icon: <User className="w-4 h-4" /> },
+    { id: 'coupons', label: isEn ? `Coupons (${coupons.length})` : `الأكواد والعروض (${coupons.length})`, icon: <Tag className="w-4 h-4" /> }
   ];
 
   return (
@@ -600,7 +603,7 @@ export default function AdminDashboard({
           <div className="w-5 h-5 rounded-full bg-gradient-to-br from-[#EAD096] to-[#C5A059] text-[#0D221A] flex items-center justify-center font-bold">
             <User className="w-3 h-3 stroke-[2.5]" />
           </div>
-          <span className="text-white group-hover:text-[#EAD096]">خروج</span>
+          <span className="text-white group-hover:text-[#EAD096]">{isEn ? 'Logout' : 'خروج'}</span>
           <LogOut className="w-3.5 h-3.5 text-rose-400" />
         </button>
       </div>
@@ -619,10 +622,10 @@ export default function AdminDashboard({
             <VeloraLogo size="sm" showText={false} />
             <div>
               <h1 className="text-sm sm:text-lg font-bold font-serif text-[#EAD096] flex items-center gap-2">
-                لوحة إدارة VELORA CARE
+                {isEn ? 'VELORA CARE Admin Dashboard' : 'لوحة إدارة VELORA CARE'}
                 <span className="bg-[#C5A059] text-[#0D221A] text-[10px] px-2 py-0.5 rounded-full font-mono font-bold hidden sm:inline-block">PRO</span>
               </h1>
-              <p className="text-[10px] sm:text-[11px] text-gray-300">مرحباً، {user?.fullName || 'مدير النظام'}</p>
+              <p className="text-[10px] sm:text-[11px] text-gray-300">{isEn ? `Welcome, ${user?.fullName || 'Admin'}` : `مرحباً، ${user?.fullName || 'مدير النظام'}`}</p>
             </div>
           </div>
         </div>
@@ -642,7 +645,7 @@ export default function AdminDashboard({
             className="px-3.5 py-1.5 rounded-full bg-[#143529] border border-[#C5A059]/40 text-[#EAD096] hover:bg-[#C5A059] hover:text-[#0D221A] text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm"
           >
             <Store className="w-3.5 h-3.5 text-[#C5A059]" />
-            <span>عرض المتجر</span>
+            <span>{isEn ? 'Store View' : 'عرض المتجر'}</span>
           </button>
 
           <button
@@ -650,7 +653,7 @@ export default function AdminDashboard({
             className="btn-secondary py-1.5 px-3 sm:px-4 text-xs flex items-center gap-1.5 border-rose-500/40 hover:bg-rose-900/40 text-rose-300"
           >
             <LogOut className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">خروج</span>
+            <span className="hidden sm:inline">{isEn ? 'Logout' : 'خروج'}</span>
           </button>
         </div>
       </header>

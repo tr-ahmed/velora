@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { X, Search, Package, CheckCircle, Truck, Clock, AlertCircle } from 'lucide-react';
 import { trackOrderApi } from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 export default function TrackOrderModal({ onClose }) {
+  const { t, i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
   const [orderNumber, setOrderNumber] = useState('');
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
@@ -26,10 +29,10 @@ export default function TrackOrderModal({ onClose }) {
   };
 
   const steps = [
-    { label: 'قيد الانتظار', icon: Clock },
-    { label: 'جاري التجهيز', icon: Package },
-    { label: 'تم الشحن', icon: Truck },
-    { label: 'مكتمل', icon: CheckCircle }
+    { label: isEn ? 'Pending' : 'قيد الانتظار', icon: Clock },
+    { label: isEn ? 'Processing' : 'جاري التجهيز', icon: Package },
+    { label: isEn ? 'Shipped' : 'تم الشحن', icon: Truck },
+    { label: isEn ? 'Completed' : 'مكتمل', icon: CheckCircle }
   ];
 
   const getStepIndex = (status) => {
@@ -57,33 +60,33 @@ export default function TrackOrderModal({ onClose }) {
           <div className="w-16 h-16 bg-[#C5A059]/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-[#C5A059]">
             <Search className="w-8 h-8 text-[#EAD096]" />
           </div>
-          <h2 className="text-2xl font-bold font-serif text-[#EAD096]">تتبع طلبك</h2>
-          <p className="text-sm text-gray-400 mt-2">أدخلي رقم الطلب ورقم الهاتف لمعرفة حالة الشحنة</p>
+          <h2 className="text-2xl font-bold font-serif text-[#EAD096]">{isEn ? 'Track Your Order' : 'تتبع طلبك'}</h2>
+          <p className="text-sm text-gray-400 mt-2">{isEn ? 'Enter your order number and phone to check the status' : 'أدخلي رقم الطلب ورقم الهاتف لمعرفة حالة الشحنة'}</p>
         </div>
 
         {!order ? (
           <form onSubmit={handleTrack} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">رقم الطلب</label>
+              <label className="block text-sm font-medium text-gray-300 mb-1">{isEn ? 'Order Number' : 'رقم الطلب'}</label>
               <input
                 type="text"
                 required
-                placeholder="مثال: VEL-EG-123456"
+                placeholder={isEn ? 'e.g. VEL-EG-123456' : 'مثال: VEL-EG-123456'}
                 value={orderNumber}
                 onChange={(e) => setOrderNumber(e.target.value)}
-                className="w-full h-12 px-4 bg-[#143529] border border-[#C5A059]/40 rounded-xl text-sm text-white focus:outline-none focus:border-[#C5A059]"
+                className={`w-full h-12 px-4 bg-[#143529] border border-[#C5A059]/40 rounded-xl text-sm text-white focus:outline-none focus:border-[#C5A059]`}
                 dir="ltr"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">رقم الهاتف</label>
+              <label className="block text-sm font-medium text-gray-300 mb-1">{isEn ? 'Phone Number' : 'رقم الهاتف'}</label>
               <input
                 type="tel"
                 required
-                placeholder="رقم الهاتف المستخدم في الطلب"
+                placeholder={isEn ? 'Phone number used in the order' : 'رقم الهاتف المستخدم في الطلب'}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full h-12 px-4 bg-[#143529] border border-[#C5A059]/40 rounded-xl text-sm text-white focus:outline-none focus:border-[#C5A059]"
+                className={`w-full h-12 px-4 bg-[#143529] border border-[#C5A059]/40 rounded-xl text-sm text-white focus:outline-none focus:border-[#C5A059]`}
                 dir="ltr"
               />
             </div>
@@ -101,11 +104,11 @@ export default function TrackOrderModal({ onClose }) {
               className="w-full btn-primary py-3.5 mt-2 text-sm disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {loading ? (
-                <>جاري البحث...</>
+                <>{isEn ? 'Searching...' : 'جاري البحث...'}</>
               ) : (
                 <>
                   <Search className="w-4 h-4" />
-                  بحث عن الطلب
+                  {isEn ? 'Track Order' : 'بحث عن الطلب'}
                 </>
               )}
             </button>
@@ -114,17 +117,17 @@ export default function TrackOrderModal({ onClose }) {
           <div className="space-y-6">
             <div className="p-4 bg-[#143529] rounded-xl border border-[#C5A059]/30">
               <div className="flex justify-between items-start mb-2">
-                <h3 className="text-[#EAD096] font-bold">طلب رقم: <span dir="ltr">{order.orderNumber}</span></h3>
+                <h3 className="text-[#EAD096] font-bold">{isEn ? 'Order:' : 'طلب رقم:'} <span dir="ltr">{order.orderNumber}</span></h3>
                 <span className={`px-2 py-1 rounded-md text-[10px] font-bold ${
                   order.status === 'مكتمل' ? 'bg-emerald-500/20 text-emerald-400' :
                   order.status === 'ملغي' ? 'bg-red-500/20 text-red-400' :
                   'bg-[#C5A059]/20 text-[#EAD096]'
                 }`}>
-                  {order.status}
+                  {isEn ? (order.status === 'مكتمل' ? 'Completed' : order.status === 'ملغي' ? 'Cancelled' : order.status === 'تم الشحن' ? 'Shipped' : order.status === 'جاري التجهيز' ? 'Processing' : 'Pending') : order.status}
                 </span>
               </div>
-              <p className="text-xs text-gray-400 mb-1">تاريخ الطلب: {new Date(order.createdAt).toLocaleDateString('ar-EG')}</p>
-              <p className="text-xs text-gray-400">الإجمالي: {order.total} ج.م</p>
+              <p className="text-xs text-gray-400 mb-1">{isEn ? 'Date:' : 'تاريخ الطلب:'} {new Date(order.createdAt).toLocaleDateString(isEn ? 'en-US' : 'ar-EG')}</p>
+              <p className="text-xs text-gray-400">{isEn ? 'Total:' : 'الإجمالي:'} {order.total} {isEn ? 'EGP' : 'ج.م'}</p>
             </div>
 
             {order.status !== 'ملغي' && (
@@ -158,7 +161,7 @@ export default function TrackOrderModal({ onClose }) {
 
             {order.status === 'ملغي' && (
               <div className="text-center p-4 text-red-400 bg-red-900/20 rounded-xl border border-red-900/50">
-                تم إلغاء هذا الطلب.
+                {isEn ? 'This order has been cancelled.' : 'تم إلغاء هذا الطلب.'}
               </div>
             )}
 
@@ -166,7 +169,7 @@ export default function TrackOrderModal({ onClose }) {
               onClick={() => setOrder(null)}
               className="w-full py-3 border border-gray-600 text-gray-300 rounded-xl hover:bg-white/5 transition-colors text-sm"
             >
-              تتبع طلب آخر
+              {isEn ? 'Track Another Order' : 'تتبع طلب آخر'}
             </button>
           </div>
         )}

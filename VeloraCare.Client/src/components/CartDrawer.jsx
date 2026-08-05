@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowLeft, Tag, ShieldCheck, Sparkles } from 'lucide-react';
 import { validateCouponApi } from '../services/api';
+import { useTranslation } from 'react-i18next';
 
 export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem, onProceedToCheckout }) {
+  const { t, i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
   const [coupon, setCoupon] = useState('');
   const [discountPercent, setDiscountPercent] = useState(0);
   const [couponError, setCouponError] = useState('');
@@ -24,10 +27,10 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
     try {
       const result = await validateCouponApi(coupon.trim());
       setDiscountPercent(result.discountPercentage);
-      setCouponSuccess(`تم تطبيق خصم ${result.discountPercentage}% بنجاح!`);
+      setCouponSuccess(isEn ? `Discount ${result.discountPercentage}% applied successfully!` : `تم تطبيق خصم ${result.discountPercentage}% بنجاح!`);
     } catch (err) {
       setDiscountPercent(0);
-      setCouponError(err.message || 'كود الخصم غير صحيح');
+      setCouponError(err.message || (isEn ? 'Invalid coupon code' : 'كود الخصم غير صحيح'));
     } finally {
       setCouponLoading(false);
     }
@@ -60,8 +63,8 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
             <X className="w-5 h-5" />
           </button>
           <div className="text-center">
-            <h3 className="font-extrabold text-[#0D221A] text-base font-serif">سلة التسوق</h3>
-            <p className="text-xs text-gray-500">{cartItems.length} منتج</p>
+            <h3 className="font-extrabold text-[#0D221A] text-base font-serif">{isEn ? 'Shopping Cart' : 'سلة التسوق'}</h3>
+            <p className="text-xs text-gray-500">{cartItems.length} {isEn ? 'items' : 'منتج'}</p>
           </div>
           <div className="w-10 h-10 rounded-full bg-[#0D221A] text-[#EAD096] flex items-center justify-center">
             <ShoppingBag className="w-5 h-5" />
@@ -77,9 +80,9 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
               <div className="w-16 h-16 rounded-full bg-[#DFE6DB] border border-[#C5A059]/40 text-[#C5A059] flex items-center justify-center mx-auto">
                 <ShoppingBag className="w-8 h-8" />
               </div>
-              <h4 className="font-bold text-gray-800 text-base">سلتك فارغة حالياً</h4>
+              <h4 className="font-bold text-gray-800 text-base">{isEn ? 'Your cart is empty' : 'سلتك فارغة حالياً'}</h4>
               <p className="text-xs text-gray-500 max-w-[220px] mx-auto">
-                استكشفي منتجات VELORA CARE واختاري إكسير النضارة المناسب.
+                {isEn ? 'Explore VELORA CARE products and choose your perfect glow elixir.' : 'استكشفي منتجات VELORA CARE واختاري إكسير النضارة المناسب.'}
               </p>
             </div>
           ) : (
@@ -95,8 +98,8 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-xs font-extrabold text-[#0D221A] line-clamp-1">{item.name}</h4>
-                  <p className="text-sm font-extrabold text-[#987834] mt-0.5 font-serif">{item.price} ج.م</p>
+                  <h4 className="text-xs font-extrabold text-[#0D221A] line-clamp-1">{isEn ? (item.nameEn || item.name) : item.name}</h4>
+                  <p className="text-sm font-extrabold text-[#987834] mt-0.5 font-serif">{item.price} {isEn ? 'EGP' : 'ج.م'}</p>
 
                   {/* Qty Controls */}
                   <div className="flex items-center gap-2 mt-1.5">
@@ -139,10 +142,11 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
                 <Tag className="w-4 h-4 text-[#C5A059] absolute right-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="كود الخصم"
+                  placeholder={isEn ? 'Coupon Code' : 'كود الخصم'}
                   value={coupon}
                   onChange={(e) => setCoupon(e.target.value)}
-                  className="input-mobile pr-9 text-sm h-12"
+                  className={`input-mobile text-sm h-12 ${isEn ? 'pl-9 pr-3' : 'pr-9 pl-3'}`}
+                  dir={isEn ? 'ltr' : 'rtl'}
                 />
               </div>
               <button
@@ -150,7 +154,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
                 disabled={couponLoading}
                 className="bg-[#0D221A] text-[#EAD096] text-sm font-bold px-4 h-12 rounded-xl hover:bg-[#C5A059] hover:text-[#0D221A] transition-colors disabled:opacity-50 flex-shrink-0"
               >
-                {couponLoading ? '...' : 'تطبيق'}
+                {couponLoading ? '...' : (isEn ? 'Apply' : 'تطبيق')}
               </button>
             </form>
             {couponSuccess && <p className="text-xs text-emerald-700 font-bold">{couponSuccess}</p>}
@@ -159,37 +163,37 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
             {/* Totals */}
             <div className="space-y-2 text-xs text-gray-600 pt-1">
               <div className="flex justify-between">
-                <span>المجموع الفرعي:</span>
-                <span className="font-bold text-gray-800">{subtotal} ج.م</span>
+                <span>{isEn ? 'Subtotal:' : 'المجموع الفرعي:'}</span>
+                <span className="font-bold text-gray-800">{subtotal} {isEn ? 'EGP' : 'ج.م'}</span>
               </div>
               {discountAmount > 0 && (
                 <div className="flex justify-between text-emerald-700">
-                  <span>الخصم ({discountPercent}%):</span>
-                  <span className="font-bold">-{discountAmount} ج.م</span>
+                  <span>{isEn ? `Discount (${discountPercent}%):` : `الخصم (${discountPercent}%):`}</span>
+                  <span className="font-bold">-{discountAmount} {isEn ? 'EGP' : 'ج.م'}</span>
                 </div>
               )}
               <div className="flex justify-between text-gray-500">
-                <span>رسوم الشحن:</span>
-                <span className="text-[10px]">يُدفع لشركة الشحن</span>
+                <span>{isEn ? 'Shipping Fee:' : 'رسوم الشحن:'}</span>
+                <span className="text-[10px]">{isEn ? 'Paid to courier' : 'يُدفع لشركة الشحن'}</span>
               </div>
               <div className="flex justify-between text-sm font-bold text-[#0D221A] pt-2 border-t border-gray-100">
-                <span>المجموع الكلي:</span>
-                <span className="text-[#987834]">{total} ج.م</span>
+                <span>{isEn ? 'Total:' : 'المجموع الكلي:'}</span>
+                <span className="text-[#987834]">{total} {isEn ? 'EGP' : 'ج.م'}</span>
               </div>
             </div>
 
             {/* Checkout CTA */}
             <button
               onClick={onProceedToCheckout}
-              className="btn-primary w-full py-4 text-base justify-center"
+              className="btn-primary w-full py-4 text-base justify-center flex items-center gap-2"
             >
-              <span>إتمام الشراء</span>
-              <ArrowLeft className="w-5 h-5" />
+              <span>{isEn ? 'Proceed to Checkout' : 'إتمام الشراء'}</span>
+              <ArrowLeft className={`w-5 h-5 ${isEn ? 'rotate-180' : ''}`} />
             </button>
 
             <div className="flex items-center justify-center gap-1.5 text-[10px] text-gray-400">
               <ShieldCheck className="w-3.5 h-3.5 text-[#C5A059]" />
-              <span>دفع آمن 100% | ضمان استرجاع 14 يوم</span>
+              <span>{isEn ? '100% Secure Payment | 14-Day Guarantee' : 'دفع آمن 100% | ضمان استرجاع 14 يوم'}</span>
             </div>
           </div>
         )}
@@ -205,8 +209,8 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
           <div className="flex items-center gap-3">
             <ShoppingBag className="w-6 h-6 text-[#C5A059]" />
             <div>
-              <h3 className="font-bold font-serif text-lg text-[#EAD096]">سلة التسوق الملكية</h3>
-              <p className="text-[11px] text-gray-300">{cartItems.length} منتجات مختارة</p>
+              <h3 className="font-bold font-serif text-lg text-[#EAD096]">{isEn ? 'Royal Shopping Cart' : 'سلة التسوق الملكية'}</h3>
+              <p className="text-[11px] text-gray-300">{cartItems.length} {isEn ? 'selected items' : 'منتجات مختارة'}</p>
             </div>
           </div>
           <button
@@ -225,8 +229,8 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
               <div className="w-16 h-16 rounded-full bg-[#DFE6DB] border border-[#C5A059]/40 text-[#C5A059] flex items-center justify-center mx-auto">
                 <ShoppingBag className="w-8 h-8" />
               </div>
-              <h4 className="font-bold text-gray-800 text-lg">سلتك فارغة حالياً</h4>
-              <p className="text-xs text-gray-500 max-w-xs mx-auto">استكشفي منتجات VELORA CARE العضوية واختاري إكسير النضارة المناسب.</p>
+              <h4 className="font-bold text-gray-800 text-lg">{isEn ? 'Your cart is empty' : 'سلتك فارغة حالياً'}</h4>
+              <p className="text-xs text-gray-500 max-w-xs mx-auto">{isEn ? 'Explore VELORA CARE products and choose your perfect glow elixir.' : 'استكشفي منتجات VELORA CARE العضوية واختاري إكسير النضارة المناسب.'}</p>
             </div>
           ) : (
             cartItems.map((item) => (
@@ -238,8 +242,8 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
                   <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="text-xs font-bold text-[#0D221A] line-clamp-1">{item.name}</h4>
-                  <p className="text-xs font-extrabold text-[#987834] mt-1 font-serif">{item.price} ج.م</p>
+                  <h4 className="text-xs font-bold text-[#0D221A] line-clamp-1">{isEn ? (item.nameEn || item.name) : item.name}</h4>
+                  <p className="text-xs font-extrabold text-[#987834] mt-1 font-serif">{item.price} {isEn ? 'EGP' : 'ج.م'}</p>
                   <div className="flex items-center gap-2 mt-2">
                     <button
                       onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
@@ -272,13 +276,14 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
           <div className="bg-white p-5 border-t border-[#C5A059]/30 space-y-4 shadow-lg flex-shrink-0">
             <form onSubmit={handleApplyCoupon} className="flex gap-2">
               <div className="relative flex-1">
-                <Tag className="w-4 h-4 text-[#C5A059] absolute right-3 top-3" />
+                <Tag className={`w-4 h-4 text-[#C5A059] absolute top-3 ${isEn ? 'left-3' : 'right-3'}`} />
                 <input
                   type="text"
-                  placeholder="كود الخصم (مثال: VELORA15)"
+                  placeholder={isEn ? 'Coupon Code (e.g. VELORA15)' : 'كود الخصم (مثال: VELORA15)'}
                   value={coupon}
                   onChange={(e) => setCoupon(e.target.value)}
-                  className="w-full pr-9 pl-3 py-2 text-xs border border-[#C5A059]/40 rounded-xl focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB]"
+                  className={`w-full py-2 text-xs border border-[#C5A059]/40 rounded-xl focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] ${isEn ? 'pl-9 pr-3' : 'pr-9 pl-3'}`}
+                  dir={isEn ? 'ltr' : 'rtl'}
                 />
               </div>
               <button
@@ -286,7 +291,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
                 disabled={couponLoading}
                 className="bg-[#0D221A] text-[#EAD096] text-xs font-bold px-4 py-2 rounded-xl hover:bg-[#C5A059] hover:text-[#0D221A] transition-colors disabled:opacity-50"
               >
-                {couponLoading ? 'جاري...' : 'تطبيق'}
+                {couponLoading ? (isEn ? '...' : 'جاري...') : (isEn ? 'Apply' : 'تطبيق')}
               </button>
             </form>
 
@@ -295,22 +300,22 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
 
             <div className="space-y-1.5 text-xs text-gray-600 border-t pt-3">
               <div className="flex justify-between">
-                <span>المجموع الفرعي:</span>
-                <span className="font-bold text-gray-800">{subtotal} ج.م</span>
+                <span>{isEn ? 'Subtotal:' : 'المجموع الفرعي:'}</span>
+                <span className="font-bold text-gray-800">{subtotal} {isEn ? 'EGP' : 'ج.م'}</span>
               </div>
               {discountAmount > 0 && (
                 <div className="flex justify-between text-emerald-700 font-bold">
-                  <span>الخصم ({discountPercent}%):</span>
-                  <span>-{discountAmount} ج.م</span>
+                  <span>{isEn ? `Discount (${discountPercent}%):` : `الخصم (${discountPercent}%):`}</span>
+                  <span>-{discountAmount} {isEn ? 'EGP' : 'ج.م'}</span>
                 </div>
               )}
               <div className="flex justify-between text-gray-500">
-                <span>رسوم الشحن:</span>
-                <span className="text-[10px]">يُدفع لشركة الشحن</span>
+                <span>{isEn ? 'Shipping Fee:' : 'رسوم الشحن:'}</span>
+                <span className="text-[10px]">{isEn ? 'Paid to courier' : 'يُدفع لشركة الشحن'}</span>
               </div>
               <div className="flex justify-between text-base font-extrabold text-[#0D221A] pt-2 border-t font-serif">
-                <span>المجموع الكلي:</span>
-                <span className="text-[#987834]">{total} ج.م</span>
+                <span>{isEn ? 'Total:' : 'المجموع الكلي:'}</span>
+                <span className="text-[#987834]">{total} {isEn ? 'EGP' : 'ج.م'}</span>
               </div>
             </div>
 
@@ -318,12 +323,12 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
               onClick={onProceedToCheckout}
               className="btn-primary w-full py-3.5 text-sm flex items-center justify-center gap-2 shadow-xl"
             >
-              <span>إتمام طلب الشراء الملكي</span>
-              <ArrowLeft className="w-4 h-4" />
+              <span>{isEn ? 'Proceed to Royal Checkout' : 'إتمام طلب الشراء الملكي'}</span>
+              <ArrowLeft className={`w-4 h-4 ${isEn ? 'rotate-180' : ''}`} />
             </button>
             <div className="flex items-center justify-center gap-2 text-[10px] text-gray-400 font-light pt-1">
               <ShieldCheck className="w-3.5 h-3.5 text-[#C5A059]" />
-              <span>دفع آمن 100% | استرجاع خلال 14 يوم</span>
+              <span>{isEn ? '100% Secure Payment | 14-Day Guarantee' : 'دفع آمن 100% | استرجاع خلال 14 يوم'}</span>
             </div>
           </div>
         )}
