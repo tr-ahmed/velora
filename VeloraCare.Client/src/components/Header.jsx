@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingBag, Search, Heart, Menu, X, Sparkles, User, ShieldCheck, LogOut, Eye, ArrowLeft, Truck, Globe, Tag } from 'lucide-react';
+import { ShoppingBag, Search, Heart, Menu, X, Sparkles, User, ShieldCheck, LogOut, Eye, ArrowLeft, Truck, Globe } from 'lucide-react';
 import VeloraLogo from './VeloraLogo';
 import { useTranslation } from 'react-i18next';
 
@@ -21,9 +21,9 @@ export default function Header({
   onQuickView
 }) {
   const { t, i18n } = useTranslation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [isFloatingMenuOpen, setIsFloatingMenuOpen] = useState(false);
 
   const isEn = i18n.language === 'en';
 
@@ -31,6 +31,7 @@ export default function Header({
     const newLang = isEn ? 'ar' : 'en';
     i18n.changeLanguage(newLang);
     document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
+    setIsFloatingMenuOpen(false); // Close mobile floating menu after switching
   };
 
   const navLinks = [
@@ -47,7 +48,6 @@ export default function Header({
     } else {
       setActiveTab(id);
     }
-    setMobileMenuOpen(false);
   };
 
   // Live Matching Products
@@ -66,16 +66,17 @@ export default function Header({
       setActiveTab('products');
       setIsSearchFocused(false);
       setMobileSearchOpen(false);
+      setIsFloatingMenuOpen(false); // Close mobile menu when searching
       window.scrollTo(0, 0);
     }
   };
 
   return (
     <>
-      {/* --- MAIN HEADER --- */}
-      <header className="sticky top-0 z-40 w-full bg-[#0D221A]/90 backdrop-blur-xl border-b border-[#C5A059]/30 shadow-xl print:hidden">
+      {/* --- DESKTOP HEADER (Hidden on mobile) --- */}
+      <header className="hidden sm:block sticky top-0 z-40 w-full bg-[#0D221A]/90 backdrop-blur-xl border-b border-[#C5A059]/30 shadow-xl print:hidden">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5">
-          <div className="flex items-center justify-between gap-4 sm:gap-8">
+          <div className="flex items-center justify-between gap-8">
             
             {/* 1. Brand Logo */}
             <div 
@@ -86,7 +87,7 @@ export default function Header({
             </div>
 
             {/* 2. Navigation Links (Desktop) */}
-            <div className="hidden lg:flex items-center gap-6 xl:gap-8">
+            <div className="flex items-center gap-6 xl:gap-8">
               {navLinks.map((link) => {
                 const isActive = activeTab === link.id;
                 
@@ -120,17 +121,17 @@ export default function Header({
             </div>
 
             {/* 3. Icons & Actions */}
-            <div className="flex items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-4">
 
-              {/* Language & Track Order (Desktop & Mobile) */}
-              <div className="flex items-center gap-1 sm:gap-2">
+              {/* Language & Track Order */}
+              <div className="flex items-center gap-2">
                 <button
                   onClick={toggleLanguage}
                   className="flex items-center gap-1 p-1.5 text-gray-300 hover:text-[#EAD096] transition-colors"
                   title={isEn ? "Switch to Arabic" : "تغيير اللغة"}
                 >
-                  <Globe className="w-4 h-4 sm:w-4 sm:h-4" />
-                  <span className="hidden sm:inline text-[10px] font-bold">{t('language', 'English')}</span>
+                  <Globe className="w-4 h-4" />
+                  <span className="hidden lg:inline text-[10px] font-bold">{t('language', 'English')}</span>
                 </button>
                 <button
                   onClick={onOpenTrackOrder}
@@ -141,8 +142,8 @@ export default function Header({
                 </button>
               </div>
               
-              {/* Expanding Search Bar (Desktop) */}
-              <div className="relative hidden lg:flex items-center justify-end w-8 focus-within:w-48 xl:focus-within:w-64 transition-all duration-300 ease-out z-50">
+              {/* Expanding Search Bar */}
+              <div className="relative flex items-center justify-end w-8 focus-within:w-48 xl:focus-within:w-64 transition-all duration-300 ease-out z-50">
                 <form onSubmit={handleSearchSubmit} className="w-full flex items-center">
                   <Search className="w-4 h-4 text-gray-300 absolute pointer-events-none" style={{ [isEn ? 'left' : 'right']: '6px' }} />
                   <input
@@ -197,7 +198,7 @@ export default function Header({
               {/* Wishlist Button */}
               <button 
                 onClick={() => setActiveTab('wishlist')}
-                className="relative hidden sm:block p-1.5 text-gray-300 hover:text-[#C5A059] transition-colors group"
+                className="relative p-1.5 text-gray-300 hover:text-[#C5A059] transition-colors group"
                 title={t('wishlist', 'المفضلة')}
               >
                 <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
@@ -210,7 +211,7 @@ export default function Header({
 
               {/* User Account / Auth */}
               {currentUser ? (
-                <div className="hidden sm:flex items-center gap-3 border-r border-[#C5A059]/20 pr-4 rtl:pr-0 rtl:border-r-0 rtl:border-l rtl:pl-4">
+                <div className="flex items-center gap-3 border-r border-[#C5A059]/20 pr-4 rtl:pr-0 rtl:border-r-0 rtl:border-l rtl:pl-4">
                   {currentUser?.role === 'Admin' && (
                     <button
                       onClick={onOpenAdminDashboard}
@@ -244,7 +245,7 @@ export default function Header({
               ) : (
                 <button
                   onClick={onOpenAuthModal}
-                  className="hidden sm:flex p-1 text-gray-300 hover:text-[#C5A059] transition-colors border-r border-[#C5A059]/20 pr-4 rtl:pr-0 rtl:border-r-0 rtl:border-l rtl:pl-4"
+                  className="flex p-1 text-gray-300 hover:text-[#C5A059] transition-colors border-r border-[#C5A059]/20 pr-4 rtl:pr-0 rtl:border-r-0 rtl:border-l rtl:pl-4"
                   title={t('login', 'دخول')}
                 >
                   <User className="w-5 h-5 hover:scale-110 transition-transform" />
@@ -266,59 +267,97 @@ export default function Header({
                 )}
               </button>
 
-              {/* Mobile Drawer Toggle */}
-              <button 
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-1.5 text-gray-300 hover:text-[#C5A059] transition-colors"
-                aria-label="القائمة"
-              >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-
             </div>
-
           </div>
-
-          {/* Mobile Search & Menu Drawer */}
-          {mobileMenuOpen && (
-            <div className="lg:hidden mt-4 pt-4 border-t border-[#C5A059]/20 flex flex-col gap-2 animate-fadeIn pb-2">
-              
-              {/* Mobile Search */}
-              <form onSubmit={handleSearchSubmit} className="relative w-full mb-3">
-                <input
-                  type="text"
-                  placeholder={t('searchPlaceholder', 'ابحثي عن منتج...')}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-[#143529] text-white placeholder-gray-400 text-xs rounded-full py-2.5 px-4 border border-[#C5A059]/40 focus:outline-none focus:border-[#C5A059] transition-all"
-                  style={{ [isEn ? 'paddingLeft' : 'paddingRight']: '40px' }}
-                />
-                <button type="submit" className="absolute top-2.5" style={{ [isEn ? 'left' : 'right']: '14px' }}>
-                  <Search className="w-4 h-4 text-[#C5A059]" />
-                </button>
-              </form>
-
-              {navLinks.map((link) => (
-                <button
-                  key={link.id}
-                  onClick={() => handleNavClick(link.id)}
-                  className={`text-start px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                    link.isSpecial
-                      ? 'bg-gradient-to-r from-[#C5A059] to-[#987834] text-[#0D221A] text-center'
-                      : activeTab === link.id
-                      ? 'bg-[#143529] text-[#EAD096] border-l-4 rtl:border-l-0 rtl:border-r-4 border-[#C5A059]'
-                      : 'text-gray-200 hover:bg-[#143529]'
-                  }`}
-                >
-                  {link.label}
-                </button>
-              ))}
-
-              {/* End of mobile drawer */}
-            </div>
-          )}
         </nav>
       </header>
+
+      {/* --- MOBILE FLOATING TOGGLE (Visible only on mobile) --- */}
+      <div className="sm:hidden fixed top-4 right-4 rtl:right-auto rtl:left-4 z-[60] print:hidden pointer-events-auto">
+        <button
+          onClick={() => setIsFloatingMenuOpen(!isFloatingMenuOpen)}
+          className={`w-11 h-11 rounded-full flex items-center justify-center shadow-[0_8px_24px_rgba(0,0,0,0.5)] border-2 transition-all duration-300 ${
+            isFloatingMenuOpen 
+              ? 'bg-[#143529] border-[#C5A059] text-[#EAD096] rotate-90' 
+              : 'bg-[#0D221A]/85 backdrop-blur-md border-[#C5A059]/60 text-[#C5A059] hover:bg-[#C5A059] hover:text-[#0D221A]'
+          }`}
+          aria-label="Menu"
+        >
+          {isFloatingMenuOpen ? <X className="w-5 h-5" /> : <Search className="w-5 h-5" />}
+        </button>
+
+        {/* Floating Panel */}
+        <div className={`absolute top-14 right-0 rtl:right-auto rtl:left-0 w-[calc(100vw-32px)] max-w-sm transition-all duration-300 origin-top-right rtl:origin-top-left ${
+          isFloatingMenuOpen 
+            ? 'opacity-100 scale-100 translate-y-0' 
+            : 'opacity-0 scale-95 -translate-y-4 pointer-events-none'
+        }`}>
+          <div className="bg-[#0D221A]/95 backdrop-blur-3xl border border-[#C5A059]/40 rounded-3xl p-4 shadow-2xl flex flex-col gap-3">
+            
+            {/* Mobile Search Bar */}
+            <form onSubmit={handleSearchSubmit} className="relative w-full">
+              <input
+                type="text"
+                placeholder={t('searchPlaceholder', 'ابحثي عن منتج...')}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-[#143529] text-white placeholder-gray-400 text-xs rounded-2xl py-3 px-4 border border-[#C5A059]/40 focus:outline-none focus:border-[#C5A059] transition-all"
+                style={{ [isEn ? 'paddingLeft' : 'paddingRight']: '42px' }}
+                autoFocus={isFloatingMenuOpen}
+              />
+              <button type="submit" className="absolute top-3" style={{ [isEn ? 'left' : 'right']: '14px' }}>
+                <Search className="w-4 h-4 text-[#C5A059]" />
+              </button>
+            </form>
+
+            {/* Quick Actions (Language & Track Order) */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={toggleLanguage}
+                className="flex-1 bg-[#143529] border border-[#C5A059]/30 rounded-2xl p-2.5 flex items-center justify-center gap-2 text-[#EAD096] hover:bg-[#C5A059]/20 transition-colors shadow-inner"
+              >
+                <Globe className="w-4 h-4" />
+                <span className="text-xs font-bold">{t('language', 'English')}</span>
+              </button>
+
+              <button
+                onClick={() => { setIsFloatingMenuOpen(false); onOpenTrackOrder(); }}
+                className="flex-1 bg-[#143529] border border-[#C5A059]/30 rounded-2xl p-2.5 flex items-center justify-center gap-2 text-[#EAD096] hover:bg-[#C5A059]/20 transition-colors shadow-inner"
+              >
+                <Truck className="w-4 h-4" />
+                <span className="text-xs font-bold">{t('trackOrder', 'تتبع طلبك')}</span>
+              </button>
+            </div>
+
+            {/* Mobile Search Results */}
+            {searchQuery.trim().length > 0 && (
+              <div className="max-h-48 overflow-y-auto mt-1 space-y-1 bg-[#143529]/80 rounded-2xl p-2 border border-[#C5A059]/20">
+                {searchResults.length > 0 ? (
+                  searchResults.map((p) => (
+                    <div
+                      key={p.id}
+                      onClick={() => {
+                        onQuickView(p);
+                        setIsFloatingMenuOpen(false);
+                        setSearchQuery(''); 
+                      }}
+                      className="flex items-center gap-3 p-2 rounded-xl hover:bg-[#0D221A] cursor-pointer transition-colors"
+                    >
+                      <img src={p.image} alt={isEn ? p.nameEn : p.name} className="w-10 h-10 rounded-lg object-cover border border-[#C5A059]/30" />
+                      <div className="flex-1 overflow-hidden" dir={isEn ? 'ltr' : 'rtl'}>
+                        <p className="text-[11px] font-bold text-white truncate text-start">{isEn ? p.nameEn : p.name}</p>
+                        <p className="text-[9px] text-[#C5A059] font-bold text-start">{p.price} {t('currency', 'ج.م')}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-[10px] text-gray-400 p-3 text-center">{t('noResults', 'لا توجد نتائج مطابقة')}</p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </>
   );
 }
