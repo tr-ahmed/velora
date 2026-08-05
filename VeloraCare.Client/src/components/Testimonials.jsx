@@ -1,11 +1,20 @@
-import React from 'react';
-import { TESTIMONIALS } from '../data/products';
-import { Star, Quote, Award, Sparkles } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Star, Quote, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { fetchTestimonialsApi } from '../services/api';
 
 export default function Testimonials() {
   const { t, i18n } = useTranslation();
   const isEn = i18n.language === 'en';
+  const [testimonials, setTestimonials] = useState([]);
+
+  useEffect(() => {
+    fetchTestimonialsApi(true)
+      .then(data => setTestimonials(data))
+      .catch(err => console.error(err));
+  }, []);
+
+  if (testimonials.length === 0) return null;
 
   return (
     <section className="py-20 bg-[#0D221A] text-white relative overflow-hidden border-t border-[#C5A059]/30" dir={isEn ? 'ltr' : 'rtl'}>
@@ -32,7 +41,7 @@ export default function Testimonials() {
 
         {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {TESTIMONIALS.map((t) => (
+          {testimonials.map((t) => (
             <div
               key={t.id}
               className="bg-[#143529]/80 rounded-3xl p-6 border border-[#C5A059]/30 shadow-xl flex flex-col justify-between hover:border-[#C5A059] transition-all duration-300 group"
@@ -48,22 +57,23 @@ export default function Testimonials() {
                 </div>
 
                 <p className="text-sm text-gray-200 leading-relaxed font-light mb-6">
-                  "{isEn ? t.commentEn : t.comment}"
+                  "{isEn ? t.commentEn || t.comment : t.comment}"
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-[#C5A059]/20 flex items-center gap-3">
-                <img
-                  src={t.avatar}
-                  alt={isEn ? t.nameEn : t.name}
-                  className="w-11 h-11 rounded-full object-cover border-2 border-[#C5A059]"
-                />
+              <div className="flex items-center gap-4 mt-auto">
+                {t.avatar ? (
+                  <img src={t.avatar} alt={isEn ? t.nameEn || t.name : t.name} className="w-12 h-12 rounded-full object-cover border-2 border-[#C5A059]" />
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-[#EAD096] text-[#0D221A] flex items-center justify-center font-bold text-lg">
+                    {(isEn ? t.nameEn || t.name : t.name).charAt(0)}
+                  </div>
+                )}
                 <div>
-                  <h4 className="text-xs font-bold text-white">{isEn ? t.nameEn : t.name}</h4>
-                  <p className="text-[10px] text-[#C5A059]">{isEn ? t.roleEn : t.role}</p>
+                  <h4 className="text-white font-bold">{isEn ? t.nameEn || t.name : t.name}</h4>
+                  <p className="text-xs text-[#EAD096]">{isEn ? t.roleEn || t.role : t.role}</p>
                 </div>
               </div>
-
             </div>
           ))}
         </div>

@@ -12,6 +12,7 @@ import CategoryFormModal from './CategoryFormModal';
 import HeroSlideFormModal from './HeroSlideFormModal';
 import VeloraLogo from '../VeloraLogo';
 import Pagination from '../Pagination';
+import TestimonialsTab from './TestimonialsTab';
 import { 
   fetchDashboardStatsApi, fetchAnalyticsReportsApi, fetchAllOrdersApi, updateOrderStatusApi, 
   fetchProductsFromApi, saveProductApi, deleteProductApi,
@@ -131,11 +132,16 @@ export default function AdminDashboard({
   const [reviews, setReviews] = useState([]);
   const [reviewStats, setReviewStats] = useState({
     totalReviews: 0,
-    pendingReviews: 0,
     approvedReviews: 0,
+    pendingReviews: 0,
     averageRating: 0,
-    ratingDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+    ratingDistribution: {}
   });
+
+  const [testimonials, setTestimonials] = useState([]);
+  const [isTestimonialModalOpen, setIsTestimonialModalOpen] = useState(false);
+  const [editingTestimonial, setEditingTestimonial] = useState(null);
+
   const [reviewSearchQuery, setReviewSearchQuery] = useState('');
   const [reviewStatusFilter, setReviewStatusFilter] = useState('all');
   const [reviewProductFilter, setReviewProductFilter] = useState('all');
@@ -247,7 +253,7 @@ export default function AdminDashboard({
   const loadData = async () => {
     setLoading(true);
     try {
-      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, usersRes, categoriesRes, settingsRes, reviewsRes] = await Promise.all([
+      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, usersRes, categoriesRes, settingsRes, reviewsRes, testimonialsRes] = await Promise.all([
         fetchDashboardStatsApi(),
         fetchAnalyticsReportsApi(),
         fetchProductsFromApi('all'),
@@ -256,7 +262,8 @@ export default function AdminDashboard({
         fetchUsersApi(),
         fetchCategoriesApi(),
         fetchStoreSettingsApi(),
-        fetchAdminReviewsApi()
+        fetchAdminReviewsApi(),
+        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5246/api'}/testimonials?activeOnly=false`).then(r => r.ok ? r.json() : [])
       ]);
       setStats(statsRes || { totalRevenue: 0, totalOrders: 0, totalProducts: 0, totalCustomers: 0, activeCoupons: 0, recentOrders: [] });
       setAnalytics(analyticsRes || { generatedAt: new Date().toISOString(), totalRevenue: 0, totalOrders: 0, averageOrderValue: 0, customerSatisfactionRate: '0%', conversionRate: '0%', salesByCity: [], salesByCategory: [], ordersByStatus: [], topProducts: [] });
@@ -268,6 +275,9 @@ export default function AdminDashboard({
       if (reviewsRes) {
         setReviews(Array.isArray(reviewsRes.reviews) ? reviewsRes.reviews : []);
         if (reviewsRes.stats) setReviewStats(reviewsRes.stats);
+      }
+      if (testimonialsRes) {
+        setTestimonials(testimonialsRes);
       }
       if (settingsRes) setStoreSettings(settingsRes);
       if (statsRes?.totalOrders) setLastOrdersCount(statsRes.totalOrders);
@@ -2673,6 +2683,16 @@ export default function AdminDashboard({
         )}
 
         {/* TAB 8: STORE SETTINGS */}
+        {/* TAB 8: TESTIMONIALS MANAGEMENT */}
+        {activeTab === 'testimonials' && (
+          <TestimonialsTab 
+            testimonials={testimonials} 
+            setTestimonials={setTestimonials} 
+            isEn={isEn} 
+          />
+        )}
+
+        {/* TAB 9: STORE SETTINGS */}
         {activeTab === 'settings' && (          <div className="bg-white rounded-3xl border border-[#C5A059]/30 p-4 sm:p-6 shadow-sm space-y-6 animate-fadeIn">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-100 pb-4">
               <div>

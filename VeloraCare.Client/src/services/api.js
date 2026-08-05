@@ -373,3 +373,36 @@ export async function updateStoreSettingsApi(settingsData) {
   if (!res.ok) throw new Error('Update settings failed');
   return await res.json();
 }
+
+// Testimonials API
+export const fetchTestimonialsApi = async (activeOnly = true) => {
+  const res = await fetch(`${API_BASE_URL}/testimonials?activeOnly=${activeOnly}`);
+  if (!res.ok) throw new Error('Fetch testimonials failed');
+  return await res.json();
+};
+
+export const addTestimonialApi = async (testimonial) => {
+  const res = await fetch(`${API_BASE_URL}/testimonials`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(testimonial)
+  });
+  if (!res.ok) throw new Error('Add testimonial failed');
+  return await res.json();
+};
+
+export const updateTestimonialApi = async (id, testimonial) => {
+  const res = await fetch(`${API_BASE_URL}/testimonials/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(testimonial)
+  });
+  if (!res.ok) throw new Error('Update testimonial failed');
+  return await res.json();
+};
+
+export const deleteTestimonialApi = async (id) => {
+  const res = await fetch(`${API_BASE_URL}/testimonials/${id}`, { method: 'DELETE' });
+  if (!res.ok) throw new Error('Delete testimonial failed');
+  return true;
+};

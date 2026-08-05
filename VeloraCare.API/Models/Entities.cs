@@ -163,3 +163,19 @@ public class StoreSettings
     public bool MaintenanceMode { get; set; } = false;
     public string StoreName { get; set; } = "VELORA CARE";
 }
+
+public class Testimonial
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string NameEn { get; set; } = string.Empty;
+    public string Role { get; set; } = string.Empty;
+    public string RoleEn { get; set; } = string.Empty;
+    public string Avatar { get; set; } = string.Empty;
+    public string Comment { get; set; } = string.Empty;
+    public string CommentEn { get; set; } = string.Empty;
+    public int Rating { get; set; } = 5;
+    public string Product { get; set; } = string.Empty;
+    public bool IsActive { get; set; } = true;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}
