@@ -17,7 +17,7 @@ import UserProfilePage from './components/UserProfilePage';
 import TrackOrderModal from './components/TrackOrderModal';
 import MobileBottomNav from './components/MobileBottomNav';
 import InfoModal from './components/InfoModal';
-import { Search, X, Sparkles, Settings, Clock, Instagram } from 'lucide-react';
+import { Search, X, Sparkles, Settings, Clock, Instagram, Lock } from 'lucide-react';
 import { 
   fetchProductsFromApi,
   fetchHeroSlidesApi, fetchHeroSettingsApi, saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi, fetchStoreSettingsApi
@@ -332,6 +332,28 @@ export default function App() {
             )}
           </div>
         </div>
+
+        {/* Hidden Admin Login Access */}
+        <button 
+          onClick={() => setIsAuthModalOpen(true)}
+          className="absolute bottom-4 right-4 opacity-30 hover:opacity-100 transition-opacity p-2"
+          title="Admin Login"
+        >
+          <Lock className="w-5 h-5 text-[#EAD096]" />
+        </button>
+
+        {isAuthModalOpen && (
+          <AuthModal 
+            onClose={() => setIsAuthModalOpen(false)} 
+            onLogin={(user) => {
+              setCurrentUser(user);
+              setIsAuthModalOpen(false);
+              if (user.role === 'Admin') {
+                setIsAdminView(true);
+              }
+            }} 
+          />
+        )}
       </div>
     );
   }
