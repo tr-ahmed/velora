@@ -122,15 +122,15 @@ export default function Header({
             {/* 3. Icons & Actions */}
             <div className="flex items-center gap-3 sm:gap-4">
 
-              {/* Language & Track Order (Desktop) */}
-              <div className="hidden lg:flex items-center gap-2">
+              {/* Language & Track Order (Desktop & Mobile) */}
+              <div className="flex items-center gap-1 sm:gap-2">
                 <button
                   onClick={toggleLanguage}
                   className="flex items-center gap-1 p-1.5 text-gray-300 hover:text-[#EAD096] transition-colors"
                   title={isEn ? "Switch to Arabic" : "تغيير اللغة"}
                 >
-                  <Globe className="w-4 h-4" />
-                  <span className="text-[10px] font-bold">{t('language', 'English')}</span>
+                  <Globe className="w-4 h-4 sm:w-4 sm:h-4" />
+                  <span className="hidden sm:inline text-[10px] font-bold">{t('language', 'English')}</span>
                 </button>
                 <button
                   onClick={onOpenTrackOrder}
@@ -314,26 +314,7 @@ export default function Header({
                 </button>
               ))}
 
-              <div className="grid grid-cols-2 gap-2 mt-2">
-                <button
-                  onClick={toggleLanguage}
-                  className="flex items-center justify-center gap-2 p-3 bg-[#143529] rounded-xl border border-[#C5A059]/40 text-[#EAD096] hover:bg-[#C5A059]/20 transition-colors"
-                >
-                  <Globe className="w-4 h-4" />
-                  <span className="font-bold text-xs">{t('language', 'English')}</span>
-                </button>
-
-                <button 
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    onOpenTrackOrder();
-                  }}
-                  className="flex items-center justify-center gap-2 p-3 bg-[#143529] rounded-xl border border-[#C5A059]/40 text-[#EAD096] hover:bg-[#C5A059]/20 transition-colors"
-                >
-                  <Truck className="w-4 h-4" />
-                  <span className="font-bold text-xs">{t('trackOrder', 'تتبع طلبك')}</span>
-                </button>
-              </div>
+              {/* End of mobile drawer */}
             </div>
           )}
         </nav>
