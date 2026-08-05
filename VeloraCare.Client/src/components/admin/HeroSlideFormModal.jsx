@@ -5,15 +5,23 @@ import { API_BASE_URL } from '../../services/api';
 export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
   const [formData, setFormData] = useState({
     badge: 'المتجر الملكي الأول للعناية العضوية 👑',
+    badgeEn: 'The First Royal Organic Care Store 👑',
     titleHighlight: 'إكسير النضارة',
+    titleHighlightEn: 'Elixir of Radiance',
     titleRest: 'الزمردية والجمال الفاخر',
+    titleRestEn: 'Emerald & Luxurious Beauty',
     description: 'اكتشفي تشكيلة VELORA CARE المستخلصة من أنقى العناصر النباتية وزيوت الزمرد العضوية.',
+    descriptionEn: 'Discover the VELORA CARE collection extracted from the purest botanicals and organic emerald oils.',
     productTitle: 'سيروم الزمرد لإعادة إحياء الشباب',
+    productTitleEn: 'Emerald Youth Revival Serum',
     productSub: 'إكسير نباتي مكثف لإشراقة ملكية',
+    productSubEn: 'Intense botanical elixir for royal radiance',
     rating: '★ 4.9',
     productImage: '/images/serum.png',
     miniCardTitle: 'كريم الترطيب الفاخر',
+    miniCardTitleEn: 'Luxurious Hydration Cream',
     miniCardOffer: 'منتجات طبيعية 100%',
+    miniCardOfferEn: '100% Natural Products',
     miniCardImage: '/images/cream.png',
     active: true
   });
@@ -24,30 +32,46 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
       setFormData({
         id: slide.id,
         badge: slide.badge || '',
+        badgeEn: slide.badgeEn || '',
         titleHighlight: slide.titleHighlight || '',
+        titleHighlightEn: slide.titleHighlightEn || '',
         titleRest: slide.titleRest || '',
+        titleRestEn: slide.titleRestEn || '',
         description: slide.description || '',
+        descriptionEn: slide.descriptionEn || '',
         productTitle: slide.productTitle || '',
+        productTitleEn: slide.productTitleEn || '',
         productSub: slide.productSub || '',
+        productSubEn: slide.productSubEn || '',
         rating: slide.rating || '★ 5.0',
         productImage: slide.productImage || '/images/serum.png',
         miniCardTitle: slide.miniCardTitle || '',
+        miniCardTitleEn: slide.miniCardTitleEn || '',
         miniCardOffer: slide.miniCardOffer || '',
+        miniCardOfferEn: slide.miniCardOfferEn || '',
         miniCardImage: slide.miniCardImage || '/images/cream.png',
         active: slide.active !== false
       });
     } else {
       setFormData({
         badge: 'عرض جديد خديوي 👑',
+        badgeEn: 'New Royal Offer 👑',
         titleHighlight: 'مستحضر جديد',
+        titleHighlightEn: 'New Product',
         titleRest: 'لجمال ونضارة مستمرة',
+        titleRestEn: 'for continuous beauty and glow',
         description: 'تركيبة فاخرة مستخلصة من أنقى الزيوت النباتية والزمرد العضوي.',
+        descriptionEn: 'Luxurious formula extracted from the purest botanical oils and organic emerald.',
         productTitle: 'مستحضر فيلورا الجديد',
+        productTitleEn: 'New Velora Product',
         productSub: 'عناية فائقة وتغذية سريعة',
+        productSubEn: 'Ultimate care and fast nutrition',
         rating: '★ 5.0',
         productImage: '/images/serum.png',
         miniCardTitle: 'عرض محدود',
+        miniCardTitleEn: 'Limited Offer',
         miniCardOffer: 'خصم 20% لفترة محدودة',
+        miniCardOfferEn: '20% off for a limited time',
         miniCardImage: '/images/cream.png',
         active: true
       });
@@ -142,6 +166,20 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
             </div>
 
             <div>
+              <label className="block font-bold text-gray-700 mb-1">Badge (EN) *</label>
+              <input
+                type="text"
+                required
+                placeholder="The First Royal Organic Care Store 👑"
+                value={formData.badgeEn}
+                onChange={(e) => setFormData({ ...formData, badgeEn: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none font-bold text-xs text-left"
+                dir="ltr"
+              />
+            </div>
+          </div>
+
+            <div>
               <label className="block font-bold text-gray-700 mb-1">التقييم المعروض</label>
               <input
                 type="text"
@@ -167,6 +205,21 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
             </div>
 
             <div>
+              <label className="block font-bold text-emerald-950 mb-1">Highlighted Title (EN) *</label>
+              <input
+                type="text"
+                required
+                placeholder="Elixir of Radiance"
+                value={formData.titleHighlightEn}
+                onChange={(e) => setFormData({ ...formData, titleHighlightEn: e.target.value })}
+                className="w-full px-3.5 py-2 border border-emerald-400 bg-emerald-50/50 rounded-xl focus:border-emerald-700 focus:outline-none font-bold text-xs text-left"
+                dir="ltr"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
               <label className="block font-bold text-gray-700 mb-1">باقي العنوان الرئيسي *</label>
               <input
                 type="text"
@@ -177,18 +230,44 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
                 className="w-full px-3.5 py-2 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none font-bold text-xs"
               />
             </div>
+            <div>
+              <label className="block font-bold text-gray-700 mb-1">Rest of Title (EN) *</label>
+              <input
+                type="text"
+                required
+                placeholder="Emerald & Luxurious Beauty"
+                value={formData.titleRestEn}
+                onChange={(e) => setFormData({ ...formData, titleRestEn: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none font-bold text-xs text-left"
+                dir="ltr"
+              />
+            </div>
           </div>
 
-          <div>
-            <label className="block font-bold text-gray-700 mb-1">الوصف التفصيلي للسلايد *</label>
-            <textarea
-              rows={2}
-              required
-              placeholder="اكتشفي تشكيلة VELORA CARE المستخلصة من أنقى العناصر النباتية وزيوت الزمرد العضوية..."
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-3.5 py-2 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none text-xs"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block font-bold text-gray-700 mb-1">الوصف التفصيلي للسلايد *</label>
+              <textarea
+                rows={2}
+                required
+                placeholder="اكتشفي تشكيلة VELORA CARE المستخلصة من أنقى العناصر النباتية وزيوت الزمرد العضوية..."
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none text-xs"
+              />
+            </div>
+            <div>
+              <label className="block font-bold text-gray-700 mb-1">Description (EN) *</label>
+              <textarea
+                rows={2}
+                required
+                placeholder="Discover the VELORA CARE collection extracted from the purest botanicals..."
+                value={formData.descriptionEn}
+                onChange={(e) => setFormData({ ...formData, descriptionEn: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none text-xs text-left"
+                dir="ltr"
+              />
+            </div>
           </div>
 
           {/* Main Product Showcase Info */}
@@ -211,6 +290,20 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
               </div>
 
               <div>
+                <label className="block font-medium text-gray-600 mb-1">Product Name (EN)</label>
+                <input
+                  type="text"
+                  placeholder="Emerald Royal Serum"
+                  value={formData.productTitleEn}
+                  onChange={(e) => setFormData({ ...formData, productTitleEn: e.target.value })}
+                  className="w-full px-3 py-1.5 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none text-xs bg-white text-left"
+                  dir="ltr"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+              <div>
                 <label className="block font-medium text-gray-600 mb-1">الوصف الفرعي للمنتج</label>
                 <input
                   type="text"
@@ -218,6 +311,18 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
                   value={formData.productSub}
                   onChange={(e) => setFormData({ ...formData, productSub: e.target.value })}
                   className="w-full px-3 py-1.5 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none text-xs bg-white"
+                />
+              </div>
+
+              <div>
+                <label className="block font-medium text-gray-600 mb-1">Product Subtitle (EN)</label>
+                <input
+                  type="text"
+                  placeholder="Intense botanical elixir for royal radiance"
+                  value={formData.productSubEn}
+                  onChange={(e) => setFormData({ ...formData, productSubEn: e.target.value })}
+                  className="w-full px-3 py-1.5 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none text-xs bg-white text-left"
+                  dir="ltr"
                 />
               </div>
             </div>
@@ -266,6 +371,20 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
               </div>
 
               <div>
+                <label className="block font-medium text-gray-600 mb-1">Mini Card Title (EN)</label>
+                <input
+                  type="text"
+                  placeholder="Luxurious Hydration Cream"
+                  value={formData.miniCardTitleEn}
+                  onChange={(e) => setFormData({ ...formData, miniCardTitleEn: e.target.value })}
+                  className="w-full px-3 py-1.5 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none text-xs bg-white text-left"
+                  dir="ltr"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+              <div>
                 <label className="block font-medium text-gray-600 mb-1">العرض أو الشارة</label>
                 <input
                   type="text"
@@ -273,6 +392,18 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
                   value={formData.miniCardOffer}
                   onChange={(e) => setFormData({ ...formData, miniCardOffer: e.target.value })}
                   className="w-full px-3 py-1.5 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none text-xs bg-white"
+                />
+              </div>
+
+              <div>
+                <label className="block font-medium text-gray-600 mb-1">Mini Card Offer (EN)</label>
+                <input
+                  type="text"
+                  placeholder="100% Natural Products"
+                  value={formData.miniCardOfferEn}
+                  onChange={(e) => setFormData({ ...formData, miniCardOfferEn: e.target.value })}
+                  className="w-full px-3 py-1.5 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none text-xs bg-white text-left"
+                  dir="ltr"
                 />
               </div>
             </div>

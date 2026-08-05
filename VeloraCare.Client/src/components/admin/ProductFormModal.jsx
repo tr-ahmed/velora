@@ -5,20 +5,28 @@ import { API_BASE_URL } from '../../services/api';
 export default function ProductFormModal({ isOpen, onClose, product, onSave }) {
   const [formData, setFormData] = useState({
     name: '',
+    nameEn: '',
     tagline: '',
+    taglineEn: '',
     description: '',
+    descriptionEn: '',
     price: '',
     originalPrice: '',
     costPrice: '',
     category: 'serum',
     image: '/images/serum.png',
     badge: '',
+    badgeEn: '',
     stock: 50,
     ingredients: '',
+    ingredientsEn: '',
     benefits: '',
+    benefitsEn: '',
     howToUse: '',
+    howToUseEn: '',
     volume: '50ml',
-    skinType: 'جميع أنواع البشرة'
+    skinType: 'جميع أنواع البشرة',
+    skinTypeEn: 'All Skin Types'
   });
   const [imageMode, setImageMode] = useState('url');
   const [uploading, setUploading] = useState(false);
@@ -30,20 +38,28 @@ export default function ProductFormModal({ isOpen, onClose, product, onSave }) {
       setFormData({
         id: product.id,
         name: product.name || '',
+        nameEn: product.nameEn || '',
         tagline: product.tagline || '',
+        taglineEn: product.taglineEn || '',
         description: product.description || '',
+        descriptionEn: product.descriptionEn || '',
         price: product.price || '',
         originalPrice: product.originalPrice || '',
         costPrice: product.costPrice || '',
         category: product.category || 'serum',
         image: product.image || '/images/serum.png',
         badge: product.badge || '',
+        badgeEn: product.badgeEn || '',
         stock: product.stock || 50,
         ingredients: product.ingredients || '',
+        ingredientsEn: product.ingredientsEn || '',
         benefits: product.benefits || '',
+        benefitsEn: product.benefitsEn || '',
         howToUse: product.howToUse || '',
+        howToUseEn: product.howToUseEn || '',
         volume: product.volume || '50ml',
-        skinType: product.skinType || 'جميع أنواع البشرة'
+        skinType: product.skinType || 'جميع أنواع البشرة',
+        skinTypeEn: product.skinTypeEn || 'All Skin Types'
       });
       if (product.image && product.image.startsWith('http')) {
         setImageMode('url');
@@ -53,20 +69,28 @@ export default function ProductFormModal({ isOpen, onClose, product, onSave }) {
     } else {
       setFormData({
         name: '',
+        nameEn: '',
         tagline: '',
+        taglineEn: '',
         description: '',
+        descriptionEn: '',
         price: '',
         originalPrice: '',
         costPrice: '',
         category: 'serum',
         image: '/images/serum.png',
         badge: '',
+        badgeEn: '',
         stock: 50,
         ingredients: '',
+        ingredientsEn: '',
         benefits: '',
+        benefitsEn: '',
         howToUse: '',
+        howToUseEn: '',
         volume: '50ml',
-        skinType: 'جميع أنواع البشرة'
+        skinType: 'جميع أنواع البشرة',
+        skinTypeEn: 'All Skin Types'
       });
       setImageMode('url');
     }
@@ -153,6 +177,19 @@ export default function ProductFormModal({ isOpen, onClose, product, onSave }) {
             </div>
 
             <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Product Name (EN) *</label>
+              <input
+                type="text"
+                required
+                placeholder="e.g. Emerald Revive Serum"
+                value={formData.nameEn}
+                onChange={(e) => setFormData({ ...formData, nameEn: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none text-left"
+                dir="ltr"
+              />
+            </div>
+
+            <div>
               <label className="block text-xs font-bold text-gray-700 mb-1">التصنيف *</label>
               <select
                 value={formData.category}
@@ -168,15 +205,28 @@ export default function ProductFormModal({ isOpen, onClose, product, onSave }) {
 
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">الشعار الترويجي الفرعي (Tagline)</label>
-            <input
-              type="text"
-              placeholder="مثال: إكسير نباتي مكثف لإشراقة ملكية"
-              value={formData.tagline}
-              onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
-              className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">الشعار الترويجي الفرعي (Tagline)</label>
+              <input
+                type="text"
+                placeholder="مثال: إكسير نباتي مكثف لإشراقة ملكية"
+                value={formData.tagline}
+                onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Tagline (EN)</label>
+              <input
+                type="text"
+                placeholder="e.g. Intense botanical elixir for royal radiance"
+                value={formData.taglineEn}
+                onChange={(e) => setFormData({ ...formData, taglineEn: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none text-left"
+                dir="ltr"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -260,6 +310,18 @@ export default function ProductFormModal({ isOpen, onClose, product, onSave }) {
                 value={formData.skinType}
                 onChange={(e) => setFormData({ ...formData, skinType: e.target.value })}
                 className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Skin Type (EN)</label>
+              <input
+                type="text"
+                placeholder="All Skin Types"
+                value={formData.skinTypeEn}
+                onChange={(e) => setFormData({ ...formData, skinTypeEn: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none text-left"
+                dir="ltr"
               />
             </div>
           </div>
@@ -350,48 +412,100 @@ export default function ProductFormModal({ isOpen, onClose, product, onSave }) {
             )}
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">الشارة الترويجية (Badge)</label>
-            <input
-              type="text"
-              placeholder="الأكثر مبيعاً 👑"
-              value={formData.badge}
-              onChange={(e) => setFormData({ ...formData, badge: e.target.value })}
-              className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">الشارة الترويجية (Badge)</label>
+              <input
+                type="text"
+                placeholder="الأكثر مبيعاً 👑"
+                value={formData.badge}
+                onChange={(e) => setFormData({ ...formData, badge: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Badge (EN)</label>
+              <input
+                type="text"
+                placeholder="Best Seller 👑"
+                value={formData.badgeEn}
+                onChange={(e) => setFormData({ ...formData, badgeEn: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none text-left"
+                dir="ltr"
+              />
+            </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">المكونات النادرة العضوية</label>
-            <textarea
-              rows="2"
-              placeholder="زيت الزمرد النادر، حمض الهيالورونيك، فيتامين C..."
-              value={formData.ingredients}
-              onChange={(e) => setFormData({ ...formData, ingredients: e.target.value })}
-              className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none resize-none"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">المكونات النادرة العضوية</label>
+              <textarea
+                rows="2"
+                placeholder="زيت الزمرد النادر، حمض الهيالورونيك، فيتامين C..."
+                value={formData.ingredients}
+                onChange={(e) => setFormData({ ...formData, ingredients: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none resize-none"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Ingredients (EN)</label>
+              <textarea
+                rows="2"
+                placeholder="Rare Emerald Oil, Hyaluronic Acid, Vitamin C..."
+                value={formData.ingredientsEn}
+                onChange={(e) => setFormData({ ...formData, ingredientsEn: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none resize-none text-left"
+                dir="ltr"
+              />
+            </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">فوائد المستحضر للبشرة</label>
-            <textarea
-              rows="2"
-              placeholder="ترطيب يدوم 72 ساعة، تحفيز الكولاجين، إشراقة وتوحيد لون البشرة..."
-              value={formData.benefits}
-              onChange={(e) => setFormData({ ...formData, benefits: e.target.value })}
-              className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none resize-none"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">فوائد المستحضر للبشرة</label>
+              <textarea
+                rows="2"
+                placeholder="ترطيب يدوم 72 ساعة، تحفيز الكولاجين، إشراقة وتوحيد لون البشرة..."
+                value={formData.benefits}
+                onChange={(e) => setFormData({ ...formData, benefits: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none resize-none"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Benefits (EN)</label>
+              <textarea
+                rows="2"
+                placeholder="72h hydration, collagen boost, brightening..."
+                value={formData.benefitsEn}
+                onChange={(e) => setFormData({ ...formData, benefitsEn: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none resize-none text-left"
+                dir="ltr"
+              />
+            </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">طريقة الاستخدام الصحية</label>
-            <textarea
-              rows="2"
-              placeholder="ضعي 3 قطرات على بشرة نظيفة وجافة صباحاً ومساءً..."
-              value={formData.howToUse}
-              onChange={(e) => setFormData({ ...formData, howToUse: e.target.value })}
-              className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none resize-none"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">طريقة الاستخدام الصحية</label>
+              <textarea
+                rows="2"
+                placeholder="ضعي 3 قطرات على بشرة نظيفة وجافة صباحاً ومساءً..."
+                value={formData.howToUse}
+                onChange={(e) => setFormData({ ...formData, howToUse: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none resize-none"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">How To Use (EN)</label>
+              <textarea
+                rows="2"
+                placeholder="Apply 3 drops to clean dry skin morning and night..."
+                value={formData.howToUseEn}
+                onChange={(e) => setFormData({ ...formData, howToUseEn: e.target.value })}
+                className="w-full px-3.5 py-2 border border-gray-300 rounded-xl text-xs focus:border-[#C5A059] focus:outline-none resize-none text-left"
+                dir="ltr"
+              />
+            </div>
           </div>
 
           <div className="pt-4 border-t flex justify-end gap-3 flex-shrink-0">
