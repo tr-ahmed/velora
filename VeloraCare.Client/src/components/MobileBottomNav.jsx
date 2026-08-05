@@ -161,17 +161,6 @@ export default function MobileBottomNav({
             </div>
 
             <div className="space-y-2 pt-1 text-xs">
-              <button
-                onClick={() => { setIsProfileMenuOpen(false); onOpenTrackOrder(); }}
-                className="w-full p-3 rounded-2xl bg-[#C5A059]/10 hover:bg-[#C5A059]/20 border border-[#C5A059]/30 flex items-center justify-between font-bold text-[#0D221A] transition-colors shadow-sm mt-2"
-              >
-                <div className="flex items-center gap-2.5">
-                  <Truck className="w-4 h-4 text-[#C5A059]" />
-                  <span>{isEn ? 'Track Guest Order' : 'تتبع طلبك كزائر'}</span>
-                </div>
-                <ChevronRight className={`w-4 h-4 text-gray-400 ${isEn ? '' : 'rotate-180'}`} />
-              </button>
-
               {!currentUser ? (
                 <button
                   onClick={() => { setIsProfileMenuOpen(false); onOpenAuthModal(); }}
