@@ -3,7 +3,7 @@ import {
   DollarSign, ShoppingBag, Package, Users, User, Tag, Plus, Edit, Trash2, 
   CheckCircle, Clock, Truck, RefreshCw, LogOut, Sparkles, Filter, Menu, X, ArrowLeft,
   BarChart3, PieChart, TrendingUp, Download, MapPin, Layers, Printer, ChevronLeft,
-  Search, FileSpreadsheet, Calendar, CreditCard, AlertTriangle, ArrowUpRight, ArrowDownRight, Eye, EyeOff, Store, ArrowUp, ArrowDown
+  Search, FileSpreadsheet, Calendar, CreditCard, AlertTriangle, ArrowUpRight, ArrowDownRight, Eye, EyeOff, Store, ArrowUp, ArrowDown, Star, Settings
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import ProductFormModal from './ProductFormModal';
