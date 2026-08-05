@@ -306,8 +306,8 @@ export default function Header({
       </header>
 
       {/* --- MOBILE FLOATING TOP ACTIONS --- */}
-      <div className="sm:hidden fixed top-3 left-3 right-3 z-[60] flex justify-end items-start pointer-events-none print:hidden">
-        <div className="flex flex-col items-end gap-2 pointer-events-auto">
+      <div className="sm:hidden fixed top-3 left-3 right-3 z-[60] flex justify-start items-start pointer-events-none print:hidden">
+        <div className="flex flex-col items-start gap-2 pointer-events-auto">
           {/* Floating Pill */}
           <div className="flex items-center bg-[#0D221A]/90 backdrop-blur-2xl border border-[#C5A059]/40 rounded-full px-2 py-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
             <button
