@@ -45,9 +45,7 @@ export default function MobileBottomNav({
     { id: 'wishlist', icon: Heart, label: isEn ? 'Wishlist' : 'مفضلتي', badge: wishlistCount },
   ];
 
-  if (!currentUser) {
-    baseTabs.push({ id: 'track_order', icon: Truck, label: isEn ? 'Orders' : 'طلباتي' });
-  }
+
 
   baseTabs.push({ id: 'profile', icon: User, label: currentUser ? (currentUser.fullName?.split(' ')[0] || (isEn ? 'Account' : 'حسابي')) : (isEn ? 'Account' : 'حسابي') });
 
@@ -96,7 +94,7 @@ export default function MobileBottomNav({
                 <button
                   key={tab.id}
                   onClick={() => handleTabClick(tab.id)}
-                  className="flex flex-col items-center justify-center min-w-[44px] py-1 relative group active:scale-95 transition-transform"
+                  className="flex flex-1 flex-col items-center justify-center min-w-[36px] px-0.5 py-1 relative group active:scale-95 transition-transform"
                   aria-label={tab.label}
                 >
                   {/* Icon Container with subtle active pill */}
@@ -128,7 +126,7 @@ export default function MobileBottomNav({
                   }`} />
 
                   {/* Label */}
-                  <span className={`text-[9.5px] font-extrabold transition-all duration-200 leading-none ${
+                  <span className={`text-[8.5px] xs:text-[9.5px] font-extrabold transition-all duration-200 leading-none truncate w-full text-center ${
                     isActive ? 'text-[#EAD096]' : 'text-gray-400 font-medium'
                   }`}>
                     {tab.label}
@@ -167,15 +165,27 @@ export default function MobileBottomNav({
 
             <div className="space-y-2 pt-1 text-xs">
               {!currentUser ? (
-                <button
-                  onClick={() => { setIsProfileMenuOpen(false); onOpenAuthModal(); }}
-                  className="w-full p-3 mt-4 rounded-2xl bg-[#0D221A] text-[#EAD096] border border-[#C5A059] flex items-center justify-between font-bold transition-all shadow-md"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <User className="w-4 h-4 text-[#C5A059]" />
-                    <span>{isEn ? 'Login / Register' : 'تسجيل الدخول / إنشاء حساب'}</span>
-                  </div>
-                </button>
+                <>
+                  <button
+                    onClick={() => { setIsProfileMenuOpen(false); onOpenAuthModal(); }}
+                    className="w-full p-3 mt-4 rounded-2xl bg-[#0D221A] text-[#EAD096] border border-[#C5A059] flex items-center justify-between font-bold transition-all shadow-md"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <User className="w-4 h-4 text-[#C5A059]" />
+                      <span>{isEn ? 'Login / Register' : 'تسجيل الدخول / إنشاء حساب'}</span>
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => { setIsProfileMenuOpen(false); onOpenTrackOrder(); }}
+                    className="w-full p-3 rounded-2xl bg-[#E6EDE4] hover:bg-[#F0EBE1] border border-gray-200 flex items-center justify-between font-bold text-[#0D221A] transition-colors mt-2"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Truck className="w-4 h-4 text-[#C5A059]" />
+                      <span>{isEn ? 'Track My Order' : 'تتبع طلبي'}</span>
+                    </div>
+                    <ChevronRight className={`w-4 h-4 text-gray-400 ${isEn ? '' : 'rotate-180'}`} />
+                  </button>
+                </>
               ) : (
                 <>
                   <button
