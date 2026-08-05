@@ -70,9 +70,6 @@ export default function TrackOrderModal({ onClose }) {
         </button>
 
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-[#C5A059]/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-[#C5A059]">
-            <Search className="w-8 h-8 text-[#EAD096]" />
-          </div>
           <h2 className="text-2xl font-bold font-serif text-[#EAD096]">{isEn ? 'Track Your Order' : 'تتبع طلبك'}</h2>
           <p className="text-sm text-gray-400 mt-2">{isEn ? 'Enter your order number and phone to check the status' : 'أدخلي رقم الطلب ورقم الهاتف لمعرفة حالة الشحنة'}</p>
         </div>
