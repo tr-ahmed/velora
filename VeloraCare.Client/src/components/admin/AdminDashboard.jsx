@@ -579,7 +579,9 @@ export default function AdminDashboard({
     { id: 'categories', label: isEn ? `Categories (${categories.length})` : `التصنيفات (${categories.length})`, icon: <Layers className="w-4 h-4 text-[#C5A059]" /> },
     { id: 'customers', label: isEn ? `Customers (${customerDatabase.length})` : `سجل العملاء (${customerDatabase.length})`, icon: <Users className="w-4 h-4" /> },
     { id: 'users', label: isEn ? `Users Management (${users.length})` : `إدارة المستخدمين (${users.length})`, icon: <User className="w-4 h-4" /> },
-    { id: 'coupons', label: isEn ? `Coupons (${coupons.length})` : `الأكواد والعروض (${coupons.length})`, icon: <Tag className="w-4 h-4" /> }
+    { id: 'coupons', label: isEn ? `Coupons (${coupons.length})` : `الأكواد والعروض (${coupons.length})`, icon: <Tag className="w-4 h-4" /> },
+    { id: 'reviews', label: isEn ? 'Reviews & Ratings ⭐' : 'التقييمات والمراجعات ⭐', icon: <Star className="w-4 h-4 text-[#C5A059]" /> },
+    { id: 'settings', label: isEn ? 'Store Settings ⚙️' : 'إعدادات المتجر ⚙️', icon: <Settings className="w-4 h-4" /> }
   ];
 
   return (
@@ -592,7 +594,7 @@ export default function AdminDashboard({
           className="px-3.5 py-1.5 rounded-full bg-[#143529] text-[#EAD096] border border-[#C5A059]/40 text-xs font-bold flex items-center gap-1.5 active:scale-95 transition-all shadow-sm"
         >
           <Store className="w-3.5 h-3.5 text-[#C5A059]" />
-          <span>العودة للمتجر 🛍️</span>
+          <span>{isEn ? 'Return to Store 🛍️' : 'العودة للمتجر 🛍️'}</span>
         </button>
 
         <button
@@ -703,14 +705,14 @@ export default function AdminDashboard({
                 className="w-full py-2.5 rounded-xl bg-[#143529] text-[#EAD096] border border-[#C5A059]/40 font-bold text-xs flex items-center justify-center gap-2"
               >
                 <Store className="w-4 h-4 text-[#C5A059]" />
-                <span>عرض المتجر</span>
+                <span>{isEn ? 'Store View' : 'عرض المتجر'}</span>
               </button>
               <button
                 onClick={onLogout}
                 className="w-full py-2.5 rounded-xl bg-rose-900/30 text-rose-300 border border-rose-500/30 font-bold text-xs flex items-center justify-center gap-2"
               >
                 <LogOut className="w-4 h-4" />
-                <span>تسجيل الخروج</span>
+                <span>{isEn ? 'Logout' : 'تسجيل الخروج'}</span>
               </button>
             </div>
           </div>
@@ -748,14 +750,14 @@ export default function AdminDashboard({
               className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold text-[#0D221A] bg-[#DFE6DB] hover:bg-gray-200 transition-all"
             >
               <Store className="w-4 h-4 text-[#C5A059]" />
-              <span>عودة للمتجر</span>
+              <span>{isEn ? 'Return to Store' : 'عودة للمتجر'}</span>
             </button>
             <button
               onClick={onLogout}
               className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition-all"
             >
               <LogOut className="w-4 h-4" />
-              <span>تسجيل الخروج</span>
+              <span>{isEn ? 'Logout' : 'تسجيل الخروج'}</span>
             </button>
           </div>
         </div>
