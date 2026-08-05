@@ -189,7 +189,6 @@ export default function HeroSlideFormModal({ isOpen, onClose, slide, onSave }) {
                 className="w-full px-3.5 py-2 border border-gray-300 rounded-xl focus:border-[#C5A059] focus:outline-none text-xs"
               />
             </div>
-          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
