@@ -304,15 +304,15 @@ export default function App() {
           </div>
           
           <h1 className="text-4xl sm:text-5xl font-black mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#EAD096] via-[#C5A059] to-[#987834]">
-            {isEn ? 'Imperial Upgrade in Progress' : 'تحديث إمبراطوري قيد التنفيذ'}
+            {isEn ? 'Site Upgrade in Progress' : 'جاري تطوير الموقع حالياً'}
           </h1>
           
           <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#C5A059] to-transparent mx-auto mb-8 rounded-full"></div>
           
           <p className="text-gray-300 text-lg sm:text-xl leading-relaxed max-w-lg mx-auto mb-10 font-light">
             {isEn 
-              ? 'We are currently weaving pure magic into VELORA CARE to bring you a more luxurious shopping experience. Our sanctuary of beauty will reopen shortly.' 
-              : 'نقوم حالياً بنسج السحر الإمبراطوري لتطوير تجربة تسوق أكثر فخامة ورقي في VELORA CARE. سيعود متجركم للعمل قريباً جداً.'}
+              ? 'We are currently upgrading our systems to provide you with a better shopping experience. The store will be back online shortly. Thank you for your patience.' 
+              : 'نعمل حالياً على تحديث وتطوير أنظمة المتجر لتقديم تجربة تسوق أفضل لعملائنا الكرام. سيعود المتجر للعمل في أقرب وقت ممكن، شكراً لتفهمكم.'}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm font-bold tracking-wide">
