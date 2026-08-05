@@ -153,3 +153,12 @@ public class Offer
     public DateTime EndTime { get; set; } = DateTime.UtcNow.AddDays(3);
     public bool IsActive { get; set; } = true;
 }
+
+public class StoreSettings
+{
+    public int Id { get; set; }
+    public decimal ShippingFee { get; set; } = 0;
+    public string WhatsAppNumber { get; set; } = "201008829444";
+    public bool MaintenanceMode { get; set; } = false;
+    public string StoreName { get; set; } = "VELORA CARE";
+}

@@ -332,3 +332,22 @@ export async function deleteOfferApi(id) {
   if (!res.ok) throw new Error('Delete offer failed');
   return true;
 }
+
+/* ============================================================
+   STORE SETTINGS API FUNCTIONS
+   ============================================================ */
+export async function fetchStoreSettingsApi() {
+  const res = await fetch(`${API_BASE_URL}/settings`);
+  if (!res.ok) throw new Error('Fetch settings failed');
+  return await res.json();
+}
+
+export async function updateStoreSettingsApi(settingsData) {
+  const res = await fetch(`${API_BASE_URL}/settings`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(settingsData)
+  });
+  if (!res.ok) throw new Error('Update settings failed');
+  return await res.json();
+}

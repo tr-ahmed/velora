@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowLeft, Tag, ShieldCheck, Sparkles } from 'lucide-react';
-import { validateCouponApi } from '../services/api';
+import { validateCouponApi, fetchStoreSettingsApi } from '../services/api';
 import { useTranslation } from 'react-i18next';
 
 export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem, onProceedToCheckout }) {
@@ -12,12 +12,21 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
   const [couponSuccess, setCouponSuccess] = useState('');
   const [couponLoading, setCouponLoading] = useState(false);
 
+  const [shippingFee, setShippingFee] = useState(0);
+  
+  React.useEffect(() => {
+    if (isOpen) {
+      fetchStoreSettingsApi().then(settings => {
+        if (settings) setShippingFee(settings.shippingFee || 0);
+      }).catch(err => console.error('Failed to load store settings', err));
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const discountAmount = Math.round((subtotal * discountPercent) / 100);
-  const shippingFee = 0; // Paid directly to courier
-  const total = subtotal - discountAmount;
+  const total = subtotal - discountAmount + shippingFee;
 
   const handleApplyCoupon = async (e) => {
     e.preventDefault();
@@ -174,7 +183,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
               )}
               <div className="flex justify-between text-gray-500">
                 <span>{isEn ? 'Shipping Fee:' : 'رسوم الشحن:'}</span>
-                <span className="text-[10px]">{isEn ? 'Paid to courier' : 'يُدفع لشركة الشحن'}</span>
+                <span className="font-bold text-[#987834]">{shippingFee > 0 ? `${shippingFee} ج.م` : (isEn ? 'Free' : 'مجانًا')}</span>
               </div>
               <div className="flex justify-between text-sm font-bold text-[#0D221A] pt-2 border-t border-gray-100">
                 <span>{isEn ? 'Total:' : 'المجموع الكلي:'}</span>
@@ -311,7 +320,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
               )}
               <div className="flex justify-between text-gray-500">
                 <span>{isEn ? 'Shipping Fee:' : 'رسوم الشحن:'}</span>
-                <span className="text-[10px]">{isEn ? 'Paid to courier' : 'يُدفع لشركة الشحن'}</span>
+                <span className="font-bold text-[#987834]">{shippingFee > 0 ? `${shippingFee} ج.م` : (isEn ? 'Free' : 'مجانًا')}</span>
               </div>
               <div className="flex justify-between text-base font-extrabold text-[#0D221A] pt-2 border-t font-serif">
                 <span>{isEn ? 'Total:' : 'المجموع الكلي:'}</span>

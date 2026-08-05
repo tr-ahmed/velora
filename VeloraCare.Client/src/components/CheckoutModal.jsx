@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, CheckCircle, CreditCard, Truck, ShieldCheck, Sparkles, ShoppingBag, ArrowLeft, MapPin, Phone, User, Package, Tag } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { createOrderApi, validateCouponApi } from '../services/api';
+import { createOrderApi, validateCouponApi, fetchStoreSettingsApi } from '../services/api';
 import { EGYPT_GOVERNORATES } from '../data/governorates';
 import { useTranslation } from 'react-i18next';
 
@@ -46,13 +46,22 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
     }
   }, [isOpen, currentUser]);
 
+  const [shippingFee, setShippingFee] = useState(0);
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchStoreSettingsApi().then(settings => {
+        if (settings) setShippingFee(settings.shippingFee || 0);
+      }).catch(err => console.error('Failed to load store settings', err));
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const discountAmount = appliedCoupon ? Math.round((subtotal * appliedCoupon.discountPercentage) / 100) : 0;
   const discountedSubtotal = Math.max(0, subtotal - discountAmount);
-  const shippingFee = 0; // Paid directly to courier
-  const total = discountedSubtotal;
+  const total = discountedSubtotal + shippingFee;
 
   const handleApplyCoupon = async (e) => {
     e.preventDefault();
@@ -234,7 +243,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                   )}
                   <div className="flex justify-between text-gray-400">
                     <span>{isEn ? 'Shipping Fee:' : 'الشحن والتوصيل:'}</span>
-                    <span className="text-[10px]">{isEn ? 'Paid to courier' : 'يُدفع لشركة الشحن'}</span>
+                    <span className="font-bold text-[#987834]">{shippingFee > 0 ? `${shippingFee} ج.م` : (isEn ? 'Free' : 'مجانًا')}</span>
                   </div>
                   <div className="flex justify-between text-base font-extrabold text-[#EAD096] pt-2 border-t border-[#C5A059]/20 font-serif">
                     <span>{isEn ? 'Total:' : 'المجموع النهائي:'}</span>
@@ -451,7 +460,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                 </div>
                 <div className="flex justify-between text-gray-400 text-[11px]">
                   <span>{isEn ? 'Shipping:' : 'الشحن والتوصيل:'}</span>
-                  <span className="text-[10px]">{isEn ? 'Paid to courier' : 'يُدفع لشركة الشحن'}</span>
+                  <span className="font-bold">{completedOrder.shippingFee > 0 ? `${completedOrder.shippingFee} ج.م` : (isEn ? 'Free' : 'مجانًا')}</span>
                 </div>
                 <div className="flex justify-between text-[#EAD096] font-extrabold text-base pt-2 border-t border-[#C5A059]/20 font-serif">
                   <span>{isEn ? 'Total:' : 'الإجمالي:'}</span>

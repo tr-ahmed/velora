@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MessageCircle, X } from 'lucide-react';
+import { fetchStoreSettingsApi } from '../services/api';
 
 const channels = [
   {
     name: 'WhatsApp',
-    url: 'https://wa.me/201008829444',
+    url: 'https://wa.me/201008829444', // Default, will be overridden
     color: 'bg-[#25D366]',
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
@@ -46,12 +47,26 @@ const channels = [
 
 export default function ContactWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [whatsAppNumber, setWhatsAppNumber] = useState('201008829444');
+
+  useEffect(() => {
+    fetchStoreSettingsApi().then(settings => {
+      if (settings && settings.whatsAppNumber) {
+        setWhatsAppNumber(settings.whatsAppNumber);
+      }
+    }).catch(err => console.error('Failed to load store settings', err));
+  }, []);
+
+  // Update WhatsApp URL dynamically
+  const dynamicChannels = channels.map(ch => 
+    ch.name === 'WhatsApp' ? { ...ch, url: `https://wa.me/${whatsAppNumber}` } : ch
+  );
 
   return (
     <div className="fixed bottom-24 sm:bottom-6 left-3 sm:left-6 z-50 flex flex-col items-start gap-2 sm:gap-3">
       {isOpen && (
         <div className="flex flex-col gap-2 sm:gap-2.5 animate-slideUp">
-          {channels.map((ch) => (
+          {dynamicChannels.map((ch) => (
             <a
               key={ch.name}
               href={ch.url}

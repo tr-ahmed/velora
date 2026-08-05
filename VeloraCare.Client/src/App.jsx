@@ -20,7 +20,7 @@ import InfoModal from './components/InfoModal';
 import { Search, X } from 'lucide-react';
 import { 
   fetchProductsFromApi,
-  fetchHeroSlidesApi, fetchHeroSettingsApi, saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi
+  fetchHeroSlidesApi, fetchHeroSettingsApi, saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi, fetchStoreSettingsApi
 } from './services/api';
 import { useTranslation } from 'react-i18next';
 
@@ -52,6 +52,7 @@ export default function App() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isTrackOrderOpen, setIsTrackOrderOpen] = useState(false);
   const [isAdminView, setIsAdminView] = useState(false);
+  const [storeSettings, setStoreSettings] = useState(null);
 
   const [currentUser, setCurrentUser] = useState(() => {
     try {
@@ -171,6 +172,15 @@ export default function App() {
     return () => window.removeEventListener('hashchange', checkAdminRoute);
   }, [currentUser]);
 
+  // Load Global Store Settings
+  useEffect(() => {
+    fetchStoreSettingsApi().then(settings => {
+      if (settings) {
+        setStoreSettings(settings);
+      }
+    }).catch(err => console.error('Failed to load global store settings:', err));
+  }, []);
+
   const loadProducts = async () => {
     try {
       const category = selectedCategory === 'offers' ? 'all' : selectedCategory;
@@ -258,23 +268,36 @@ export default function App() {
   const cartTotalCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   // Render Admin Dashboard if Admin View is Active
-  if (isAdminView) {
-    if (currentUser?.role === 'Admin') {
-      return (
-        <AdminDashboard
-          user={currentUser}
-          onLogout={() => {
-            setIsAdminView(false);
-            setCurrentUser(null);
-          }}
-          onGoToStore={() => setIsAdminView(false)}
-          heroSlides={heroSlides}
-          setHeroSlides={setHeroSlides}
-          heroSettings={heroSettings}
-          setHeroSettings={setHeroSettings}
-        />
-      );
-    }
+  if (isAdminView && currentUser?.role === 'Admin') {
+    return (
+      <AdminDashboard
+        user={currentUser}
+        onLogout={() => {
+          setIsAdminView(false);
+          setCurrentUser(null);
+        }}
+        onGoToStore={() => {
+          setIsAdminView(false);
+          window.location.hash = '';
+        }}
+        heroSlides={heroSlides}
+        setHeroSlides={setHeroSlides}
+        heroSettings={heroSettings}
+        setHeroSettings={setHeroSettings}
+      />
+    );
+  }
+
+  if (storeSettings?.maintenanceMode && currentUser?.role !== 'Admin') {
+    return (
+      <div className="min-h-screen bg-[#0D221A] text-[#EAD096] flex flex-col items-center justify-center p-6 text-center font-serif">
+        <Sparkles className="w-16 h-16 mb-6 text-[#C5A059]" />
+        <h1 className="text-3xl font-bold mb-4">{isEn ? 'Under Maintenance' : 'المتجر تحت الصيانة'}</h1>
+        <p className="text-gray-400 max-w-md">
+          {isEn ? 'We are currently upgrading our systems to serve you better. Please check back soon.' : 'نقوم حالياً بتحديث أنظمتنا لتقديم خدمة أفضل. يرجى زيارتنا لاحقاً.'}
+        </p>
+      </div>
+    );
   }
 
   return (

@@ -17,6 +17,7 @@ public class VeloraDbContext : DbContext
     public DbSet<HeroSlide> HeroSlides => Set<HeroSlide>();
     public DbSet<HeroSettings> HeroSettings => Set<HeroSettings>();
     public DbSet<Offer> Offers => Set<Offer>();
+    public DbSet<StoreSettings> StoreSettings => Set<StoreSettings>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -48,6 +49,10 @@ public class VeloraDbContext : DbContext
 
         modelBuilder.Entity<OrderItem>()
             .Property(oi => oi.TotalPrice)
+            .HasColumnType("decimal(18,2)");
+
+        modelBuilder.Entity<StoreSettings>()
+            .Property(s => s.ShippingFee)
             .HasColumnType("decimal(18,2)");
     }
 }

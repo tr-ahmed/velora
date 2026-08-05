@@ -20,7 +20,8 @@ import {
   fetchCategoriesApi, saveCategoryApi, deleteCategoryApi,
   saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi,
   fetchUsersApi, updateUserRoleApi, deleteUserApi, updateUserApi,
-  fetchAdminOffersApi, saveOfferApi, toggleOfferApi, deleteOfferApi
+  fetchAdminOffersApi, saveOfferApi, toggleOfferApi, deleteOfferApi,
+  fetchStoreSettingsApi, updateStoreSettingsApi
 } from '../../services/api';
 import { EGYPT_GOVERNORATES } from '../../data/governorates';
 
@@ -122,6 +123,30 @@ export default function AdminDashboard({
   const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
   const [editingOffer, setEditingOffer] = useState(null);
   const [editingHeroSlide, setEditingHeroSlide] = useState(null);
+  const [storeSettings, setStoreSettings] = useState({
+    shippingFee: 0,
+    whatsAppNumber: '201008829444',
+    maintenanceMode: false,
+    storeName: 'VELORA CARE'
+  });
+  const [isSavingSettings, setIsSavingSettings] = useState(false);
+  const [lastOrdersCount, setLastOrdersCount] = useState(0);
+
+  // Store Settings Action
+  const handleSaveStoreSettings = async (e) => {
+    e.preventDefault();
+    setIsSavingSettings(true);
+    try {
+      const updated = await updateStoreSettingsApi(storeSettings);
+      setStoreSettings(updated);
+      alert(isEn ? 'Settings saved successfully!' : 'تم حفظ الإعدادات بنجاح!');
+    } catch (err) {
+      console.error(err);
+      alert(isEn ? 'Failed to save settings' : 'فشل حفظ الإعدادات');
+    } finally {
+      setIsSavingSettings(false);
+    }
+  };
 
   // Hero Slide Action Handlers linked to C# API
   const handleSaveHeroSlide = async (slideData) => {
@@ -203,7 +228,7 @@ export default function AdminDashboard({
   const loadData = async () => {
     setLoading(true);
     try {
-      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, usersRes, offersRes, categoriesRes] = await Promise.all([
+      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, usersRes, offersRes, categoriesRes, settingsRes] = await Promise.all([
         fetchDashboardStatsApi(),
         fetchAnalyticsReportsApi(),
         fetchProductsFromApi('all'),
@@ -211,7 +236,8 @@ export default function AdminDashboard({
         fetchCouponsApi(),
         fetchUsersApi(),
         fetchAdminOffersApi(),
-        fetchCategoriesApi()
+        fetchCategoriesApi(),
+        fetchStoreSettingsApi()
       ]);
       setStats(statsRes || { totalRevenue: 0, totalOrders: 0, totalProducts: 0, totalCustomers: 0, activeCoupons: 0, recentOrders: [] });
       setAnalytics(analyticsRes || { generatedAt: new Date().toISOString(), totalRevenue: 0, totalOrders: 0, averageOrderValue: 0, customerSatisfactionRate: '0%', conversionRate: '0%', salesByCity: [], salesByCategory: [], ordersByStatus: [], topProducts: [] });
@@ -221,6 +247,8 @@ export default function AdminDashboard({
       setUsers(Array.isArray(usersRes) ? usersRes : []);
       setOffers(Array.isArray(offersRes) ? offersRes : []);
       setCategories(Array.isArray(categoriesRes) ? categoriesRes : []);
+      if (settingsRes) setStoreSettings(settingsRes);
+      if (statsRes?.totalOrders) setLastOrdersCount(statsRes.totalOrders);
     } catch (err) {
       console.error('Error loading admin data:', err);
     } finally {
@@ -232,11 +260,120 @@ export default function AdminDashboard({
     loadData();
   }, []);
 
+  // Polling for live notifications (30s)
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const stats = await fetchDashboardStatsApi();
+        if (stats && stats.totalOrders > lastOrdersCount && lastOrdersCount > 0) {
+          // Play a sound
+          const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+          audio.play().catch(e => console.log('Audio blocked', e));
+          // Update last orders count so we don't keep playing
+          setLastOrdersCount(stats.totalOrders);
+          // Show alert (or ideally toast)
+          alert(isEn ? '🔔 New Order Received!' : '🔔 استلام طلب جديد!');
+          // Refresh orders implicitly
+          const newOrders = await fetchAllOrdersApi();
+          setOrders(Array.isArray(newOrders) ? newOrders : []);
+          setStats(stats);
+        } else if (stats && stats.totalOrders > 0 && lastOrdersCount === 0) {
+           setLastOrdersCount(stats.totalOrders);
+        }
+      } catch (err) {
+        console.error('Polling error:', err);
+      }
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [lastOrdersCount, isEn]);
+
   const handleUpdateOrderStatus = async (orderId, newStatus) => {
     await updateOrderStatusApi(orderId, newStatus);
     setOrders(prev =>
       prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o)
     );
+  };
+
+  const printWaybill = (order) => {
+    const printWindow = window.open('', '_blank');
+    const html = `
+      <html dir="rtl">
+        <head>
+          <title>بوليصة شحن - ${order.orderNumber}</title>
+          <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; color: #0D221A; }
+            .header { text-align: center; border-bottom: 2px solid #C5A059; padding-bottom: 10px; margin-bottom: 20px; }
+            .logo { font-size: 24px; font-weight: bold; color: #0D221A; margin-bottom: 5px; }
+            .waybill-title { font-size: 18px; color: #555; }
+            .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+            .box { border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #fafafa; }
+            .box h3 { margin-top: 0; color: #C5A059; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 14px; }
+            .box p { margin: 5px 0; font-size: 13px; font-weight: bold; }
+            table { w-full; width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: right; }
+            th { background: #0D221A; color: #EAD096; }
+            .total-row { font-weight: bold; font-size: 14px; }
+            .barcode { text-align: center; margin-top: 30px; font-family: monospace; font-size: 20px; letter-spacing: 5px; padding: 20px; border: 2px dashed #ccc; background: #fff; }
+            .footer { text-align: center; margin-top: 20px; font-size: 11px; color: #777; }
+            @media print { body { padding: 0; } .no-print { display: none; } }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="logo">VELORA CARE</div>
+            <div class="waybill-title">بوليصة شحن / Waybill</div>
+          </div>
+          
+          <div class="info-grid">
+            <div class="box">
+              <h3>بيانات المستلم (Receiver)</h3>
+              <p>الاسم: ${order.fullName}</p>
+              <p>الهاتف: <span dir="ltr">${order.phone}</span></p>
+              <p>المحافظة: ${order.city}</p>
+              <p>العنوان التفصيلي: ${order.address}</p>
+            </div>
+            
+            <div class="box">
+              <h3>بيانات الطلب (Order Info)</h3>
+              <p>رقم الطلب: ${order.orderNumber}</p>
+              <p>تاريخ الطلب: ${new Date(order.createdAt).toLocaleDateString('ar-EG')}</p>
+              <p>طريقة الدفع: ${paymentLabels[order.paymentMethod] || order.paymentMethod}</p>
+              <p>المبلغ المطلوب تحصيله (COD): ${order.paymentMethod === 'cod' ? order.total + ' ج.م' : 'خالص (Paid)'}</p>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>المنتج</th>
+                <th>الكمية</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${(order.items || []).map(item => `
+                <tr>
+                  <td>${item.productName}</td>
+                  <td>${item.quantity}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <div class="barcode">
+            *${order.orderNumber}*
+          </div>
+          
+          <div class="footer">
+            شكراً لتسوقكم من VELORA CARE. إذا كان لديكم أي استفسار يرجى التواصل معنا عبر واتساب: ${storeSettings?.whatsAppNumber || '201008829444'}
+          </div>
+          <script>
+            window.onload = function() { window.print(); window.close(); }
+          </script>
+        </body>
+      </html>
+    `;
+    printWindow.document.write(html);
+    printWindow.document.close();
   };
 
   const handleSaveProduct = async (productData) => {
@@ -656,6 +793,20 @@ export default function AdminDashboard({
           >
             <LogOut className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">{isEn ? 'Logout' : 'خروج'}</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('settings')}
+            className="flex flex-col items-center justify-center p-2 rounded-2xl transition-all"
+          >
+            <Settings 
+              className={`w-5 h-5 mb-1 transition-colors ${
+                activeTab === 'settings' ? 'text-[#EAD096]' : 'text-gray-400'
+              }`} 
+            />
+            <div className={`w-1 h-1 rounded-full ${
+              activeTab === 'settings' ? 'bg-[#C5A059]/20 text-[#EAD096] border border-[#C5A059]/40' : ''
+            }`} />
           </button>
         </div>
       </header>
@@ -1544,6 +1695,15 @@ export default function AdminDashboard({
                       التفاصيل
                     </button>
 
+                    <button
+                      onClick={() => printWaybill(order)}
+                      className="px-2.5 py-1 rounded-lg bg-gray-100 text-[#0D221A] hover:bg-[#C5A059] hover:text-white transition-colors text-[10px] font-bold flex items-center gap-1"
+                      title="طباعة بوليصة الشحن"
+                    >
+                      <Printer className="w-3 h-3" />
+                      بوليصة
+                    </button>
+
                     <select
                       value={order.status}
                       onChange={(e) => handleUpdateOrderStatus(order.id, e.target.value)}
@@ -1593,13 +1753,22 @@ export default function AdminDashboard({
                         </span>
                       </td>
                       <td className="py-3 px-2">
-                        <button
-                          onClick={() => setSelectedOrderDetails(order)}
-                          className="p-1.5 rounded-lg bg-gray-100 text-[#0D221A] hover:bg-[#C5A059] hover:text-white transition-colors"
-                          title="عرض المنتجات والتفاصيل"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                        </button>
+                        <div className="flex gap-1">
+                          <button
+                            onClick={() => setSelectedOrderDetails(order)}
+                            className="p-1.5 rounded-lg bg-gray-100 text-[#0D221A] hover:bg-[#C5A059] hover:text-white transition-colors"
+                            title="عرض المنتجات والتفاصيل"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => printWaybill(order)}
+                            className="p-1.5 rounded-lg bg-gray-100 text-[#0D221A] hover:bg-[#C5A059] hover:text-white transition-colors"
+                            title="طباعة بوليصة الشحن"
+                          >
+                            <Printer className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </td>
                       <td className="py-3 px-2">
                         <select
@@ -2393,6 +2562,90 @@ export default function AdminDashboard({
           </div>
         )}
 
+        {/* TAB 8: STORE SETTINGS */}
+        {activeTab === 'settings' && (
+          <div className="bg-white rounded-3xl border border-[#C5A059]/30 p-4 sm:p-6 shadow-sm space-y-6 animate-fadeIn">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-100 pb-4">
+              <div>
+                <h3 className="text-lg sm:text-xl font-bold font-serif text-[#0D221A]">إعدادات المتجر العامة ⚙️</h3>
+                <p className="text-xs text-gray-500">تحكم في إعدادات الشحن والتواصل وحالة الموقع</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleSaveStoreSettings} className="space-y-6 max-w-2xl">
+              <div className="space-y-4">
+                
+                {/* Store Name */}
+                <div>
+                  <label className="block text-xs font-bold text-[#0D221A] mb-1">اسم المتجر</label>
+                  <input
+                    type="text"
+                    required
+                    value={storeSettings.storeName || ''}
+                    onChange={(e) => setStoreSettings(prev => ({ ...prev, storeName: e.target.value }))}
+                    className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] text-sm"
+                  />
+                </div>
+
+                {/* Shipping Fee */}
+                <div>
+                  <label className="block text-xs font-bold text-[#0D221A] mb-1">تكلفة الشحن الثابتة (ج.م)</label>
+                  <input
+                    type="number"
+                    required
+                    min="0"
+                    value={storeSettings.shippingFee ?? 0}
+                    onChange={(e) => setStoreSettings(prev => ({ ...prev, shippingFee: Number(e.target.value) }))}
+                    className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] text-sm"
+                  />
+                  <p className="text-[10px] text-gray-500 mt-1">سيتم تطبيق هذه التكلفة على جميع الطلبات تلقائياً في السلة ومرحلة الدفع.</p>
+                </div>
+
+                {/* WhatsApp Number */}
+                <div>
+                  <label className="block text-xs font-bold text-[#0D221A] mb-1">رقم الواتساب (للتواصل السريع)</label>
+                  <input
+                    type="text"
+                    required
+                    dir="ltr"
+                    value={storeSettings.whatsAppNumber || ''}
+                    onChange={(e) => setStoreSettings(prev => ({ ...prev, whatsAppNumber: e.target.value }))}
+                    className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] text-sm text-left"
+                    placeholder="201008829444"
+                  />
+                </div>
+
+                {/* Maintenance Mode */}
+                <div className="flex items-center gap-3 bg-rose-50 p-4 rounded-xl border border-rose-200">
+                  <input
+                    type="checkbox"
+                    id="maintenanceMode"
+                    checked={storeSettings.maintenanceMode || false}
+                    onChange={(e) => setStoreSettings(prev => ({ ...prev, maintenanceMode: e.target.checked }))}
+                    className="w-5 h-5 text-rose-600 rounded focus:ring-rose-500 cursor-pointer"
+                  />
+                  <label htmlFor="maintenanceMode" className="text-sm font-bold text-rose-900 cursor-pointer select-none">
+                    تفعيل وضع الصيانة (إيقاف المتجر للزوار مؤقتاً)
+                  </label>
+                </div>
+
+              </div>
+
+              <div className="pt-4 border-t border-gray-100 flex justify-end">
+                <button
+                  type="submit"
+                  disabled={isSavingSettings}
+                  className="btn-primary px-8 py-3 flex items-center gap-2"
+                >
+                  <CheckCircle className="w-5 h-5" />
+                  <span>{isSavingSettings ? 'جاري الحفظ...' : 'حفظ الإعدادات'}</span>
+                </button>
+              </div>
+            </form>
+
+          </div>
+        )}
+
       </div>
 
       {/* Order Details Modal */}
@@ -2601,6 +2854,20 @@ export default function AdminDashboard({
             <Tag className="w-5 h-5" />
           </div>
           <span className="text-[10px] font-bold">الأكواد</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('settings')}
+          className={`flex flex-col items-center justify-center gap-1 relative transition-all duration-200 active:scale-90 ${
+            activeTab === 'settings' ? 'text-[#EAD096]' : 'text-gray-400'
+          }`}
+        >
+          <div className={`p-1.5 rounded-2xl relative transition-all ${
+            activeTab === 'settings' ? 'bg-[#C5A059]/20 text-[#EAD096] border border-[#C5A059]/40' : ''
+          }`}>
+            <Settings className="w-5 h-5" />
+          </div>
+          <span className="text-[10px] font-bold">الإعدادات</span>
         </button>
       </div>
 
