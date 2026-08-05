@@ -12,7 +12,8 @@ export default function MobileBottomNav({
   currentUser,
   onOpenAuthModal,
   onOpenAdminDashboard,
-  onLogout
+  onLogout,
+  onOpenCart
 }) {
   const { t, i18n } = useTranslation();
   const isEn = i18n.language === 'en';
