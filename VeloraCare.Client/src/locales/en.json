@@ -21,5 +21,13 @@
   "phoneLabel": "Phone Number",
   "trackButton": "Track",
   "close": "Close",
-  "buyNow": "Buy Now"
+  "buyNow": "Buy Now",
+  "quiz": "Skin Routine Quiz",
+  "about": "The VELORA Story",
+  "searchPlaceholder": "Search for a product...",
+  "noResults": "No matching results",
+  "viewAllResults": "View all results in store",
+  "admin": "Admin",
+  "myAccount": "My Account",
+  "login": "Login"
 }

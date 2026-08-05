@@ -21,5 +21,13 @@
   "phoneLabel": "رقم الهاتف",
   "trackButton": "تتبع",
   "close": "إغلاق",
-  "buyNow": "اشتري الآن"
+  "buyNow": "اشتري الآن",
+  "quiz": "اختبار روتين البشرة",
+  "about": "قصة VELORA",
+  "searchPlaceholder": "ابحثي عن منتج...",
+  "noResults": "لا توجد نتائج مطابقة",
+  "viewAllResults": "عرض جميع النتائج في المتجر",
+  "admin": "الأدمن",
+  "myAccount": "حسابي",
+  "login": "دخول"
 }

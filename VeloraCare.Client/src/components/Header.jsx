@@ -138,7 +138,7 @@ export default function Header({
                 <form onSubmit={handleSearchSubmit}>
                   <input
                     type="text"
-                    placeholder="ابحثي عن منتج..."
+                    placeholder={t('searchPlaceholder', 'ابحثي عن منتج...')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={() => setIsSearchFocused(true)}
@@ -170,14 +170,14 @@ export default function Header({
                         </div>
                       ))
                     ) : (
-                      <p className="text-xs text-gray-400 p-2 text-center">لا توجد نتائج مطابقة</p>
+                      <p className="text-xs text-gray-400 p-2 text-center">{t('noResults', 'لا توجد نتائج مطابقة')}</p>
                     )}
                     {searchResults.length > 0 && (
                       <button
                         onClick={handleSearchSubmit}
                         className="w-full text-center text-[10px] text-[#EAD096] font-bold py-1.5 border-t border-[#C5A059]/20 hover:text-white flex items-center justify-center gap-1"
                       >
-                        <span>عرض جميع النتائج في المتجر</span>
+                        <span>{t('viewAllResults', 'عرض جميع النتائج في المتجر')}</span>
                         <ArrowLeft className="w-3 h-3" />
                       </button>
                     )}
@@ -210,7 +210,7 @@ export default function Header({
                       title="لوحة تحكم الأدمن"
                     >
                       <ShieldCheck className="w-3.5 h-3.5" />
-                      <span>الأدمن 👑</span>
+                      <span>{t('admin', 'الأدمن')} 👑</span>
                     </button>
                   )}
 
@@ -231,7 +231,7 @@ export default function Header({
                         <User className="w-3 h-3 stroke-[2.5]" />
                       )}
                     </div>
-                    <span className="hidden sm:inline">{currentUser.fullName?.split(' ')[0] || 'حسابي'}</span>
+                    <span className="hidden sm:inline">{currentUser.fullName?.split(' ')[0] || t('myAccount', 'حسابي')}</span>
                   </button>
 
                   {/* Quick Logout Icon */}
@@ -249,7 +249,7 @@ export default function Header({
                   className="hidden sm:flex items-center gap-1.5 text-xs text-[#EAD096] font-bold hover:text-white px-3.5 py-1.5 rounded-full bg-[#143529] border border-[#C5A059]/40 hover:border-[#C5A059] transition-all shadow-sm"
                 >
                   <User className="w-3.5 h-3.5 text-[#C5A059]" />
-                  <span>دخول</span>
+                  <span>{t('login', 'دخول')}</span>
                 </button>
               )}
 
