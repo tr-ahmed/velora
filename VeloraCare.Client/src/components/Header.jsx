@@ -72,41 +72,9 @@ export default function Header({
 
   return (
     <>
-      {/* --- TOP BAR --- */}
-      <div className="hidden sm:flex bg-[#081611] text-[#EAD096] text-[10px] sm:text-xs py-1.5 px-4 lg:px-8 items-center justify-between border-b border-[#C5A059]/20 font-medium z-50 relative">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={toggleLanguage}
-            className="flex items-center gap-1.5 hover:text-white transition-colors"
-            title={isEn ? "Switch to Arabic" : "تغيير اللغة"}
-          >
-            <Globe className="w-3.5 h-3.5" />
-            <span className="font-bold">{t('language', 'English')}</span>
-          </button>
-          
-          <div className="w-px h-3 bg-[#C5A059]/30 hidden sm:block"></div>
-          
-          <button
-            onClick={onOpenTrackOrder}
-            className="flex items-center gap-1.5 hover:text-white transition-colors"
-          >
-            <Truck className="w-3.5 h-3.5" />
-            <span>{t('trackOrder', 'تتبع طلبك')}</span>
-          </button>
-        </div>
-
-        {/* Center / Promotional */}
-        <div className="hidden md:flex items-center gap-1.5 text-gray-300">
-          <Tag className="w-3 h-3 text-[#C5A059]" />
-          <span>{isEn ? 'Free shipping on orders over 1000 EGP' : 'شحن مجاني للطلبات أكثر من ١٠٠٠ ج.م'}</span>
-        </div>
-        
-        {/* Empty div for flex balance if needed, but not necessary since justify-between works */}
-      </div>
-
       {/* --- MAIN HEADER --- */}
       <header className="sticky top-0 z-40 w-full bg-[#0D221A]/90 backdrop-blur-xl border-b border-[#C5A059]/30 shadow-xl print:hidden">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 sm:py-2.5">
           <div className="flex items-center justify-between gap-4 sm:gap-8">
             
             {/* 1. Brand Logo */}
@@ -152,7 +120,26 @@ export default function Header({
             </div>
 
             {/* 3. Icons & Actions */}
-            <div className="flex items-center gap-4 sm:gap-5">
+            <div className="flex items-center gap-3 sm:gap-4">
+
+              {/* Language & Track Order (Desktop) */}
+              <div className="hidden lg:flex items-center gap-2">
+                <button
+                  onClick={toggleLanguage}
+                  className="flex items-center gap-1 p-1.5 text-gray-300 hover:text-[#EAD096] transition-colors"
+                  title={isEn ? "Switch to Arabic" : "تغيير اللغة"}
+                >
+                  <Globe className="w-4 h-4" />
+                  <span className="text-[10px] font-bold">{t('language', 'English')}</span>
+                </button>
+                <button
+                  onClick={onOpenTrackOrder}
+                  className="flex items-center gap-1 p-1.5 text-gray-300 hover:text-[#EAD096] transition-colors"
+                  title={t('trackOrder', 'تتبع طلبك')}
+                >
+                  <Truck className="w-4 h-4" />
+                </button>
+              </div>
               
               {/* Expanding Search Bar (Desktop) */}
               <div className="relative hidden lg:flex items-center justify-end w-8 focus-within:w-48 xl:focus-within:w-64 transition-all duration-300 ease-out z-50">
