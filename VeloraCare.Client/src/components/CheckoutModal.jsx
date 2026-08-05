@@ -29,14 +29,20 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
   const [validatingCoupon, setValidatingCoupon] = useState(false);
 
   useEffect(() => {
-    if (isOpen && currentUser) {
-      setFormData(prev => ({
-        ...prev,
-        fullName: currentUser.fullName || prev.fullName,
-        phone: currentUser.phone || prev.phone,
-        city: currentUser.city || prev.city,
-        address: currentUser.address || prev.address
-      }));
+    if (isOpen) {
+      setStep('form');
+      setCompletedOrder(null);
+      setOrderError('');
+      
+      if (currentUser) {
+        setFormData(prev => ({
+          ...prev,
+          fullName: currentUser.fullName || prev.fullName,
+          phone: currentUser.phone || prev.phone,
+          city: currentUser.city || prev.city,
+          address: currentUser.address || prev.address
+        }));
+      }
     }
   }, [isOpen, currentUser]);
 
