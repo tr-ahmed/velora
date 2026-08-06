@@ -359,7 +359,7 @@ export async function deleteOfferApi(id) {
    STORE SETTINGS API FUNCTIONS
    ============================================================ */
 export async function fetchStoreSettingsApi() {
-  const res = await fetch(`${API_BASE_URL}/settings`);
+  const res = await fetch(`${API_BASE_URL}/settings?_t=${Date.now()}`, { cache: 'no-store' });
   if (!res.ok) throw new Error('Fetch settings failed');
   return await res.json();
 }
