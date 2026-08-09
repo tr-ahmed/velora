@@ -117,9 +117,9 @@ export default function Footer({ onOpenQuiz, setActiveTab, onOpenInfoModal }) {
                 <Phone className="w-4 h-4 text-[#C5A059]" />
                 <span dir="ltr">+20 103 803 5240</span>
               </a>
-              <a href="mailto:care@velorabeauty.eg" className="flex items-center gap-2 hover:text-[#C5A059] transition-colors">
+              <a href="mailto:veloracareeg@gmail.com" className="flex items-center gap-2 hover:text-[#C5A059] transition-colors">
                 <Mail className="w-4 h-4 text-[#C5A059]" />
-                <span>care@velorabeauty.eg</span>
+                <span>veloracareeg@gmail.com</span>
               </a>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-[#C5A059]" />
