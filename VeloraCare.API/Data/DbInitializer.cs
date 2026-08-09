@@ -386,6 +386,49 @@ public static class DbInitializer
             context.SaveChanges();
         }
 
+        if (!context.Testimonials.Any())
+        {
+            context.Testimonials.AddRange(
+                new Testimonial
+                {
+                    Name = "يارا الشرقاوي",
+                    NameEn = "Yara El Sharkawy",
+                    Role = "بلوجر عناية بالبشرة - القاهرة",
+                    RoleEn = "Skincare Blogger - Cairo",
+                    Avatar = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200",
+                    Comment = "بجد منتجات ڤيلورا كير غيرت بشرتي ١٨٠ درجة! الغسول تحفة وبينضف من غير ما ينشف الوش خالص، وفرق معايا جداً في النضارة.",
+                    CommentEn = "Velora Care products literally changed my skin 180 degrees! The cleanser is amazing and cleans without drying my face at all. Huge difference in glow.",
+                    Rating = 5,
+                    IsActive = true
+                },
+                new Testimonial
+                {
+                    Name = "مريم الجندي",
+                    NameEn = "Mariam El Gendy",
+                    Role = "عميلة مميزة - الإسكندرية",
+                    RoleEn = "VIP Client - Alexandria",
+                    Avatar = "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200",
+                    Comment = "الباكدچينج لوحده حكاية وشيك جداً، بس الأهم المفعول! التونر ملمسه خفيف وبيدي ترطيب فظيع، والتوصيل كان سريع جداً.",
+                    CommentEn = "The packaging alone is a masterpiece and very chic, but the effect is what matters! The toner feels light and gives incredible hydration. Very fast delivery.",
+                    Rating = 5,
+                    IsActive = true
+                },
+                new Testimonial
+                {
+                    Name = "نورهان عادل",
+                    NameEn = "Nourhan Adel",
+                    Role = "ميكب أرتيست - المنصورة",
+                    RoleEn = "Makeup Artist - Mansoura",
+                    Avatar = "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&q=80&w=200",
+                    Comment = "مجموعة ڤيلورا بقت خطوة أساسية لتهيئة بشرة العرايس قبل الميكب.. بتدي جلوي (Glow) رهيب وترطيب عميق بدون أي لمعة دهنية.",
+                    CommentEn = "The Velora set has become an essential step to prep brides' skin before makeup.. it gives a glowing effect and deep hydration without any oily shine.",
+                    Rating = 5,
+                    IsActive = true
+                }
+            );
+            context.SaveChanges();
+        }
+
         if (!context.SocialReviewSettings.Any())
         {
             context.SocialReviewSettings.Add(new SocialReviewSettings
