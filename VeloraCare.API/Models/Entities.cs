@@ -55,6 +55,7 @@ public class Order
     public decimal Total { get; set; }
     public string Status { get; set; } = "قيد الانتظار";
     public string PaymentMethod { get; set; } = "cod";
+    public string? PaymentReference { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public List<OrderItem> Items { get; set; } = new();

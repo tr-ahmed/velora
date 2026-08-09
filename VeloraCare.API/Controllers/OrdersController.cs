@@ -84,6 +84,7 @@ public class OrdersController : ControllerBase
             ShippingFee = dto.ShippingFee,
             Total = dto.Total,
             PaymentMethod = dto.PaymentMethod ?? "cod",
+            PaymentReference = dto.PaymentReference,
             Status = "قيد الانتظار",
             CreatedAt = DateTime.UtcNow,
             Items = dto.Items.Select(i => new OrderItem
@@ -124,6 +125,7 @@ public class CreateOrderDto
     public decimal ShippingFee { get; set; }
     public decimal Total { get; set; }
     public string? PaymentMethod { get; set; }
+    public string? PaymentReference { get; set; }
     public List<CreateOrderItemDto> Items { get; set; } = new();
 }
 
