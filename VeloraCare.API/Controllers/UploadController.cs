@@ -28,7 +28,13 @@ public class UploadController : ControllerBase
         if (file.Length > 5 * 1024 * 1024)
             return BadRequest(new { message = "File size must be under 5MB" });
 
-        var uploadsDir = Path.Combine(_env.WebRootPath, "images", "products");
+        var folder = Request.Query["folder"].ToString();
+        if (string.IsNullOrEmpty(folder))
+        {
+            folder = "products";
+        }
+
+        var uploadsDir = Path.Combine(_env.WebRootPath, "images", folder);
         Directory.CreateDirectory(uploadsDir);
 
         var fileName = $"{Guid.NewGuid()}{ext}";
@@ -39,7 +45,7 @@ public class UploadController : ControllerBase
             await file.CopyToAsync(stream);
         }
 
-        var imageUrl = $"/images/products/{fileName}";
+        var imageUrl = $"/images/{folder}/{fileName}";
         var baseUrl = $"{Request.Scheme}://localhost:5095";
         return Ok(new { url = $"{baseUrl}{imageUrl}", fileName });
     }

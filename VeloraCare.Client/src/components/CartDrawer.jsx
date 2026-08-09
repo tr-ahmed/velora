@@ -203,7 +203,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
 
             <div className="flex items-center justify-center gap-1.5 text-[10px] text-gray-400">
               <ShieldCheck className="w-3.5 h-3.5 text-[#C5A059]" />
-              <span>{isEn ? '100% Secure Payment | 14-Day Guarantee' : 'دفع آمن 100% | ضمان استرجاع 14 يوم'}</span>
+              <span>{isEn ? '100% Secure Payment' : 'دفع آمن 100%'}</span>
             </div>
           </div>
         )}
@@ -338,7 +338,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
             </button>
             <div className="flex items-center justify-center gap-2 text-[10px] text-gray-400 font-light pt-1">
               <ShieldCheck className="w-3.5 h-3.5 text-[#C5A059]" />
-              <span>{isEn ? '100% Secure Payment | 14-Day Guarantee' : 'دفع آمن 100% | استرجاع خلال 14 يوم'}</span>
+              <span>{isEn ? '100% Secure Payment' : 'دفع آمن 100%'}</span>
             </div>
           </div>
         )}

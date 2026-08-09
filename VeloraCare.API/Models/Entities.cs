@@ -159,7 +159,7 @@ public class StoreSettings
 {
     public int Id { get; set; }
     public decimal ShippingFee { get; set; } = 0;
-    public string WhatsAppNumber { get; set; } = "201008829444";
+    public string WhatsAppNumber { get; set; } = "201038035240";
     public bool MaintenanceMode { get; set; } = false;
     public string StoreName { get; set; } = "VELORA CARE";
 }
@@ -178,4 +178,25 @@ public class Testimonial
     public string Product { get; set; } = string.Empty;
     public bool IsActive { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}
+
+public class SocialReview
+{
+    public int Id { get; set; }
+    public string ImageUrl { get; set; } = string.Empty;
+    public bool IsActive { get; set; } = true;
+    public int DisplayOrder { get; set; } = 0;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}
+
+public class SocialReviewSettings
+{
+    public int Id { get; set; }
+    public bool IsVisible { get; set; } = true;
+    public string SectionTitle { get; set; } = "آراء عملائنا";
+    public string SectionTitleEn { get; set; } = "Customer Reviews";
+    public string SectionSubtitle { get; set; } = "تجارب حقيقية من عملائنا على وسائل التواصل الاجتماعي";
+    public string SectionSubtitleEn { get; set; } = "Real experiences from our customers on social media";
+    public bool AutoPlay { get; set; } = true;
+    public int AutoPlayInterval { get; set; } = 3;
 }

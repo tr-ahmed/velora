@@ -8,6 +8,7 @@ import SkinRoutineQuiz from './components/SkinRoutineQuiz';
 import CartDrawer from './components/CartDrawer';
 import CheckoutModal from './components/CheckoutModal';
 import Testimonials from './components/Testimonials';
+import SocialReviewsSlider from './components/SocialReviewsSlider';
 import Footer from './components/Footer';
 import ContactWidget from './components/ContactWidget';
 import AuthModal from './components/AuthModal';
@@ -419,6 +420,7 @@ export default function App() {
               cartItems={cartItems}
             />
             <Testimonials />
+            <SocialReviewsSlider />
           </>
         )}
 
@@ -498,6 +500,7 @@ export default function App() {
         {activeTab === 'reviews' && (
           <div className="py-8">
             <Testimonials />
+            <SocialReviewsSlider />
           </div>
         )}
 

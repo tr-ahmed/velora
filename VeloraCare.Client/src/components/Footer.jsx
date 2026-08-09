@@ -102,11 +102,6 @@ export default function Footer({ onOpenQuiz, setActiveTab, onOpenInfoModal }) {
                 </button>
               </li>
               <li>
-                <button onClick={() => onOpenInfoModal && onOpenInfoModal('returns')} className={`hover:text-[#C5A059] transition-colors ${isEn ? 'text-left' : 'text-right'}`}>
-                  {isEn ? 'Returns & Exchanges' : 'سياسة الاستبدال والاسترجاع'}
-                </button>
-              </li>
-              <li>
                 <button onClick={() => onOpenInfoModal && onOpenInfoModal('terms')} className={`hover:text-[#C5A059] transition-colors ${isEn ? 'text-left' : 'text-right'}`}>
                   {isEn ? 'Terms & Conditions' : 'الشروط والأحكام'}
                 </button>
@@ -118,9 +113,9 @@ export default function Footer({ onOpenQuiz, setActiveTab, onOpenInfoModal }) {
           <div>
             <h4 className="text-sm font-bold text-[#EAD096] font-serif mb-4">{isEn ? 'Contact Us (Egypt)' : 'تواصل معنا في مصر'}</h4>
             <div className="space-y-3 text-xs text-gray-300">
-              <a href="tel:+201008829444" className="flex items-center gap-2 hover:text-[#C5A059] transition-colors">
+              <a href="tel:+201038035240" className="flex items-center gap-2 hover:text-[#C5A059] transition-colors">
                 <Phone className="w-4 h-4 text-[#C5A059]" />
-                <span dir="ltr">+20 100 8829 444</span>
+                <span dir="ltr">+20 103 803 5240</span>
               </a>
               <a href="mailto:care@velorabeauty.eg" className="flex items-center gap-2 hover:text-[#C5A059] transition-colors">
                 <Mail className="w-4 h-4 text-[#C5A059]" />

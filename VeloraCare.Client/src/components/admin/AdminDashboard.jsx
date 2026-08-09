@@ -3,7 +3,7 @@ import {
   DollarSign, ShoppingBag, Package, Users, User, Tag, Plus, Edit, Trash2, 
   CheckCircle, Clock, Truck, RefreshCw, LogOut, Sparkles, Filter, Menu, X, ArrowLeft,
   BarChart3, PieChart, TrendingUp, Download, MapPin, Layers, Printer, ChevronLeft,
-  Search, FileSpreadsheet, Calendar, CreditCard, AlertTriangle, ArrowUpRight, ArrowDownRight, Eye, EyeOff, Store, ArrowUp, ArrowDown, Star, Settings
+  Search, FileSpreadsheet, Calendar, CreditCard, AlertTriangle, ArrowUpRight, ArrowDownRight, Eye, EyeOff, Store, ArrowUp, ArrowDown, Star, Settings, Image as ImageIcon
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import ProductFormModal from './ProductFormModal';
@@ -13,6 +13,7 @@ import HeroSlideFormModal from './HeroSlideFormModal';
 import VeloraLogo from '../VeloraLogo';
 import Pagination from '../Pagination';
 import TestimonialsTab from './TestimonialsTab';
+import SocialReviewsTab from './SocialReviewsTab';
 import { 
   fetchDashboardStatsApi, fetchAnalyticsReportsApi, fetchAllOrdersApi, updateOrderStatusApi, 
   fetchProductsFromApi, saveProductApi, deleteProductApi,
@@ -121,7 +122,7 @@ export default function AdminDashboard({
   const [editingHeroSlide, setEditingHeroSlide] = useState(null);
   const [storeSettings, setStoreSettings] = useState({
     shippingFee: 0,
-    whatsAppNumber: '201008829444',
+    whatsAppNumber: '201038035240',
     maintenanceMode: false,
     storeName: 'VELORA CARE'
   });
@@ -396,7 +397,7 @@ export default function AdminDashboard({
           </div>
           
           <div class="footer">
-            شكراً لتسوقكم من VELORA CARE. إذا كان لديكم أي استفسار يرجى التواصل معنا عبر واتساب: ${storeSettings?.whatsAppNumber || '201008829444'}
+            شكراً لتسوقكم من VELORA CARE. إذا كان لديكم أي استفسار يرجى التواصل معنا عبر واتساب: ${storeSettings?.whatsAppNumber || '201038035240'}
           </div>
           <script>
             window.onload = function() { window.print(); window.close(); }
@@ -766,6 +767,7 @@ export default function AdminDashboard({
     { id: 'users', label: isEn ? `Users Management (${users.length})` : `إدارة المستخدمين (${users.length})`, icon: <User className="w-4 h-4" /> },
     { id: 'coupons', label: isEn ? `Coupons (${coupons.length})` : `الأكواد والعروض (${coupons.length})`, icon: <Tag className="w-4 h-4" /> },
     { id: 'reviews', label: isEn ? 'Reviews & Ratings ⭐' : 'التقييمات والمراجعات ⭐', icon: <Star className="w-4 h-4 text-[#C5A059]" /> },
+    { id: 'social-reviews', label: isEn ? 'Social Reviews 📱' : 'تقييمات السوشيال 📱', icon: <ImageIcon className="w-4 h-4 text-[#C5A059]" /> },
     { id: 'settings', label: isEn ? 'Store Settings ⚙️' : 'إعدادات المتجر ⚙️', icon: <Settings className="w-4 h-4" /> }
   ];
 
@@ -2692,6 +2694,12 @@ export default function AdminDashboard({
           />
         )}
 
+        {/* TAB 8.5: SOCIAL REVIEWS MANAGEMENT */}
+        {activeTab === 'social-reviews' && (
+          <SocialReviewsTab />
+        )}
+
+
         {/* TAB 9: STORE SETTINGS */}
         {activeTab === 'settings' && (          <div className="bg-white rounded-3xl border border-[#C5A059]/30 p-4 sm:p-6 shadow-sm space-y-6 animate-fadeIn">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-100 pb-4">
@@ -2757,7 +2765,7 @@ export default function AdminDashboard({
                     value={storeSettings.whatsAppNumber || ''}
                     onChange={(e) => setStoreSettings(prev => ({ ...prev, whatsAppNumber: e.target.value }))}
                     className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] text-sm text-left"
-                    placeholder="201008829444"
+                    placeholder="201038035240"
                   />
                 </div>
 

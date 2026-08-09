@@ -5,7 +5,7 @@ import { fetchStoreSettingsApi } from '../services/api';
 const channels = [
   {
     name: 'WhatsApp',
-    url: 'https://wa.me/201008829444', // Default, will be overridden
+    url: 'https://wa.me/201038035240', // Default, will be overridden
     color: 'bg-[#25D366]',
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
@@ -47,7 +47,7 @@ const channels = [
 
 export default function ContactWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [whatsAppNumber, setWhatsAppNumber] = useState('201008829444');
+  const [whatsAppNumber, setWhatsAppNumber] = useState('201038035240');
 
   useEffect(() => {
     fetchStoreSettingsApi().then(settings => {

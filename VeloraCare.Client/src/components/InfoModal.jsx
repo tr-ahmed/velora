@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, ShieldCheck, Truck, RotateCcw, HelpCircle, FileText } from 'lucide-react';
+import { X, ShieldCheck, Truck, HelpCircle, FileText } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function InfoModal({ isOpen, onClose, contentType }) {
@@ -37,19 +37,6 @@ export default function InfoModal({ isOpen, onClose, contentType }) {
           <ul className="list-disc list-inside space-y-2 text-gray-600 font-light">
             <li>{isEn ? 'Shipping fees are determined by the shipping company and paid directly to the courier upon delivery.' : 'يتم تحديد رسوم الشحن بواسطة شركة الشحن وتُدفع مباشرة للمندوب عند الاستلام.'}</li>
             <li>{isEn ? 'All products are carefully packaged in luxurious boxes to protect them during transit.' : 'يتم تغليف جميع المنتجات بعناية في عبوات فاخرة لحمايتها أثناء النقل.'}</li>
-          </ul>
-        </div>
-      )
-    },
-    returns: {
-      title: isEn ? 'Return & Exchange Policy' : 'سياسة الاستبدال والاسترجاع',
-      icon: <RotateCcw className="w-6 h-6 text-[#C5A059]" />,
-      body: (
-        <div className="space-y-3 text-xs sm:text-sm text-gray-700 leading-relaxed">
-          <p className="font-bold text-[#0D221A]">{isEn ? 'Your satisfaction and trust are our top priorities at VELORA CARE:' : 'رضاكم وشعوركم بالثقة هو أولويتنا القصوى في VELORA CARE:'}</p>
-          <ul className="list-disc list-inside space-y-2 text-gray-600 font-light">
-            <li>{isEn ? 'Products can be exchanged or returned within 14 days of receipt provided the outer seal is unbroken.' : 'يمكن استبدال أو استرجاع المنتج خلال 14 يوماً من تاريخ الاستلام بشرط عدم فتح الغلاف الخارجي للمنتج.'}</li>
-            <li>{isEn ? 'If a damaged or incorrect product arrives, it will be exchanged immediately free of charge.' : 'في حالة وصول منتج تالف أو غير مطابق للطلب، يتم الاستبدال فوراً مجاناً دون تكبد أي مصاريف شحن إضافية.'}</li>
           </ul>
         </div>
       )

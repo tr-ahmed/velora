@@ -374,6 +374,53 @@ export async function updateStoreSettingsApi(settingsData) {
   return await res.json();
 }
 
+// Social Reviews
+export const fetchSocialReviewsApi = async (activeOnly = false) => {
+  const res = await fetch(`${API_BASE}/api/SocialReviews?activeOnly=${activeOnly}`);
+  if (!res.ok) return [];
+  return res.json();
+};
+
+export const createSocialReviewApi = async (review) => {
+  const res = await fetch(`${API_BASE}/api/SocialReviews`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(review),
+  });
+  return res.json();
+};
+
+export const updateSocialReviewApi = async (id, review) => {
+  const res = await fetch(`${API_BASE}/api/SocialReviews/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(review),
+  });
+  return res.ok;
+};
+
+export const deleteSocialReviewApi = async (id) => {
+  const res = await fetch(`${API_BASE}/api/SocialReviews/${id}`, {
+    method: 'DELETE'
+  });
+  return res.ok;
+};
+
+export const fetchSocialReviewSettingsApi = async () => {
+  const res = await fetch(`${API_BASE}/api/SocialReviewSettings`);
+  if (!res.ok) return null;
+  return res.json();
+};
+
+export const updateSocialReviewSettingsApi = async (settings) => {
+  const res = await fetch(`${API_BASE}/api/SocialReviewSettings`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(settings),
+  });
+  return res.ok;
+};
+
 // Testimonials API
 export const fetchTestimonialsApi = async (activeOnly = true) => {
   const res = await fetch(`${API_BASE_URL}/testimonials?activeOnly=${activeOnly}`);

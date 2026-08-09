@@ -19,7 +19,8 @@ public class VeloraDbContext : DbContext
     public DbSet<Offer> Offers => Set<Offer>();
     public DbSet<StoreSettings> StoreSettings => Set<StoreSettings>();
     public DbSet<Testimonial> Testimonials => Set<Testimonial>();
-
+    public DbSet<SocialReview> SocialReviews => Set<SocialReview>();
+    public DbSet<SocialReviewSettings> SocialReviewSettings => Set<SocialReviewSettings>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

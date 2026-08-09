@@ -385,5 +385,36 @@ public static class DbInitializer
             );
             context.SaveChanges();
         }
+
+        if (!context.SocialReviewSettings.Any())
+        {
+            context.SocialReviewSettings.Add(new SocialReviewSettings
+            {
+                IsVisible = true,
+                SectionTitle = "آراء عملائنا",
+                SectionTitleEn = "Customer Reviews",
+                SectionSubtitle = "تجارب حقيقية من عملائنا على وسائل التواصل الاجتماعي",
+                SectionSubtitleEn = "Real experiences from our customers on social media",
+                AutoPlay = true,
+                AutoPlayInterval = 3
+            });
+            context.SaveChanges();
+        }
+
+        if (!context.SocialReviews.Any())
+        {
+            var socialReviews = new List<SocialReview>();
+            for (int i = 1; i <= 26; i++)
+            {
+                socialReviews.Add(new SocialReview
+                {
+                    ImageUrl = $"/images/reviews/review_img_{i}.jpeg",
+                    IsActive = true,
+                    DisplayOrder = i
+                });
+            }
+            context.SocialReviews.AddRange(socialReviews);
+            context.SaveChanges();
+        }
     }
 }
