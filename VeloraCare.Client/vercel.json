@@ -6,6 +6,10 @@
       "destination": "http://veloracare.runasp.net/api/:path*"
     },
     {
+      "source": "/images/reviews/:path*",
+      "destination": "http://veloracare.runasp.net/images/reviews/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
