@@ -376,13 +376,13 @@ export async function updateStoreSettingsApi(settingsData) {
 
 // Social Reviews
 export const fetchSocialReviewsApi = async (activeOnly = false) => {
-  const res = await fetch(`${API_BASE}/api/SocialReviews?activeOnly=${activeOnly}`);
+  const res = await fetch(`${API_BASE_URL}/SocialReviews?activeOnly=${activeOnly}`);
   if (!res.ok) return [];
   return res.json();
 };
 
 export const createSocialReviewApi = async (review) => {
-  const res = await fetch(`${API_BASE}/api/SocialReviews`, {
+  const res = await fetch(`${API_BASE_URL}/SocialReviews`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(review),
@@ -391,7 +391,7 @@ export const createSocialReviewApi = async (review) => {
 };
 
 export const updateSocialReviewApi = async (id, review) => {
-  const res = await fetch(`${API_BASE}/api/SocialReviews/${id}`, {
+  const res = await fetch(`${API_BASE_URL}/SocialReviews/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(review),
@@ -400,20 +400,24 @@ export const updateSocialReviewApi = async (id, review) => {
 };
 
 export const deleteSocialReviewApi = async (id) => {
-  const res = await fetch(`${API_BASE}/api/SocialReviews/${id}`, {
+  const res = await fetch(`${API_BASE_URL}/SocialReviews/${id}`, {
     method: 'DELETE'
   });
   return res.ok;
 };
 
 export const fetchSocialReviewSettingsApi = async () => {
-  const res = await fetch(`${API_BASE}/api/SocialReviewSettings`);
-  if (!res.ok) return null;
-  return res.json();
+  try {
+    const res = await fetch(`${API_BASE_URL}/SocialReviewSettings`);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (error) {
+    return null;
+  }
 };
 
 export const updateSocialReviewSettingsApi = async (settings) => {
-  const res = await fetch(`${API_BASE}/api/SocialReviewSettings`, {
+  const res = await fetch(`${API_BASE_URL}/SocialReviewSettings`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(settings),
