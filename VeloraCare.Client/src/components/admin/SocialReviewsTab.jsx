@@ -207,7 +207,8 @@ export default function SocialReviewsTab() {
                 <img 
                   src={`${API_BASE_URL.replace('/api', '')}${r.imageUrl}`} 
                   alt="Review" 
-                  className={`w-full h-48 object-cover transition-opacity ${!r.isActive ? 'opacity-50' : 'opacity-100'}`}
+                  onClick={() => window.open(`${API_BASE_URL.replace('/api', '')}${r.imageUrl}`, '_blank')}
+                  className={`w-full h-48 object-contain bg-gray-100 cursor-zoom-in transition-opacity ${!r.isActive ? 'opacity-50' : 'opacity-100'}`}
                 />
                 
                 {/* Actions Overlay */}

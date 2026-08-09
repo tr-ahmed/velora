@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { fetchSocialReviewsApi, fetchSocialReviewSettingsApi, API_BASE_URL } from '../services/api';
-import { Sparkles, Image as ImageIcon } from 'lucide-react';
+import { Image as ImageIcon, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function SocialReviewsSlider() {
   const { i18n } = useTranslation();
   const isEn = i18n.language === 'en';
   const [reviews, setReviews] = useState([]);
   const [settings, setSettings] = useState(null);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -23,9 +24,29 @@ export default function SocialReviewsSlider() {
     loadData();
   }, []);
 
+  // Keyboard navigation + body scroll lock while lightbox is open
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+
+    const onKey = (e) => {
+      if (e.key === 'Escape') setLightboxIndex(null);
+      else if (e.key === 'ArrowLeft') setLightboxIndex((i) => (i - 1 + reviews.length) % reviews.length);
+      else if (e.key === 'ArrowRight') setLightboxIndex((i) => (i + 1) % reviews.length);
+    };
+
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [lightboxIndex, reviews.length]);
+
   if (!settings || !settings.isVisible || reviews.length === 0) return null;
 
   const IMAGE_BASE_URL = API_BASE_URL.replace('/api', '');
+  const activeReview = lightboxIndex !== null ? reviews[lightboxIndex] : null;
 
   return (
     <section className="py-20 bg-[#0D221A] border-t border-[#C5A059]/10 relative overflow-hidden" dir={isEn ? 'ltr' : 'rtl'}>
@@ -57,23 +78,73 @@ export default function SocialReviewsSlider() {
           {[1, 2, 3].map((batch) => (
             <React.Fragment key={batch}>
               {reviews.map((r, i) => (
-                <div 
-                  key={`${batch}-${i}`} 
-                  className="w-[280px] md:w-[320px] h-[400px] flex-shrink-0 rounded-2xl overflow-hidden border border-[#C5A059]/20 shadow-2xl transition-transform duration-500 hover:scale-[1.02] hover:border-[#C5A059]/50"
+                <button
+                  key={`${batch}-${i}`}
+                  onClick={() => setLightboxIndex(i)}
+                  title={isEn ? 'View full image' : 'عرض الصورة كاملة'}
+                  className="w-[280px] md:w-[320px] h-[400px] flex-shrink-0 rounded-2xl overflow-hidden border border-[#C5A059]/20 shadow-2xl transition-transform duration-500 hover:scale-[1.02] hover:border-[#C5A059]/50 bg-[#0F2A20] group cursor-zoom-in"
                 >
                   <img 
                     src={`${IMAGE_BASE_URL}${r.imageUrl}`} 
                     alt="Social Review" 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain p-3 transition-transform duration-500 group-hover:scale-[1.04]"
                     loading="lazy"
                   />
-                </div>
+                </button>
               ))}
             </React.Fragment>
           ))}
         </div>
       </div>
       
+      {/* Lightbox - full image viewer */}
+      {activeReview && (
+        <div
+          className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 backdrop-blur-md animate-fadeIn p-4"
+          onClick={() => setLightboxIndex(null)}
+          dir="ltr"
+        >
+          {/* Close */}
+          <button
+            onClick={() => setLightboxIndex(null)}
+            className="absolute top-4 right-4 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+            aria-label="Close"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          {/* Prev */}
+          <button
+            onClick={(e) => { e.stopPropagation(); setLightboxIndex((i) => (i - 1 + reviews.length) % reviews.length); }}
+            className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-10 w-11 h-11 md:w-14 md:h-14 rounded-full bg-white/10 hover:bg-[#C5A059] text-white flex items-center justify-center transition-colors"
+            aria-label="Previous"
+          >
+            <ChevronLeft className="w-6 h-6 md:w-7 md:h-7" />
+          </button>
+
+          {/* Next */}
+          <button
+            onClick={(e) => { e.stopPropagation(); setLightboxIndex((i) => (i + 1) % reviews.length); }}
+            className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-10 w-11 h-11 md:w-14 md:h-14 rounded-full bg-white/10 hover:bg-[#C5A059] text-white flex items-center justify-center transition-colors"
+            aria-label="Next"
+          >
+            <ChevronRight className="w-6 h-6 md:w-7 md:h-7" />
+          </button>
+
+          {/* Image */}
+          <div className="max-w-[94vw] max-h-[90vh] flex flex-col items-center gap-4" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={`${IMAGE_BASE_URL}${activeReview.imageUrl}`}
+              alt="Social Review"
+              className="max-w-full max-h-[82vh] object-contain rounded-xl shadow-2xl"
+            />
+            <div className="text-white/70 text-sm font-light tracking-wider">
+              {lightboxIndex + 1} / {reviews.length}
+            </div>
+          </div>
+        </div>
+      )}
+
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes marquee {
           0% { transform: translateX(0); }
