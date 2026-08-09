@@ -104,12 +104,18 @@ public class OrdersController : ControllerBase
         _db.Orders.Add(order);
         await _db.SaveChangesAsync();
 
+        var settings = await _db.StoreSettings.FirstOrDefaultAsync();
+        var notificationEmail = settings?.NotificationEmails;
+        if (string.IsNullOrEmpty(notificationEmail))
+        {
+            notificationEmail = _config["EmailSettings:NotificationEmail"];
+        }
+
         // Send Email Notification
         _ = Task.Run(async () =>
         {
             try
             {
-                var notificationEmail = _config["EmailSettings:NotificationEmail"];
                 if (!string.IsNullOrEmpty(notificationEmail))
                 {
                     var itemsHtml = string.Join("", order.Items.Select(i => $@"

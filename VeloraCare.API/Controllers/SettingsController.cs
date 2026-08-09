@@ -43,6 +43,7 @@ public class SettingsController : ControllerBase
         settings.WhatsAppNumber = updated.WhatsAppNumber;
         settings.MaintenanceMode = updated.MaintenanceMode;
         settings.StoreName = updated.StoreName;
+        settings.NotificationEmails = updated.NotificationEmails ?? settings.NotificationEmails;
 
         await _context.SaveChangesAsync();
         return Ok(settings);

@@ -163,6 +163,7 @@ public class StoreSettings
     public string WhatsAppNumber { get; set; } = "201038035240";
     public bool MaintenanceMode { get; set; } = false;
     public string StoreName { get; set; } = "VELORA CARE";
+    public string NotificationEmails { get; set; } = "veloracareeg@gmail.com";
 }
 
 public class Testimonial
