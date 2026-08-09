@@ -15,7 +15,8 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
     city: 'القاهرة',
     address: '',
     notes: '',
-    paymentMethod: 'vodafone'
+    paymentMethod: 'vodafone',
+    paymentReference: ''
   });
   const [completedOrder, setCompletedOrder] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -97,6 +98,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
       shippingFee,
       total,
       paymentMethod: formData.paymentMethod,
+      paymentReference: formData.paymentReference,
       items: cartItems.map(item => ({
         productId: item.id,
         productName: item.name,
@@ -374,6 +376,27 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
 
                   </div>
                 </div>
+
+                {/* Payment Reference Input */}
+                {formData.paymentMethod !== 'cod' && (
+                  <div className="mt-4 p-4 bg-[#0D221A] rounded-2xl border border-[#C5A059]/30">
+                    <label className="block text-sm font-bold text-[#EAD096] mb-2">
+                      {isEn ? 'Mobile number / InstaPay address transferred from *' : 'رقم الموبايل / عنوان إنستاباي المحول منه *'}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.paymentReference}
+                      onChange={(e) => setFormData({ ...formData, paymentReference: e.target.value })}
+                      placeholder={isEn ? 'e.g. 01012345678' : 'مثال: 01012345678'}
+                      className="w-full px-4 py-3 bg-white border border-[#C5A059]/40 rounded-xl text-[#0D221A] font-bold focus:outline-none focus:ring-2 focus:ring-[#C5A059]"
+                      dir="ltr"
+                    />
+                    <p className="text-[10px] text-gray-400 mt-1">
+                      {isEn ? 'This is required to verify your payment and process your order quickly.' : 'مطلوب لتأكيد الدفع الخاص بك ومعالجة الطلب في أسرع وقت.'}
+                    </p>
+                  </div>
+                )}
 
                 {orderError && (
                   <div className="text-rose-600 bg-rose-50 border border-rose-200 text-xs font-bold p-3 rounded-xl text-center mt-4">

@@ -2826,6 +2826,11 @@ export default function AdminDashboard({
                 <p className="text-gray-600">المحافظة: {selectedOrderDetails.city}</p>
                 <p className="text-gray-600">العنوان: {selectedOrderDetails.address}</p>
                 <p className="text-gray-600">طريقة الدفع: {paymentLabels[selectedOrderDetails.paymentMethod] || selectedOrderDetails.paymentMethod}</p>
+                {selectedOrderDetails.paymentReference && (
+                  <p className="text-rose-600 font-bold bg-rose-50 p-2 rounded-lg mt-2 border border-rose-100">
+                    رقم التحويل (المرجع): <span dir="ltr">{selectedOrderDetails.paymentReference}</span>
+                  </p>
+                )}
               </div>
 
               <div>
