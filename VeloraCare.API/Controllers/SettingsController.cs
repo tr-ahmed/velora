@@ -44,6 +44,7 @@ public class SettingsController : ControllerBase
         settings.MaintenanceMode = updated.MaintenanceMode;
         settings.StoreName = updated.StoreName;
         settings.NotificationEmails = updated.NotificationEmails ?? settings.NotificationEmails;
+        settings.CallMeBotApiKey = updated.CallMeBotApiKey;
 
         await _context.SaveChangesAsync();
         return Ok(settings);

@@ -117,7 +117,36 @@ public class OrdersController : ControllerBase
             Console.WriteLine($"SignalR Error: {ex.Message}");
         }
 
-        var settings = await _db.StoreSettings.FirstOrDefaultAsync();
+        // Send WhatsApp Notification via CallMeBot
+        var waSettings = await _db.StoreSettings.FirstOrDefaultAsync();
+        string? waApiKey = waSettings?.CallMeBotApiKey;
+        string? waPhone = waSettings?.WhatsAppNumber;
+
+        if (!string.IsNullOrEmpty(waApiKey) && !string.IsNullOrEmpty(waPhone))
+        {
+            _ = Task.Run(async () =>
+            {
+                try 
+                {
+                    string message = $"*طلب جديد في المتجر! 🛒*\n\nالعميل: {order.FullName}\nالمبلغ: {order.Total} ج.م\nالمدينة: {order.City}\nرقم الطلب: {order.OrderNumber}";
+                    string encodedMessage = Uri.EscapeDataString(message);
+                    
+                    string phone = waPhone.StartsWith("+") ? waPhone.Substring(1) : waPhone;
+                    if (!phone.StartsWith("20") && phone.StartsWith("01")) phone = "20" + phone.Substring(1); 
+
+                    string url = $"https://api.callmebot.com/whatsapp.php?phone={phone}&text={encodedMessage}&apikey={waApiKey}";
+                    
+                    using var client = new HttpClient();
+                    await client.GetAsync(url);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"WhatsApp Error: {ex.Message}");
+                }
+            });
+        }
+
+        var settings = waSettings;
         var notificationEmail = settings?.NotificationEmails;
         if (string.IsNullOrEmpty(notificationEmail))
         {

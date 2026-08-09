@@ -2806,6 +2806,20 @@ export default function AdminDashboard({
                   <p className="text-[10px] text-gray-500 mt-1 text-right">أدخل الإيميلات التي تريد أن يصلها إشعار عند كل طلب جديد (افصل بينها بفاصلة <code>,</code>)</p>
                 </div>
 
+                {/* CallMeBot API Key */}
+                <div>
+                  <label className="block text-xs font-bold text-[#0D221A] mb-1">مفتاح إشعارات الواتساب (CallMeBot API Key)</label>
+                  <input
+                    type="text"
+                    dir="ltr"
+                    value={storeSettings.callMeBotApiKey || ''}
+                    onChange={(e) => setStoreSettings(prev => ({ ...prev, callMeBotApiKey: e.target.value }))}
+                    className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] text-sm text-left font-mono"
+                    placeholder="e.g. 1234567"
+                  />
+                  <p className="text-[10px] text-gray-500 mt-1 text-right">سيتم إرسال إشعارات الطلبات لرقم الواتساب الخاص بك باستخدام هذا المفتاح.</p>
+                </div>
+
                 {/* Maintenance Mode */}
                 <div className="flex items-center gap-3 bg-rose-50 p-4 rounded-xl border border-rose-200">
                   <input

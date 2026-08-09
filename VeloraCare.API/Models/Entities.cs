@@ -164,6 +164,7 @@ public class StoreSettings
     public bool MaintenanceMode { get; set; } = false;
     public string StoreName { get; set; } = "VELORA CARE";
     public string NotificationEmails { get; set; } = "veloracareeg@gmail.com";
+    public string? CallMeBotApiKey { get; set; }
 }
 
 public class Testimonial
