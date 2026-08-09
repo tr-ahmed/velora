@@ -2769,6 +2769,20 @@ export default function AdminDashboard({
                   />
                 </div>
 
+                {/* Notification Emails */}
+                <div>
+                  <label className="block text-xs font-bold text-[#0D221A] mb-1">إيميلات إشعارات الطلبات (مفصولة بفاصلة)</label>
+                  <input
+                    type="text"
+                    dir="ltr"
+                    value={storeSettings.notificationEmails || ''}
+                    onChange={(e) => setStoreSettings(prev => ({ ...prev, notificationEmails: e.target.value }))}
+                    className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] text-sm text-left"
+                    placeholder="admin@velora.com, boss@velora.com"
+                  />
+                  <p className="text-[10px] text-gray-500 mt-1 text-right">أدخل الإيميلات التي تريد أن يصلها إشعار عند كل طلب جديد (افصل بينها بفاصلة <code>,</code>)</p>
+                </div>
+
                 {/* Maintenance Mode */}
                 <div className="flex items-center gap-3 bg-rose-50 p-4 rounded-xl border border-rose-200">
                   <input
