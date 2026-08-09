@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { fetchSocialReviewsApi, fetchSocialReviewSettingsApi } from '../services/api';
+import { fetchSocialReviewsApi, fetchSocialReviewSettingsApi, API_BASE_URL } from '../services/api';
 import { Sparkles, Image as ImageIcon } from 'lucide-react';
 
 export default function SocialReviewsSlider() {
@@ -25,7 +25,7 @@ export default function SocialReviewsSlider() {
 
   if (!settings || !settings.isVisible || reviews.length === 0) return null;
 
-  const API_BASE = 'http://localhost:5095';
+  const IMAGE_BASE_URL = API_BASE_URL.replace('/api', '');
 
   return (
     <section className="py-20 bg-[#0D221A] border-t border-[#C5A059]/10 relative overflow-hidden" dir={isEn ? 'ltr' : 'rtl'}>
@@ -62,7 +62,7 @@ export default function SocialReviewsSlider() {
                   className="w-[280px] md:w-[320px] h-[400px] flex-shrink-0 rounded-2xl overflow-hidden border border-[#C5A059]/20 shadow-2xl transition-transform duration-500 hover:scale-[1.02] hover:border-[#C5A059]/50"
                 >
                   <img 
-                    src={`${API_BASE}${r.imageUrl}`} 
+                    src={`${IMAGE_BASE_URL}${r.imageUrl}`} 
                     alt="Social Review" 
                     className="w-full h-full object-cover"
                     loading="lazy"

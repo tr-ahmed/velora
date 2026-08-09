@@ -6,7 +6,8 @@ import {
   updateSocialReviewApi,
   deleteSocialReviewApi,
   fetchSocialReviewSettingsApi,
-  updateSocialReviewSettingsApi
+  updateSocialReviewSettingsApi,
+  API_BASE_URL
 } from '../../services/api';
 
 export default function SocialReviewsTab() {
@@ -54,15 +55,16 @@ export default function SocialReviewsTab() {
     formData.append('file', file);
     
     // Upload image
-    const res = await fetch('http://localhost:5095/api/Upload/image?folder=reviews', {
+    const res = await fetch(`${API_BASE_URL}/Upload/image?folder=reviews`, {
       method: 'POST',
       body: formData
     });
     
     if (res.ok) {
       const data = await res.json();
+      const IMAGE_BASE_URL = API_BASE_URL.replace('/api', '');
       const newReview = {
-        imageUrl: data.url.replace('http://localhost:5095', ''), // Store relative path
+        imageUrl: data.url.replace(IMAGE_BASE_URL, ''), // Store relative path
         isActive: true,
         displayOrder: reviews.length + 1
       };
@@ -203,7 +205,7 @@ export default function SocialReviewsTab() {
             {reviews.map((r, index) => (
               <div key={r.id} className="relative group rounded-xl border overflow-hidden">
                 <img 
-                  src={`http://localhost:5095${r.imageUrl}`} 
+                  src={`${API_BASE_URL.replace('/api', '')}${r.imageUrl}`} 
                   alt="Review" 
                   className={`w-full h-48 object-cover transition-opacity ${!r.isActive ? 'opacity-50' : 'opacity-100'}`}
                 />
