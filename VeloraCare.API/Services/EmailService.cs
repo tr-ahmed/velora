@@ -33,7 +33,18 @@ public class EmailService : IEmailService
 
             var email = new MimeMessage();
             email.From.Add(new MailboxAddress(senderName, senderEmail));
-            email.To.Add(new MailboxAddress(toEmail, toEmail));
+            
+            // Support multiple comma-separated emails
+            var emails = toEmail.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var addr in emails)
+            {
+                var cleanAddr = addr.Trim();
+                if (!string.IsNullOrEmpty(cleanAddr))
+                {
+                    email.To.Add(new MailboxAddress(cleanAddr, cleanAddr));
+                }
+            }
+
             email.Subject = subject;
 
             var builder = new BodyBuilder { HtmlBody = bodyHtml };
