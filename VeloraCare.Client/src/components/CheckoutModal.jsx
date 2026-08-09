@@ -381,14 +381,17 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                 {formData.paymentMethod !== 'cod' && (
                   <div className="mt-4 p-4 bg-[#0D221A] rounded-2xl border border-[#C5A059]/30">
                     <label className="block text-sm font-bold text-[#EAD096] mb-2">
-                      {isEn ? 'Mobile number / InstaPay address transferred from *' : 'رقم الموبايل / عنوان إنستاباي المحول منه *'}
+                      {formData.paymentMethod === 'vodafone' 
+                        ? (isEn ? 'Enter the Vodafone Cash number transferred from *' : 'أدخل رقم فودافون كاش الذي سيتم التحويل منه *')
+                        : (isEn ? 'Enter the InstaPay number / address transferred from *' : 'أدخل رقم / عنوان إنستاباي الذي سيتم التحويل منه *')
+                      }
                     </label>
                     <input
                       type="text"
                       required
                       value={formData.paymentReference}
                       onChange={(e) => setFormData({ ...formData, paymentReference: e.target.value })}
-                      placeholder={isEn ? 'e.g. 01012345678' : 'مثال: 01012345678'}
+                      placeholder={formData.paymentMethod === 'vodafone' ? (isEn ? 'e.g. 01012345678' : 'مثال: 01012345678') : (isEn ? 'e.g. 01012345678 or name@instapay' : 'مثال: 01012345678 أو name@instapay')}
                       className="w-full px-4 py-3 bg-white border border-[#C5A059]/40 rounded-xl text-[#0D221A] font-bold focus:outline-none focus:ring-2 focus:ring-[#C5A059]"
                       dir="ltr"
                     />
