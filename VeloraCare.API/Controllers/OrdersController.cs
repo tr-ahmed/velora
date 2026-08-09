@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VeloraCare.API.Data;
 using VeloraCare.API.Models;
+using Microsoft.AspNetCore.SignalR;
 
 namespace VeloraCare.API.Controllers;
 
@@ -12,12 +13,14 @@ public class OrdersController : ControllerBase
     private readonly VeloraDbContext _db;
     private readonly VeloraCare.API.Services.IEmailService _emailService;
     private readonly IConfiguration _config;
+    private readonly Microsoft.AspNetCore.SignalR.IHubContext<VeloraCare.API.Hubs.OrderHub> _hubContext;
 
-    public OrdersController(VeloraDbContext db, VeloraCare.API.Services.IEmailService emailService, IConfiguration config)
+    public OrdersController(VeloraDbContext db, VeloraCare.API.Services.IEmailService emailService, IConfiguration config, Microsoft.AspNetCore.SignalR.IHubContext<VeloraCare.API.Hubs.OrderHub> hubContext)
     {
         _db = db;
         _emailService = emailService;
         _config = config;
+        _hubContext = hubContext;
     }
 
     [HttpGet]
@@ -103,6 +106,16 @@ public class OrdersController : ControllerBase
 
         _db.Orders.Add(order);
         await _db.SaveChangesAsync();
+
+        // Send Real-time notification to Admins
+        try 
+        {
+            await _hubContext.Clients.All.SendAsync("ReceiveNewOrder", order);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"SignalR Error: {ex.Message}");
+        }
 
         var settings = await _db.StoreSettings.FirstOrDefaultAsync();
         var notificationEmail = settings?.NotificationEmails;

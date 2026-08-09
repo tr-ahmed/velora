@@ -22,8 +22,10 @@ import {
   saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi,
   fetchUsersApi, updateUserRoleApi, deleteUserApi, updateUserApi,
   fetchAdminReviewsApi, deleteReviewApi, toggleReviewApprovalApi,
-  fetchStoreSettingsApi, updateStoreSettingsApi, fetchTestimonialsApi
+  fetchStoreSettingsApi, updateStoreSettingsApi, fetchTestimonialsApi, HUB_URL
 } from '../../services/api';
+import * as signalR from '@microsoft/signalr';
+import toast, { Toaster } from 'react-hot-toast';
 import { EGYPT_GOVERNORATES } from '../../data/governorates';
 
 // UTF-8 BOM Excel Export Helper for perfect Arabic support in Microsoft Excel
@@ -251,18 +253,17 @@ export default function AdminDashboard({
     newSlides[targetIndex] = temp;
     setHeroSlides(newSlides);
   };
+
   const loadData = async () => {
-    setLoading(true);
     try {
-      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, usersRes, categoriesRes, settingsRes, reviewsRes, testimonialsRes] = await Promise.all([
+      setLoading(true);
+      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, categoriesRes, usersRes, storeSettingsRes] = await Promise.all([
         fetchDashboardStatsApi(),
         fetchAnalyticsReportsApi(),
-        fetchProductsFromApi('all'),
+        fetchProductsFromApi(),
         fetchAllOrdersApi(),
         fetchCouponsApi(),
-        fetchUsersApi(),
         fetchCategoriesApi(),
-        fetchStoreSettingsApi(),
         fetchAdminReviewsApi(),
         fetchTestimonialsApi(false).catch(() => [])
       ]);
@@ -289,37 +290,58 @@ export default function AdminDashboard({
     }
   };
 
+  // SignalR Real-time Notifications Setup
   useEffect(() => {
     loadData();
-  }, []);
 
-  // Polling for live notifications (30s)
-  useEffect(() => {
-    const interval = setInterval(async () => {
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl(HUB_URL)
+      .withAutomaticReconnect()
+      .build();
+
+    connection.on("ReceiveNewOrder", (newOrder) => {
+      // Play sound
+      const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+      audio.play().catch(e => console.log('Audio blocked', e));
+
+      // Show toast
+      toast.success(
+        (t) => (
+          <div className="flex flex-col gap-1 text-right font-arabic" dir="rtl">
+            <span className="font-bold text-[#0D221A]">طلب جديد وصل! 🎉</span>
+            <span className="text-sm text-gray-700">تم استلام طلب من <span className="font-bold">{newOrder.fullName}</span></span>
+            <span className="text-sm text-[#C5A059] font-bold mt-1">القيمة: {newOrder.total} ج.م</span>
+          </div>
+        ), 
+        { duration: 8000, position: 'top-left' }
+      );
+
+      // Prepend to orders list dynamically
+      setOrders(prevOrders => [newOrder, ...prevOrders]);
+      
+      // Update stats dynamically
+      setStats(prev => ({
+        ...prev,
+        totalOrders: (prev.totalOrders || 0) + 1,
+        totalRevenue: (prev.totalRevenue || 0) + newOrder.total,
+        recentOrders: [newOrder, ...(prev.recentOrders || [])].slice(0, 10)
+      }));
+    });
+
+    const startConnection = async () => {
       try {
-        const stats = await fetchDashboardStatsApi();
-        if (stats && stats.totalOrders > lastOrdersCount && lastOrdersCount > 0) {
-          // Play a sound
-          const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
-          audio.play().catch(e => console.log('Audio blocked', e));
-          // Update last orders count so we don't keep playing
-          setLastOrdersCount(stats.totalOrders);
-          // Show alert (or ideally toast)
-          alert(isEn ? '🔔 New Order Received!' : '🔔 استلام طلب جديد!');
-          // Refresh orders implicitly
-          const newOrders = await fetchAllOrdersApi();
-          setOrders(Array.isArray(newOrders) ? newOrders : []);
-          setStats(stats);
-        } else if (stats && stats.totalOrders > 0 && lastOrdersCount === 0) {
-           setLastOrdersCount(stats.totalOrders);
-        }
+        await connection.start();
+        console.log("SignalR Connected to OrderHub");
       } catch (err) {
-        console.error('Polling error:', err);
+        console.error("SignalR Connection Error: ", err);
       }
-    }, 30000);
-    return () => clearInterval(interval);
-  }, [lastOrdersCount, isEn]);
+    };
+    startConnection();
 
+    return () => {
+      connection.stop();
+    };
+  }, []);
   const handleUpdateOrderStatus = async (orderId, newStatus) => {
     await updateOrderStatusApi(orderId, newStatus);
     setOrders(prev =>
@@ -773,6 +795,7 @@ export default function AdminDashboard({
 
   return (
     <div className="min-h-screen bg-[#E6EDE4] text-[#0D221A] flex flex-col font-sans">
+      <Toaster />
       
       {/* Mobile Sleek Action Bar (Back to Store & Logout) */}
       <div className="sm:hidden sticky top-0 z-40 bg-[#0D221A] text-white px-4 py-2.5 border-b border-[#C5A059]/40 flex items-center justify-between shadow-md print:hidden">

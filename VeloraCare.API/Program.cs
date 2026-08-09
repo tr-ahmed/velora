@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // 1. Add Controllers
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 // Register EmailService
 builder.Services.AddScoped<VeloraCare.API.Services.IEmailService, VeloraCare.API.Services.EmailService>();
@@ -50,5 +51,6 @@ app.UseCors("AllowAll");
 app.UseStaticFiles();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<VeloraCare.API.Hubs.OrderHub>("/hubs/orders");
 
 app.Run();

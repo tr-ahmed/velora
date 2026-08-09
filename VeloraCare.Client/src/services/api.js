@@ -1,4 +1,5 @@
 export const API_BASE_URL = import.meta.env.PROD ? '/api' : 'http://localhost:5095/api';
+export const HUB_URL = import.meta.env.PROD ? '/hubs/orders' : 'http://localhost:5095/hubs/orders';
 
 export async function fetchProductsFromApi(category = 'all') {
   const url = category && category !== 'all'
