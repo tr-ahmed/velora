@@ -46,8 +46,16 @@ public class EmailService : IEmailService
             }
 
             email.Subject = subject;
+            email.ReplyTo.Add(new MailboxAddress(senderName, senderEmail)); // Add ReplyTo
 
-            var builder = new BodyBuilder { HtmlBody = bodyHtml };
+            // Create a plain text version from HTML to lower spam score
+            string textBody = System.Text.RegularExpressions.Regex.Replace(bodyHtml, "<.*?>", String.Empty);
+            textBody = System.Web.HttpUtility.HtmlDecode(textBody).Trim();
+
+            var builder = new BodyBuilder { 
+                HtmlBody = bodyHtml,
+                TextBody = textBody // Plain text alternative is crucial for spam filters
+            };
             email.Body = builder.ToMessageBody();
 
             using var smtp = new SmtpClient();
