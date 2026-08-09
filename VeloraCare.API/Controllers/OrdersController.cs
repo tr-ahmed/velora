@@ -10,10 +10,14 @@ namespace VeloraCare.API.Controllers;
 public class OrdersController : ControllerBase
 {
     private readonly VeloraDbContext _db;
+    private readonly VeloraCare.API.Services.IEmailService _emailService;
+    private readonly IConfiguration _config;
 
-    public OrdersController(VeloraDbContext db)
+    public OrdersController(VeloraDbContext db, VeloraCare.API.Services.IEmailService emailService, IConfiguration config)
     {
         _db = db;
+        _emailService = emailService;
+        _config = config;
     }
 
     [HttpGet]
@@ -99,6 +103,46 @@ public class OrdersController : ControllerBase
 
         _db.Orders.Add(order);
         await _db.SaveChangesAsync();
+
+        // Send Email Notification
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                var notificationEmail = _config["EmailSettings:NotificationEmail"];
+                if (!string.IsNullOrEmpty(notificationEmail))
+                {
+                    var itemsHtml = string.Join("", order.Items.Select(i => $"<li>{i.ProductName} (x{i.Quantity}) - {i.TotalPrice} ج.م</li>"));
+                    
+                    var emailBody = $@"
+                        <div dir='rtl' style='font-family: Arial; padding: 20px; border: 1px solid #ddd; border-radius: 10px;'>
+                            <h2 style='color: #0D221A;'>طلب جديد من متجر فيلورا! 🛍️</h2>
+                            <p><strong>رقم الطلب:</strong> {order.OrderNumber}</p>
+                            <p><strong>اسم العميل:</strong> {order.FullName}</p>
+                            <p><strong>الموبايل:</strong> <span dir='ltr'>{order.Phone}</span></p>
+                            <p><strong>المحافظة:</strong> {order.City}</p>
+                            <p><strong>العنوان:</strong> {order.Address}</p>
+                            <p><strong>طريقة الدفع:</strong> {order.PaymentMethod}</p>
+                            {(string.IsNullOrEmpty(order.PaymentReference) ? "" : $"<p style='color: red;'><strong>رقم التحويل (المرجع):</strong> <span dir='ltr'>{order.PaymentReference}</span></p>")}
+                            
+                            <hr />
+                            <h3>المنتجات المطلوبة:</h3>
+                            <ul>
+                                {itemsHtml}
+                            </ul>
+                            <hr />
+                            <h3 style='color: #C5A059;'>المجموع الكلي: {order.Total} ج.م</h3>
+                        </div>
+                    ";
+
+                    await _emailService.SendEmailAsync(notificationEmail, $"طلب جديد #{order.OrderNumber}", emailBody);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending email: {ex.Message}");
+            }
+        });
 
         return CreatedAtAction(nameof(GetById), new { id = order.Id }, order);
     }

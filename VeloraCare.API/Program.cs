@@ -7,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 // 1. Add Controllers
 builder.Services.AddControllers();
 
+// Register EmailService
+builder.Services.AddScoped<VeloraCare.API.Services.IEmailService, VeloraCare.API.Services.EmailService>();
+
 // 2. Configure SQL Server DbContext with Warning Suppression for Pending Changes
 builder.Services.AddDbContext<VeloraDbContext>(options =>
 {
