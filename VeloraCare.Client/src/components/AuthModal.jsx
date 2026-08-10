@@ -12,7 +12,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
-  const [city, setCity] = useState('القاهرة');
+  const [city, setCity] = useState('القاهرة - الجيزة - المدن الجديدة');
   const [address, setAddress] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -24,7 +24,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
     setPassword('');
     setFullName('');
     setPhone('');
-    setCity('القاهرة');
+    setCity('القاهرة - الجيزة - المدن الجديدة');
     setAddress('');
     setError('');
   };

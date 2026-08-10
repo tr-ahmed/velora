@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, CheckCircle, CreditCard, Truck, ShieldCheck, Sparkles, ShoppingBag, ArrowLeft, MapPin, Phone, User, Package, Tag } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { createOrderApi, validateCouponApi, fetchStoreSettingsApi } from '../services/api';
-import { EGYPT_GOVERNORATES } from '../data/governorates';
+import { EGYPT_GOVERNORATES, SHIPPING_RATES } from '../data/governorates';
 import { useTranslation } from 'react-i18next';
 
 export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderComplete, currentUser }) {
@@ -12,7 +12,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
-    city: 'القاهرة',
+    city: 'القاهرة - الجيزة - المدن الجديدة',
     address: '',
     notes: '',
     paymentMethod: 'vodafone',
@@ -47,15 +47,19 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
     }
   }, [isOpen, currentUser]);
 
-  const [shippingFee, setShippingFee] = useState(0);
+  const [baseShippingFee, setBaseShippingFee] = useState(0);
 
   useEffect(() => {
     if (isOpen) {
       fetchStoreSettingsApi().then(settings => {
-        if (settings) setShippingFee(settings.shippingFee || 0);
+        if (settings) setBaseShippingFee(settings.shippingFee || 0);
       }).catch(err => console.error('Failed to load store settings', err));
     }
   }, [isOpen]);
+
+  const shippingFee = (formData.city && SHIPPING_RATES[formData.city] !== undefined)
+    ? SHIPPING_RATES[formData.city]
+    : baseShippingFee;
 
   if (!isOpen) return null;
 
@@ -257,19 +261,25 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                     </div>
                   )}
                   <div className="flex justify-between text-gray-400">
-                    <span>{isEn ? 'Shipping Fee:' : 'الشحن والتوصيل:'}</span>
+                    <span>{isEn ? 'Shipping Fee (Paid upon delivery):' : 'تكلفة الشحن (يتم تحصيله من خلال شركة الشحن):'}</span>
                     <span className="font-bold text-[#987834]">{shippingFee > 0 ? `${shippingFee} ج.م` : shippingFee === -1 ? (isEn ? 'Paid to Courier' : 'يُدفع لشركة الشحن') : (isEn ? 'Free' : 'مجانًا')}</span>
                   </div>
                   <div className="flex justify-between text-base font-extrabold text-[#EAD096] pt-2 border-t border-[#C5A059]/20 font-serif">
-                    <span>{isEn ? 'Total:' : 'المجموع النهائي:'}</span>
-                    <span>{total} {isEn ? 'EGP' : 'ج.م'}</span>
+                    <span>{isEn ? 'Required to Pay (Products only):' : 'المطلوب دفعه (مبلغ المنتجات فقط):'}</span>
+                    <span>{discountedSubtotal} {isEn ? 'EGP' : 'ج.م'}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-[#C5A059]/20 text-[11px] text-gray-400 flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#C5A059]" />
-                <span>{isEn ? 'VELORA Royal Guarantee: 100% Protected Packaging & Delivery in 2-4 Business Days.' : 'ضمان VELORA الملكي: تغليف محمي 100% وتوصيل خلال 2-4 أيام عمل.'}</span>
+              <div className="mt-6 pt-4 border-t border-[#C5A059]/20 text-[11px] text-gray-400 flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#C5A059] flex-shrink-0" />
+                  <span>{isEn ? 'VELORA Royal Guarantee: 100% Protected Packaging & Delivery in 2-4 Business Days.' : 'ضمان VELORA الملكي: تغليف محمي 100% وتوصيل خلال 2-4 أيام عمل.'}</span>
+                </div>
+                <div className="flex items-center gap-2 text-amber-200/80">
+                  <Truck className="w-4 h-4 text-amber-400/80 flex-shrink-0" />
+                  <span>{isEn ? '* Note: Product value is paid online, shipping is paid in cash to the courier.' : '* ملاحظة هامة: يتم تحويل قيمة المنتجات فقط عبر الإنترنت، بينما تُدفع مصاريف الشحن نقداً لمندوب التوصيل.'}</span>
+                </div>
               </div>
             </div>
 
@@ -398,6 +408,14 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                     <p className="text-[10px] text-gray-400 mt-1">
                       {isEn ? 'This is required to verify your payment and process your order quickly.' : 'مطلوب لتأكيد الدفع الخاص بك ومعالجة الطلب في أسرع وقت.'}
                     </p>
+                    <div className="mt-3 p-3 bg-amber-900/30 border border-amber-500/30 rounded-xl">
+                      <p className="text-xs text-amber-200 font-bold">
+                        {isEn ? `Please transfer exactly ${discountedSubtotal} EGP (Products value).` : `يرجى تحويل مبلغ ${discountedSubtotal} ج.م فقط (قيمة المنتجات).`}
+                      </p>
+                      <p className="text-[10px] text-amber-300/80 mt-1">
+                        {isEn ? 'Shipping fees are collected in cash by the shipping courier upon delivery.' : 'مصاريف الشحن يتم تحصيلها نقداً عن طريق مندوب الشحن عند الاستلام.'}
+                      </p>
+                    </div>
                   </div>
                 )}
 
@@ -498,12 +516,15 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                   <span>{completedOrder.subtotal} {isEn ? 'EGP' : 'ج.م'}</span>
                 </div>
                 <div className="flex justify-between text-gray-400 text-[11px]">
-                  <span>{isEn ? 'Shipping:' : 'الشحن والتوصيل:'}</span>
+                  <span>{isEn ? 'Shipping Fee (Paid upon delivery):' : 'تكلفة الشحن (يتم تحصيله من خلال شركة الشحن):'}</span>
                   <span className="font-bold">{completedOrder.shippingFee > 0 ? `${completedOrder.shippingFee} ج.م` : shippingFee === -1 ? (isEn ? 'Paid to Courier' : 'يُدفع لشركة الشحن') : (isEn ? 'Free' : 'مجانًا')}</span>
                 </div>
                 <div className="flex justify-between text-[#EAD096] font-extrabold text-base pt-2 border-t border-[#C5A059]/20 font-serif">
-                  <span>{isEn ? 'Total:' : 'الإجمالي:'}</span>
-                  <span>{completedOrder.total} {isEn ? 'EGP' : 'ج.م'}</span>
+                  <span>{isEn ? 'Paid Amount (Products only):' : 'المبلغ المدفوع (مبلغ المنتجات فقط):'}</span>
+                  <span>{completedOrder.total - completedOrder.shippingFee} {isEn ? 'EGP' : 'ج.م'}</span>
+                </div>
+                <div className="text-[10px] text-gray-400 mt-2 text-center bg-[#0D221A] p-2 rounded-lg border border-[#C5A059]/20">
+                  {isEn ? `* You transferred ${completedOrder.total - completedOrder.shippingFee} EGP online. Shipping (${completedOrder.shippingFee} EGP) will be collected by courier.` : `* تم تحويل ${completedOrder.total - completedOrder.shippingFee} ج.م إلكترونياً. وسيتم تحصيل مصاريف الشحن (${completedOrder.shippingFee} ج.م) بواسطة المندوب.`}
                 </div>
               </div>
 

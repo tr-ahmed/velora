@@ -14,7 +14,7 @@ export default function UserProfilePage({ currentUser, onUpdateUser, onLogout, o
   // Form State
   const [fullName, setFullName] = useState(currentUser?.fullName || '');
   const [phone, setPhone] = useState(currentUser?.phone || '');
-  const [city, setCity] = useState(currentUser?.city || 'القاهرة');
+  const [city, setCity] = useState(currentUser?.city || 'القاهرة - الجيزة - المدن الجديدة');
   const [address, setAddress] = useState(currentUser?.address || '');
   const [avatar, setAvatar] = useState(currentUser?.avatar || '');
 
