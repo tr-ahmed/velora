@@ -282,14 +282,14 @@ export default function App() {
           
           {/* Velora Logo Center */}
           <div className="absolute inset-4 bg-[#143529] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(197,160,89,0.2)] border border-[#C5A059]/30">
-            <VeloraLogo size="sm" showText={false} glow={false} />
+            <VeloraLogo size="lg" showText={false} glow={false} />
           </div>
         </div>
         
         <h2 className="text-[#EAD096] font-serif text-xl sm:text-2xl font-bold tracking-wider mb-2">VELORA CARE</h2>
         <div className="flex items-center gap-2 text-[#C5A059]/80 text-sm font-arabic" dir="rtl">
           <Loader2 className="w-4 h-4 animate-spin" />
-          <span>جاري إيقاظ سحر الطبيعة الزمردية...</span>
+          <span>جاري تحضير المتجر، يرجى الانتظار...</span>
         </div>
       </div>
     );
