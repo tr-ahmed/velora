@@ -18,7 +18,8 @@ import UserProfilePage from './components/UserProfilePage';
 import TrackOrderModal from './components/TrackOrderModal';
 import MobileBottomNav from './components/MobileBottomNav';
 import InfoModal from './components/InfoModal';
-import { Search, X, Sparkles, Settings, Clock, Instagram, Lock } from 'lucide-react';
+import VeloraLogo from './components/VeloraLogo';
+import { Search, X, Sparkles, Settings, Clock, Instagram, Lock, Loader2 } from 'lucide-react';
 import { 
   fetchProductsFromApi,
   fetchHeroSlidesApi, fetchHeroSettingsApi, saveHeroSlideApi, deleteHeroSlideApi, updateHeroSettingsApi, fetchStoreSettingsApi
@@ -54,6 +55,7 @@ export default function App() {
   const [isTrackOrderOpen, setIsTrackOrderOpen] = useState(false);
   const [isAdminView, setIsAdminView] = useState(false);
   const [storeSettings, setStoreSettings] = useState(null);
+  const [isAppLoading, setIsAppLoading] = useState(true);
 
   // Allow admin login via URL hash
   useEffect(() => {
@@ -123,41 +125,46 @@ export default function App() {
 
   const [offers, setOffers] = useState([]);
 
+  // Initial App Data Loading (Splash Screen)
   useEffect(() => {
-    async function loadHeroData() {
+    async function loadInitialData() {
       try {
-        const slides = await fetchHeroSlidesApi();
-        if (slides && slides.length > 0) setHeroSlides(slides);
+        const [settingsRes, heroSlidesRes, heroSettingsRes, productsRes] = await Promise.allSettled([
+          fetchStoreSettingsApi(),
+          fetchHeroSlidesApi(),
+          fetchHeroSettingsApi(),
+          fetchProductsFromApi('all')
+        ]);
 
-        const settings = await fetchHeroSettingsApi();
-        if (settings) setHeroSettings(settings);
+        if (settingsRes.status === 'fulfilled' && settingsRes.value) setStoreSettings(settingsRes.value);
+        if (heroSlidesRes.status === 'fulfilled' && heroSlidesRes.value?.length > 0) setHeroSlides(heroSlidesRes.value);
+        if (heroSettingsRes.status === 'fulfilled' && heroSettingsRes.value) setHeroSettings(heroSettingsRes.value);
+        if (productsRes.status === 'fulfilled' && productsRes.value?.length > 0) setProducts(productsRes.value);
       } catch (err) {
-        console.warn('Hero API load failed:', err);
+        console.warn('Initial load failed:', err);
+      } finally {
+        setIsAppLoading(false);
       }
     }
-    loadHeroData();
+    loadInitialData();
   }, []);
 
-  // Persist Current User
-  useEffect(() => {
+  // Fetch products when category changes (after initial load)
+  const loadProducts = async () => {
     try {
-      if (currentUser) {
-        localStorage.setItem('velora_user', JSON.stringify(currentUser));
-      } else {
-        localStorage.removeItem('velora_user');
-      }
-    } catch (e) {
-      console.warn('LocalStorage save failed for user');
+      const category = selectedCategory === 'offers' ? 'all' : selectedCategory;
+      const data = await fetchProductsFromApi(category);
+      setProducts(data);
+    } catch (err) {
+      console.warn('Failed to load products:', err);
     }
-  }, [currentUser]);
+  };
 
   useEffect(() => {
-    try {
-      localStorage.setItem('velora_wishlist', JSON.stringify(wishlist));
-    } catch (e) {
-      console.warn('LocalStorage save failed');
+    if (!isAppLoading) {
+      loadProducts();
     }
-  }, [wishlist]);
+  }, [selectedCategory]);
 
   // Automatic Admin Route & Hash Detection (#admin, /admin, ?admin=true)
   useEffect(() => {
@@ -179,29 +186,6 @@ export default function App() {
     window.addEventListener('hashchange', checkAdminRoute);
     return () => window.removeEventListener('hashchange', checkAdminRoute);
   }, [currentUser]);
-
-  // Load Global Store Settings
-  useEffect(() => {
-    fetchStoreSettingsApi().then(settings => {
-      if (settings) {
-        setStoreSettings(settings);
-      }
-    }).catch(err => console.error('Failed to load global store settings:', err));
-  }, []);
-
-  const loadProducts = async () => {
-    try {
-      const category = selectedCategory === 'offers' ? 'all' : selectedCategory;
-      const data = await fetchProductsFromApi(category);
-      setProducts(data);
-    } catch (err) {
-      console.warn('Failed to load products:', err);
-    }
-  };
-
-  useEffect(() => {
-    loadProducts();
-  }, [selectedCategory]);
 
   // Always scroll to top when changing tabs or views
   useEffect(() => {
@@ -274,6 +258,40 @@ export default function App() {
   };
 
   const cartTotalCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  // Re-add removed simple local storage hooks
+  useEffect(() => {
+    if (currentUser) localStorage.setItem('velora_user', JSON.stringify(currentUser));
+    else localStorage.removeItem('velora_user');
+  }, [currentUser]);
+
+  useEffect(() => {
+    localStorage.setItem('velora_wishlist', JSON.stringify(wishlist));
+  }, [wishlist]);
+
+  // Splash Screen
+  if (isAppLoading) {
+    return (
+      <div className="fixed inset-0 z-[9999] bg-[#0A1913] flex flex-col items-center justify-center animate-pulse-slow">
+        <div className="relative flex items-center justify-center mb-8">
+          {/* Outer glowing spinning rings */}
+          <div className="absolute inset-0 w-32 h-32 border-t-2 border-r-2 border-[#C5A059] rounded-full animate-spin" style={{ animationDuration: '3s' }}></div>
+          <div className="absolute inset-2 w-28 h-28 border-b-2 border-l-2 border-[#EAD096]/50 rounded-full animate-spin" style={{ animationDuration: '2s', animationDirection: 'reverse' }}></div>
+          
+          {/* Velora Logo Center */}
+          <div className="relative z-10 w-24 h-24 bg-[#143529] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(197,160,89,0.2)] border border-[#C5A059]/30">
+            <VeloraLogo size="sm" showText={false} glow={false} />
+          </div>
+        </div>
+        
+        <h2 className="text-[#EAD096] font-serif text-xl sm:text-2xl font-bold tracking-wider mb-2">VELORA CARE</h2>
+        <div className="flex items-center gap-2 text-[#C5A059]/80 text-sm font-arabic" dir="rtl">
+          <Loader2 className="w-4 h-4 animate-spin" />
+          <span>جاري إيقاظ سحر الطبيعة الزمردية...</span>
+        </div>
+      </div>
+    );
+  }
 
   // Render Admin Dashboard if Admin View is Active
   if (isAdminView && currentUser?.role === 'Admin') {
