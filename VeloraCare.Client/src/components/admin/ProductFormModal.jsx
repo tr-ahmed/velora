@@ -177,10 +177,9 @@ export default function ProductFormModal({ isOpen, onClose, product, onSave }) {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Product Name (EN) *</label>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Product Name (EN)</label>
               <input
                 type="text"
-                required
                 placeholder="e.g. Emerald Revive Serum"
                 value={formData.nameEn}
                 onChange={(e) => setFormData({ ...formData, nameEn: e.target.value })}
