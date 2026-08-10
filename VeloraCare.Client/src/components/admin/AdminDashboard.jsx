@@ -257,15 +257,17 @@ export default function AdminDashboard({
   const loadData = async () => {
     try {
       setLoading(true);
-      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, categoriesRes, usersRes, storeSettingsRes] = await Promise.all([
+      const [statsRes, analyticsRes, productsRes, ordersRes, couponsRes, categoriesRes, usersRes, reviewsRes, testimonialsRes, settingsRes] = await Promise.all([
         fetchDashboardStatsApi(),
         fetchAnalyticsReportsApi(),
         fetchProductsFromApi(),
         fetchAllOrdersApi(),
         fetchCouponsApi(),
         fetchCategoriesApi(),
-        fetchAdminReviewsApi(),
-        fetchTestimonialsApi(false).catch(() => [])
+        fetchUsersApi().catch(() => []),
+        fetchAdminReviewsApi().catch(() => ({ reviews: [], stats: null })),
+        fetchTestimonialsApi(false).catch(() => []),
+        fetchStoreSettingsApi().catch(() => null)
       ]);
       setStats(statsRes || { totalRevenue: 0, totalOrders: 0, totalProducts: 0, totalCustomers: 0, activeCoupons: 0, recentOrders: [] });
       setAnalytics(analyticsRes || { generatedAt: new Date().toISOString(), totalRevenue: 0, totalOrders: 0, averageOrderValue: 0, customerSatisfactionRate: '0%', conversionRate: '0%', salesByCity: [], salesByCategory: [], ordersByStatus: [], topProducts: [] });
