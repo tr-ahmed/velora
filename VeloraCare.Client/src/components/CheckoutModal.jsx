@@ -47,19 +47,25 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
     }
   }, [isOpen, currentUser]);
 
-  const [baseShippingFee, setBaseShippingFee] = useState(0);
+  const [baseStoreShippingFee, setBaseStoreShippingFee] = useState(0);
 
   useEffect(() => {
     if (isOpen) {
       fetchStoreSettingsApi().then(settings => {
-        if (settings) setBaseShippingFee(settings.shippingFee || 0);
+        if (settings) setBaseStoreShippingFee(settings.shippingFee || 0);
       }).catch(err => console.error('Failed to load store settings', err));
     }
   }, [isOpen]);
 
-  const shippingFee = (formData.city && SHIPPING_RATES[formData.city] !== undefined)
+  const totalWeight = cartItems.reduce((acc, item) => acc + ((item.weight || 0.5) * item.quantity), 0);
+  const billableWeight = Math.max(1, Math.ceil(totalWeight));
+  const extraWeightFee = (billableWeight - 1) * 10;
+
+  const baseCityShippingFee = (formData.city && SHIPPING_RATES[formData.city] !== undefined)
     ? SHIPPING_RATES[formData.city]
-    : baseShippingFee;
+    : baseStoreShippingFee;
+
+  const shippingFee = baseCityShippingFee > 0 ? baseCityShippingFee + extraWeightFee : 0;
 
   if (!isOpen) return null;
 
@@ -100,6 +106,8 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
       address: formData.address,
       subtotal,
       shippingFee,
+      totalWeight,
+      extraWeightFee,
       total,
       paymentMethod: formData.paymentMethod,
       paymentReference: formData.paymentReference,
@@ -119,6 +127,8 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
         items: [...cartItems],
         subtotal,
         shippingFee: shippingCost,
+        totalWeight,
+        extraWeightFee,
         total
       });
 
@@ -261,7 +271,14 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                     </div>
                   )}
                   <div className="flex justify-between text-gray-400">
-                    <span>{isEn ? 'Shipping Fee (Paid upon delivery):' : 'تكلفة الشحن (يتم تحصيله من خلال شركة الشحن):'}</span>
+                    <span className="flex flex-col">
+                      <span>{isEn ? 'Shipping Fee (Paid upon delivery):' : 'تكلفة الشحن (يتم تحصيله من خلال شركة الشحن):'}</span>
+                      {extraWeightFee > 0 && (
+                        <span className="text-[9px] text-amber-500/80 mt-0.5">
+                          {isEn ? `Includes +${extraWeightFee} EGP for extra weight (${totalWeight.toFixed(1)} kg)` : `(يشمل +${extraWeightFee} ج.م للوزن الزائد - إجمالي ${totalWeight.toFixed(1)} كجم)`}
+                        </span>
+                      )}
+                    </span>
                     <span className="font-bold text-[#987834]">{shippingFee > 0 ? `${shippingFee} ج.م` : shippingFee === -1 ? (isEn ? 'Paid to Courier' : 'يُدفع لشركة الشحن') : (isEn ? 'Free' : 'مجانًا')}</span>
                   </div>
                   <div className="flex justify-between text-base font-extrabold text-[#EAD096] pt-2 border-t border-[#C5A059]/20 font-serif">
@@ -519,6 +536,11 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                   <span>{isEn ? 'Shipping Fee (Paid upon delivery):' : 'تكلفة الشحن (يتم تحصيله من خلال شركة الشحن):'}</span>
                   <span className="font-bold">{completedOrder.shippingFee > 0 ? `${completedOrder.shippingFee} ج.م` : shippingFee === -1 ? (isEn ? 'Paid to Courier' : 'يُدفع لشركة الشحن') : (isEn ? 'Free' : 'مجانًا')}</span>
                 </div>
+                {completedOrder.extraWeightFee > 0 && (
+                   <div className="text-[9px] text-amber-500/80 mt-0.5 mb-1 text-right" dir={isEn ? 'ltr' : 'rtl'}>
+                     {isEn ? `Includes +${completedOrder.extraWeightFee} EGP for extra weight (${completedOrder.totalWeight.toFixed(1)} kg)` : `شامل +${completedOrder.extraWeightFee} ج.م للوزن الزائد (${completedOrder.totalWeight.toFixed(1)} كجم)`}
+                   </div>
+                )}
                 <div className="flex justify-between text-[#EAD096] font-extrabold text-base pt-2 border-t border-[#C5A059]/20 font-serif">
                   <span>{isEn ? 'Paid Amount (Products only):' : 'المبلغ المدفوع (مبلغ المنتجات فقط):'}</span>
                   <span>{completedOrder.total - completedOrder.shippingFee} {isEn ? 'EGP' : 'ج.م'}</span>
