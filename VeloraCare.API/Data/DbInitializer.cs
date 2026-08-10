@@ -19,6 +19,32 @@ public static class DbInitializer
             context.SaveChanges();
         }
 
+        // Seed Admin: د ليلي
+        if (!context.Users.Any(u => u.Email == "laila@velora.com"))
+        {
+            context.Users.Add(new User
+            {
+                FullName = "د ليلي",
+                Email = "laila@velora.com",
+                PasswordHash = "Laila123!",
+                Role = "Admin"
+            });
+            context.SaveChanges();
+        }
+
+        // Seed Admin: د علا
+        if (!context.Users.Any(u => u.Email == "ola@velora.com"))
+        {
+            context.Users.Add(new User
+            {
+                FullName = "د علا",
+                Email = "ola@velora.com",
+                PasswordHash = "Ola123!",
+                Role = "Admin"
+            });
+            context.SaveChanges();
+        }
+
         // Seed Purifying Cleanser category if missing
         if (!context.Categories.Any(c => c.Code == "cleansers"))
         {
