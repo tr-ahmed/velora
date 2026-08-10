@@ -289,7 +289,7 @@ export default function App() {
         <h2 className="text-[#EAD096] font-serif text-xl sm:text-2xl font-bold tracking-wider mb-2">VELORA CARE</h2>
         <div className="flex items-center gap-2 text-[#C5A059]/80 text-sm font-arabic" dir="rtl">
           <Loader2 className="w-4 h-4 animate-spin" />
-          <span>جاري تحضير المتجر، يرجى الانتظار...</span>
+          <span>أهلاً بك في عالم فيلورا للعناية الفاخرة...</span>
         </div>
       </div>
     );
