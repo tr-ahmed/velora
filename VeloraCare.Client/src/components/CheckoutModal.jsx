@@ -12,7 +12,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
-    city: 'القاهرة - الجيزة - المدن الجديدة',
+    city: 'القاهرة',
     address: '',
     notes: '',
     paymentMethod: 'vodafone',
