@@ -129,11 +129,13 @@ export default function App() {
   useEffect(() => {
     async function loadInitialData() {
       try {
+        const minSplashTime = new Promise(resolve => setTimeout(resolve, 2500)); // Minimum 2.5s for aesthetics
         const [settingsRes, heroSlidesRes, heroSettingsRes, productsRes] = await Promise.allSettled([
           fetchStoreSettingsApi(),
           fetchHeroSlidesApi(),
           fetchHeroSettingsApi(),
-          fetchProductsFromApi('all')
+          fetchProductsFromApi('all'),
+          minSplashTime
         ]);
 
         if (settingsRes.status === 'fulfilled' && settingsRes.value) setStoreSettings(settingsRes.value);
