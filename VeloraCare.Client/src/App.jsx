@@ -29,7 +29,10 @@ import { useTranslation } from 'react-i18next';
 export default function App() {
   const { t, i18n } = useTranslation();
   const isEn = i18n.language === 'en';
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState(() => sessionStorage.getItem('velora_activeTab') || 'home');
+  useEffect(() => {
+    sessionStorage.setItem('velora_activeTab', activeTab);
+  }, [activeTab]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,7 +56,10 @@ export default function App() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isTrackOrderOpen, setIsTrackOrderOpen] = useState(false);
-  const [isAdminView, setIsAdminView] = useState(false);
+  const [isAdminView, setIsAdminView] = useState(() => sessionStorage.getItem('velora_isAdminView') === 'true');
+  useEffect(() => {
+    sessionStorage.setItem('velora_isAdminView', isAdminView.toString());
+  }, [isAdminView]);
   const [storeSettings, setStoreSettings] = useState(null);
   const [isAppLoading, setIsAppLoading] = useState(true);
 
