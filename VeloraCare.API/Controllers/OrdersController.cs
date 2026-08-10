@@ -128,7 +128,26 @@ public class OrdersController : ControllerBase
             {
                 try 
                 {
-                    string message = $"*طلب جديد في المتجر! 🛒*\n\nالعميل: {order.FullName}\nالمبلغ: {order.Total} ج.م\nالمدينة: {order.City}\nرقم الطلب: {order.OrderNumber}";
+                    string paymentMethodAr = order.PaymentMethod == "vodafone" ? "فودافون كاش" : (order.PaymentMethod == "instapay" ? "انستا باي" : order.PaymentMethod);
+                    string paymentRef = !string.IsNullOrEmpty(order.PaymentReference) ? order.PaymentReference : "لا يوجد";
+                    var itemsDetails = string.Join("\n", order.Items.Select(i => $"- {i.ProductName} (الكمية: {i.Quantity})"));
+                    
+                    string message = $@"*طلب جديد في المتجر! 🛒*
+
+*رقم الطلب:* {order.OrderNumber}
+*العميل:* {order.FullName}
+*الهاتف:* {order.Phone}
+*المحافظة:* {order.City}
+*العنوان:* {order.Address}
+
+*المنتجات:*
+{itemsDetails}
+
+*طريقة الدفع:* {paymentMethodAr}
+*رقم التحويل / المرجع:* {paymentRef}
+
+*المجموع:* {order.Total} ج.م
+*(المنتجات: {order.Subtotal} + الشحن: {order.ShippingFee})*";
                     string encodedMessage = Uri.EscapeDataString(message);
                     
                     string phone = waPhone.StartsWith("+") ? waPhone.Substring(1) : waPhone;
