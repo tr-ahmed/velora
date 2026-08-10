@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle, CreditCard, Truck, ShieldCheck, Sparkles, ShoppingBag, ArrowLeft, MapPin, Phone, User, Package, Tag } from 'lucide-react';
+import { X, CheckCircle, CreditCard, Truck, Sparkles, ShoppingBag, ArrowLeft, MapPin, Phone, User, Package, Tag } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { createOrderApi, validateCouponApi, fetchStoreSettingsApi } from '../services/api';
 import { EGYPT_GOVERNORATES, SHIPPING_RATES } from '../data/governorates';
@@ -289,10 +289,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
               </div>
 
               <div className="mt-6 pt-4 border-t border-[#C5A059]/20 text-[11px] text-gray-400 flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[#C5A059] flex-shrink-0" />
-                  <span>{isEn ? 'VELORA Royal Guarantee: 100% Protected Packaging & Delivery in 2-4 Business Days.' : 'ضمان VELORA الملكي: تغليف محمي 100% وتوصيل خلال 2-4 أيام عمل.'}</span>
-                </div>
+
                 <div className="flex items-center gap-2 text-amber-200/80">
                   <Truck className="w-4 h-4 text-amber-400/80 flex-shrink-0" />
                   <span>{isEn ? '* Note: Product value is paid online, shipping is paid in cash to the courier.' : '* ملاحظة هامة: يتم تحويل قيمة المنتجات فقط عبر الإنترنت، بينما تُدفع مصاريف الشحن نقداً لمندوب التوصيل.'}</span>
