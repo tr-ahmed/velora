@@ -275,13 +275,13 @@ export default function App() {
   if (isAppLoading) {
     return (
       <div className="fixed inset-0 z-[9999] bg-[#0A1913] flex flex-col items-center justify-center animate-pulse-slow">
-        <div className="relative flex items-center justify-center mb-8">
+        <div className="relative w-32 h-32 mb-8">
           {/* Outer glowing spinning rings */}
-          <div className="absolute inset-0 w-32 h-32 border-t-2 border-r-2 border-[#C5A059] rounded-full animate-spin" style={{ animationDuration: '3s' }}></div>
-          <div className="absolute inset-2 w-28 h-28 border-b-2 border-l-2 border-[#EAD096]/50 rounded-full animate-spin" style={{ animationDuration: '2s', animationDirection: 'reverse' }}></div>
+          <div className="absolute inset-0 border-t-2 border-r-2 border-[#C5A059] rounded-full animate-spin" style={{ animationDuration: '3s' }}></div>
+          <div className="absolute inset-2 border-b-2 border-l-2 border-[#EAD096]/50 rounded-full animate-spin" style={{ animationDuration: '2s', animationDirection: 'reverse' }}></div>
           
           {/* Velora Logo Center */}
-          <div className="relative z-10 w-24 h-24 bg-[#143529] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(197,160,89,0.2)] border border-[#C5A059]/30">
+          <div className="absolute inset-4 bg-[#143529] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(197,160,89,0.2)] border border-[#C5A059]/30">
             <VeloraLogo size="sm" showText={false} glow={false} />
           </div>
         </div>
