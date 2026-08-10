@@ -564,8 +564,27 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
             </div>
 
             <p className="text-xs text-gray-400 max-w-sm mx-auto">
-              {isEn ? 'We will contact you via WhatsApp and mobile on' : 'سيتم التواصل معكِ عبر الواتساب والجوال على الرقم'} <strong className="text-gray-300" dir="ltr">{completedOrder.phone}</strong> {isEn ? 'to provide your tracking link.' : 'لتزويدك برابط تتبع الشحنة فور انطلاقها.'}
+              {isEn ? 'You can track your order at any time using this link:' : 'يمكنك تتبع حالة طلبك في أي وقت عبر الرابط التالي:'}
             </p>
+            
+            <div className="flex items-center gap-2 max-w-sm mx-auto w-full bg-[#0a1812] border border-[#C5A059]/30 rounded-lg p-2 mt-2 mb-4">
+               <input 
+                 type="text" 
+                 readOnly 
+                 value={`${window.location.origin}/?track=${completedOrder.orderNumber}&phone=${completedOrder.phone}`}
+                 className="flex-1 bg-transparent text-gray-300 text-[10px] outline-none"
+                 dir="ltr"
+               />
+               <button 
+                 onClick={() => {
+                   navigator.clipboard.writeText(`${window.location.origin}/?track=${completedOrder.orderNumber}&phone=${completedOrder.phone}`);
+                   alert(isEn ? 'Tracking link copied to clipboard!' : 'تم نسخ رابط التتبع بنجاح!');
+                 }}
+                 className="bg-[#1A3C2F] text-[#EAD096] px-3 py-1.5 rounded text-[10px] font-bold hover:bg-[#23503f] transition-colors whitespace-nowrap"
+               >
+                 {isEn ? 'Copy' : 'نسخ الرابط'}
+               </button>
+            </div>
 
             <button
               onClick={onClose}

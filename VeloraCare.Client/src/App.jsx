@@ -62,6 +62,11 @@ export default function App() {
     if (window.location.hash === '#admin' || window.location.search.includes('admin=true')) {
       setIsAuthModalOpen(true);
     }
+    
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('track') && params.has('phone')) {
+      setIsTrackOrderOpen(true);
+    }
   }, []);
 
   const [currentUser, setCurrentUser] = useState(() => {
@@ -595,7 +600,17 @@ export default function App() {
       )}
 
       {isTrackOrderOpen && (
-        <TrackOrderModal onClose={() => setIsTrackOrderOpen(false)} />
+        <TrackOrderModal 
+          onClose={() => {
+            setIsTrackOrderOpen(false);
+            // Clean up URL to avoid reopening on refresh
+            if (window.location.search.includes('track=')) {
+              window.history.replaceState({}, '', window.location.pathname);
+            }
+          }}
+          initialOrderNumber={new URLSearchParams(window.location.search).get('track')}
+          initialPhone={new URLSearchParams(window.location.search).get('phone')}
+        />
       )}
 
       <ContactWidget />

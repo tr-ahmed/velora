@@ -3,11 +3,11 @@ import { X, Search, Package, CheckCircle, Truck, Clock, AlertCircle } from 'luci
 import { trackOrderApi, fetchMyOrdersApi } from '../services/api';
 import { useTranslation } from 'react-i18next';
 
-export default function TrackOrderModal({ onClose }) {
+export default function TrackOrderModal({ onClose, initialOrderNumber, initialPhone }) {
   const { t, i18n } = useTranslation();
   const isEn = i18n.language === 'en';
-  const [orderNumber, setOrderNumber] = useState('');
-  const [phone, setPhone] = useState('');
+  const [orderNumber, setOrderNumber] = useState(initialOrderNumber || '');
+  const [phone, setPhone] = useState(initialPhone || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [order, setOrder] = useState(null);
@@ -15,8 +15,8 @@ export default function TrackOrderModal({ onClose }) {
   const [tab, setTab] = useState('track'); // 'track' or 'history'
   const [ordersList, setOrdersList] = useState(null);
 
-  const handleTrack = async (e) => {
-    e.preventDefault();
+  const handleTrack = async (e, num, ph) => {
+    if (e) e.preventDefault();
     setError(null);
     setOrder(null);
     setOrdersList(null);
@@ -24,10 +24,10 @@ export default function TrackOrderModal({ onClose }) {
 
     try {
       if (tab === 'track') {
-        const data = await trackOrderApi(orderNumber, phone);
+        const data = await trackOrderApi(num || orderNumber, ph || phone);
         setOrder(data);
       } else {
-        const data = await fetchMyOrdersApi(phone, '');
+        const data = await fetchMyOrdersApi(ph || phone, '');
         if (data.length === 0) {
            setError(isEn ? 'No orders found for this phone number' : 'لم يتم العثور على طلبات مرتبطة برقم الهاتف هذا');
         } else {
@@ -40,6 +40,12 @@ export default function TrackOrderModal({ onClose }) {
       setLoading(false);
     }
   };
+
+  React.useEffect(() => {
+    if (initialOrderNumber && initialPhone) {
+      handleTrack(new Event('submit'), initialOrderNumber, initialPhone);
+    }
+  }, []);
 
   const steps = [
     { label: isEn ? 'Pending' : 'قيد الانتظار', icon: Clock },
