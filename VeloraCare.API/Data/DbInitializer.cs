@@ -20,28 +20,40 @@ public static class DbInitializer
         }
 
         // Seed Admin: د ليلي
-        if (!context.Users.Any(u => u.Email == "laila@velora.com"))
+        var laila = context.Users.FirstOrDefault(u => u.Email == "laila@velora.com");
+        if (laila == null)
         {
             context.Users.Add(new User
             {
                 FullName = "د ليلي",
                 Email = "laila@velora.com",
-                PasswordHash = "Laila123!",
+                PasswordHash = "velora123",
                 Role = "Admin"
             });
             context.SaveChanges();
         }
+        else if (laila.PasswordHash != "velora123")
+        {
+            laila.PasswordHash = "velora123";
+            context.SaveChanges();
+        }
 
         // Seed Admin: د علا
-        if (!context.Users.Any(u => u.Email == "ola@velora.com"))
+        var ola = context.Users.FirstOrDefault(u => u.Email == "ola@velora.com");
+        if (ola == null)
         {
             context.Users.Add(new User
             {
                 FullName = "د علا",
                 Email = "ola@velora.com",
-                PasswordHash = "Ola123!",
+                PasswordHash = "velora123",
                 Role = "Admin"
             });
+            context.SaveChanges();
+        }
+        else if (ola.PasswordHash != "velora123")
+        {
+            ola.PasswordHash = "velora123";
             context.SaveChanges();
         }
 
