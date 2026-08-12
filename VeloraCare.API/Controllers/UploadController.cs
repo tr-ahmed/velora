@@ -47,7 +47,6 @@ public class UploadController : ControllerBase
         }
 
         var imageUrl = $"/images/{folder}/{fileName}";
-        var baseUrl = $"{Request.Scheme}://{Request.Host}";
-        return Ok(new { url = $"{baseUrl}{imageUrl}", fileName });
+        return Ok(new { url = imageUrl, fileName });
     }
 }
