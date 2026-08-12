@@ -119,8 +119,8 @@ public class OrdersController : ControllerBase
 
         // Send WhatsApp Notification via CallMeBot
         var waSettings = await _db.StoreSettings.FirstOrDefaultAsync();
-        string waApiKey = !string.IsNullOrEmpty(waSettings?.CallMeBotApiKey) ? waSettings.CallMeBotApiKey : "6520714";
-        string waPhone = "201210252587"; // Dedicated admin notification number
+        string waApiKey = !string.IsNullOrEmpty(waSettings?.CallMeBotApiKey) ? waSettings.CallMeBotApiKey : "6802963";
+        string waPhone = "201038035240"; // Dedicated admin notification number
 
         if (!string.IsNullOrEmpty(waApiKey) && !string.IsNullOrEmpty(waPhone))
         {
