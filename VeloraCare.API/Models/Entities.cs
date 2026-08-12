@@ -11,6 +11,7 @@ public class Product
     public string DescriptionEn { get; set; } = string.Empty;
     public decimal Price { get; set; }
     public decimal? OriginalPrice { get; set; }
+    public decimal? CostPrice { get; set; }
     public string Category { get; set; } = string.Empty;
     public string Image { get; set; } = string.Empty;
     public string? Badge { get; set; }

@@ -133,6 +133,7 @@ export default function ProductFormModal({ isOpen, onClose, product, onSave }) {
       ...formData,
       price: Number(formData.price),
       originalPrice: formData.originalPrice ? Number(formData.originalPrice) : null,
+      costPrice: formData.costPrice ? Number(formData.costPrice) : null,
       stock: Number(formData.stock)
     });
     onClose();
