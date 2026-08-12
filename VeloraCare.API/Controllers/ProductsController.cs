@@ -62,6 +62,7 @@ public class ProductsController : ControllerBase
         existing.DescriptionEn = product.DescriptionEn;
         existing.Price = product.Price;
         existing.OriginalPrice = product.OriginalPrice;
+        existing.CostPrice = product.CostPrice;
         existing.Category = product.Category;
         existing.Image = product.Image;
         existing.Badge = product.Badge;
