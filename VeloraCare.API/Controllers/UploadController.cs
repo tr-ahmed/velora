@@ -34,7 +34,8 @@ public class UploadController : ControllerBase
             folder = "products";
         }
 
-        var uploadsDir = Path.Combine(_env.WebRootPath, "images", folder);
+        var webRoot = _env.WebRootPath ?? Path.Combine(_env.ContentRootPath, "wwwroot");
+        var uploadsDir = Path.Combine(webRoot, "images", folder);
         Directory.CreateDirectory(uploadsDir);
 
         var fileName = $"{Guid.NewGuid()}{ext}";
