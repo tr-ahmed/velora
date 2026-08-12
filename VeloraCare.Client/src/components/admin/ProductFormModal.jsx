@@ -402,8 +402,7 @@ export default function ProductFormModal({ isOpen, onClose, product, onSave }) {
               </div>
             ) : (
               <input
-                type="url"
-                required
+                type="text"
                 placeholder="https://example.com/product-image.jpg"
                 value={formData.image}
                 onChange={(e) => setFormData({ ...formData, image: e.target.value })}
