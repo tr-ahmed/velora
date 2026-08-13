@@ -132,28 +132,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
         total
       });
 
-      try {
-        const count = 250;
-        const defaults = {
-          origin: { y: 0.6 },
-          colors: ['#C5A059', '#143529', '#EAD096', '#FFFFFF'],
-          zIndex: 9999
-        };
 
-        function fire(particleRatio, opts) {
-          confetti(Object.assign({}, defaults, opts, {
-            particleCount: Math.floor(count * particleRatio)
-          }));
-        }
-
-        fire(0.25, { spread: 26, startVelocity: 55 });
-        fire(0.2, { spread: 60 });
-        fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
-        fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
-        fire(0.1, { spread: 120, startVelocity: 45 });
-      } catch (err) {
-        console.log('Confetti effect triggered');
-      }
 
       setStep('success');
       onOrderComplete();
@@ -309,74 +288,80 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
 
               <form onSubmit={handleSubmitOrder} className="space-y-4">
 
-                {/* Name field */}
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1.5">{isEn ? 'Full Name *' : 'الاسم الكامل *'}</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder={isEn ? 'Enter your name' : 'أدخلي اسمك'}
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                    className={`w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#DFE6DB] transition-all`}
-                    dir={isEn ? 'ltr' : 'rtl'}
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Shipping Details Card */}
+                <div className="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+                  <h3 className="font-bold text-[#0D221A] text-sm mb-2 pb-2 border-b border-gray-100">{isEn ? 'Personal & Delivery Info' : 'المعلومات الشخصية والتوصيل'}</h3>
+                  
+                  {/* Name field */}
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1.5">{isEn ? 'Mobile Number *' : 'رقم الموبايل *'}</label>
+                    <label className="block text-xs font-bold text-gray-700 mb-1.5">{isEn ? 'Full Name *' : 'الاسم الكامل *'}</label>
                     <input
-                      type="tel"
+                      type="text"
                       required
-                      placeholder="01XXXXXXXXX"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#DFE6DB] transition-all"
-                      dir="ltr"
+                      placeholder={isEn ? 'Enter your name' : 'أدخلي اسمك'}
+                      value={formData.fullName}
+                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                      className={`w-full h-12 px-4 rounded-xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#DFE6DB] transition-all`}
+                      dir={isEn ? 'ltr' : 'rtl'}
                     />
                   </div>
 
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 mb-1.5">{isEn ? 'Mobile Number *' : 'رقم الموبايل *'}</label>
+                      <input
+                        type="tel"
+                        required
+                        placeholder="01XXXXXXXXX"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        className="w-full h-12 px-4 rounded-xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#DFE6DB] transition-all"
+                        dir="ltr"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 mb-1.5">{isEn ? 'Governorate *' : 'المحافظة *'}</label>
+                      <select
+                        value={formData.city}
+                        onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                        className="w-full h-12 px-4 rounded-xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] transition-all"
+                        dir={isEn ? 'ltr' : 'rtl'}
+                      >
+                        {EGYPT_GOVERNORATES.map(c => (
+                          <option key={c} value={c} className="text-[#0D221A] bg-white font-bold">{c}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Address */}
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1.5">{isEn ? 'Governorate *' : 'المحافظة *'}</label>
-                    <select
-                      value={formData.city}
-                      onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] bg-[#DFE6DB] transition-all"
+                    <label className="block text-xs font-bold text-gray-700 mb-1.5">{isEn ? 'Detailed Address *' : 'العنوان التفصيلي *'}</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder={isEn ? 'Area, street, building or apartment no.' : 'المنطقة، الشارع، رقم العمارة أو الشقة'}
+                      value={formData.address}
+                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                      className="w-full h-12 px-4 rounded-xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#DFE6DB] transition-all"
                       dir={isEn ? 'ltr' : 'rtl'}
-                    >
-                      {EGYPT_GOVERNORATES.map(c => (
-                        <option key={c} value={c} className="text-[#0D221A] bg-white font-bold">{c}</option>
-                      ))}
-                    </select>
+                    />
                   </div>
                 </div>
 
-                {/* Address */}
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1.5">{isEn ? 'Detailed Address *' : 'العنوان التفصيلي *'}</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder={isEn ? 'Area, street, building or apartment no.' : 'المنطقة، الشارع، رقم العمارة أو الشقة'}
-                    value={formData.address}
-                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    className="w-full h-12 px-4 rounded-2xl border border-[#C5A059]/40 text-sm focus:outline-none focus:border-[#C5A059] focus:ring-2 focus:ring-[#C5A059]/10 bg-[#DFE6DB] transition-all"
-                    dir={isEn ? 'ltr' : 'rtl'}
-                  />
-                </div>
-
-                <div className="pt-4 border-t border-gray-200">
-                  <label className="block text-xs font-bold text-gray-700 mb-3">{isEn ? 'Available Payment Methods in Egypt 💳' : 'طريقة الدفع المتاحة في مصر 💳'}</label>
+                {/* Payment Card */}
+                <div className="bg-[#0D221A] p-4 sm:p-5 rounded-2xl border border-[#C5A059]/40 shadow-md">
+                  <h3 className="font-bold text-[#EAD096] text-sm mb-3">{isEn ? 'Payment Method' : 'طريقة الدفع وتأكيد الطلب'}</h3>
                   <div className="grid grid-cols-1 gap-3">
                     
                     <button
                       type="button"
                       onClick={() => setFormData({ ...formData, paymentMethod: 'vodafone' })}
-                      className={`p-3.5 rounded-2xl border text-center flex flex-col items-center justify-center gap-1.5 transition-all ${
+                      className={`p-3.5 rounded-xl border text-center flex flex-col items-center justify-center gap-1.5 transition-all ${
                         formData.paymentMethod === 'vodafone'
-                          ? 'bg-[#0D221A] text-[#EAD096] border-[#C5A059] font-bold shadow-md ring-2 ring-[#C5A059]/40'
-                          : 'bg-[#DFE6DB] text-gray-700 border-gray-200 hover:bg-gray-100'
+                          ? 'bg-[#143529] text-[#EAD096] border-[#C5A059] font-bold shadow-inner'
+                          : 'bg-white/10 text-gray-300 border-white/20 hover:bg-white/20'
                       }`}
                     >
                       <Sparkles className="w-5 h-5 text-[#C5A059]" />
@@ -385,12 +370,10 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                     </button>
 
                   </div>
-                </div>
 
-                {/* Payment Instructions Only */}
-                {formData.paymentMethod !== 'cod' && (
-                  <div className="mt-4 p-4 bg-[#0D221A] rounded-2xl border border-[#C5A059]/30">
-                    <div className="p-3 bg-amber-900/30 border border-amber-500/30 rounded-xl text-center">
+                  {/* Payment Instructions Only */}
+                  {formData.paymentMethod !== 'cod' && (
+                    <div className="mt-4 p-3 bg-amber-900/30 border border-amber-500/30 rounded-xl text-center">
                       <p className="text-sm text-amber-200 font-bold leading-relaxed mb-2">
                         {isEn ? (
                           <>Please transfer exactly <strong className="text-white text-lg bg-[#C5A059]/20 px-2 py-0.5 rounded mx-1">{discountedSubtotal} EGP</strong> to our Vodafone Cash number: <strong className="text-white text-lg bg-[#143529] border border-[#C5A059]/30 px-2 py-0.5 rounded block mt-2">01038035240</strong></>
@@ -402,8 +385,8 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                         {isEn ? 'Shipping fees are collected in cash by the courier upon delivery.' : 'مصاريف الشحن يتم تحصيلها نقداً عن طريق مندوب الشحن عند الاستلام.'}
                       </p>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
 
                 {orderError && (
                   <div className="text-rose-600 bg-rose-50 border border-rose-200 text-xs font-bold p-3 rounded-xl text-center mt-4">
@@ -428,27 +411,27 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
         ) : completedOrder && (
           <div className="p-6 md:p-10 text-center bg-[#0D221A] text-white space-y-5 overflow-y-auto max-h-[90vh]">
             
-            <div className="w-20 h-20 rounded-full bg-[#C5A059]/20 border-2 border-[#C5A059] text-[#C5A059] flex items-center justify-center mx-auto animate-bounce">
-              <CheckCircle className="w-12 h-12" />
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 text-amber-200 text-sm leading-relaxed max-w-lg mx-auto shadow-lg animate-pulse mb-6">
+              <span className="block text-base font-bold text-amber-400 mb-2">⚠️ {isEn ? 'Important Notice: Order Not Confirmed Yet' : 'تنبيه هام: الطلب غير مؤكد حتى يتم الدفع'} ⚠️</span>
+              {isEn ? (
+                'Your order has been recorded with number ' + completedOrder.orderNumber + ' but will not be confirmed until payment is successfully made.'
+              ) : (
+                'تم تسجيل طلبك مبدئياً برقم ' + completedOrder.orderNumber + '، ولكنه لن يتم تأكيده إلا بعد إتمام الدفع بنجاح وإرسال الإيصال.'
+              )}
             </div>
 
-            <div>
-              <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold">{isEn ? 'Order Placed Successfully' : 'تم تسجيل طلبك بنجاح'}</span>
-              <h2 className="text-2xl sm:text-3xl font-bold font-serif text-[#EAD096] mt-1">
-                {isEn ? 'Thank you for choosing VELORA CARE!' : 'شكراً لاختيارك VELORA CARE!'}
-              </h2>
-              <p className="text-sm text-gray-300 mt-2">
-                {isEn ? 'Your order number is:' : 'رقم الطلب الخاص بك هو:'} <strong className="text-[#C5A059] text-base font-mono">{completedOrder.orderNumber}</strong>
-              </p>
-            </div>
-            
-            <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 text-amber-200 text-xs leading-relaxed max-w-lg mx-auto shadow-lg animate-pulse">
-              <span className="block text-sm font-bold text-amber-400 mb-2">⚠️ {isEn ? 'Important Notice' : 'تنبيه هام'} ⚠️</span>
-              {isEn ? (
-                'Your order will not be confirmed until payment is successfully made. The transferred amount via Vodafone Cash will be reviewed, and the order will be confirmed directly by the administration after review.'
-              ) : (
-                'لن يتم تأكيد الطلب إلا بعد إتمام الدفع بنجاح. سيتم مراجعة المبلغ المرسل عن طريق فودافون كاش، وسيتم تأكيد الطلب مباشرة من قِبل الإدارة بعد المراجعة.'
-              )}
+            <div className="max-w-sm mx-auto w-full">
+              <a
+                href={`https://wa.me/201038035240?text=${encodeURIComponent(isEn 
+                  ? `Hello, I placed order #${completedOrder.orderNumber} for ${completedOrder.total - completedOrder.shippingFee} EGP, and here is my Vodafone Cash transfer receipt.`
+                  : `مرحباً، لقد قمت بطلب رقم #${completedOrder.orderNumber} بقيمة ${completedOrder.total - completedOrder.shippingFee} جنيه، وهذا إيصال التحويل فودافون كاش.`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-2xl text-base flex items-center justify-center gap-2 transition-colors shadow-xl shadow-[#25D366]/30 animate-popIn"
+              >
+                <Phone className="w-6 h-6" />
+                {isEn ? 'Confirm Payment via WhatsApp' : 'تأكيد الدفع وإرسال الإيصال عبر واتساب'}
+              </a>
             </div>
 
             <div className={`max-w-lg mx-auto p-5 bg-[#143529] rounded-2xl border border-[#C5A059]/40 text-xs space-y-4 ${isEn ? 'text-left' : 'text-right'}`}>
@@ -565,21 +548,9 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
             </div>
 
             <div className="flex flex-col gap-3 max-w-sm mx-auto mt-6">
-              <a
-                href={`https://wa.me/201038035240?text=${encodeURIComponent(isEn 
-                  ? `Hello, I placed order #${completedOrder.orderNumber} for ${completedOrder.total - completedOrder.shippingFee} EGP, and here is my Vodafone Cash transfer receipt.`
-                  : `مرحباً، لقد قمت بطلب رقم #${completedOrder.orderNumber} بقيمة ${completedOrder.total - completedOrder.shippingFee} جنيه، وهذا إيصال التحويل فودافون كاش.`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3.5 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 transition-colors shadow-lg shadow-[#25D366]/30"
-              >
-                <Phone className="w-5 h-5" />
-                {isEn ? 'Confirm Payment via WhatsApp' : 'تأكيد الدفع وإرسال الإيصال عبر واتساب'}
-              </a>
-
               <button
                 onClick={onClose}
-                className="w-full py-3 text-sm text-gray-400 hover:text-white transition-colors"
+                className="w-full py-3 text-sm text-gray-400 hover:text-white transition-colors border border-gray-600 rounded-xl"
               >
                 {isEn ? 'Back to Store' : 'العودة للتسوق في المتجر'}
               </button>
