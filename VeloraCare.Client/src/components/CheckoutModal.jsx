@@ -394,8 +394,8 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
             <div className="max-w-sm mx-auto w-full mt-4">
               <a
                 href={`https://wa.me/201038035240?text=${encodeURIComponent(isEn 
-                  ? `Hello, I placed order #${completedOrder.orderNumber} for ${completedOrder.total - completedOrder.shippingFee} EGP, and here is my Vodafone Cash transfer receipt.`
-                  : `مرحباً، لقد قمت بطلب رقم #${completedOrder.orderNumber} بقيمة ${completedOrder.total - completedOrder.shippingFee} جنيه، وهذا إيصال التحويل فودافون كاش.`)}`}
+                  ? `Hello, I placed order #${completedOrder.orderNumber} for ${completedOrder.total - completedOrder.shippingFee} EGP, and here is my Vodafone Cash transfer receipt.\n\n[ADMIN] Order Link:\n${window.location.origin}/?admin_order=${completedOrder.orderNumber}`
+                  : `مرحباً، لقد قمت بطلب رقم #${completedOrder.orderNumber} بقيمة ${completedOrder.total - completedOrder.shippingFee} جنيه، وهذا إيصال التحويل فودافون كاش.\n\n[رابط الإدارة]:\n${window.location.origin}/?admin_order=${completedOrder.orderNumber}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-2xl text-base flex items-center justify-center gap-2 transition-colors shadow-xl shadow-[#25D366]/30 animate-popIn"

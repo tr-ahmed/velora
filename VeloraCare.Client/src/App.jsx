@@ -73,6 +73,10 @@ export default function App() {
     if (params.has('track') && params.has('phone')) {
       setIsTrackOrderOpen(true);
     }
+    
+    if (params.has('admin_order')) {
+      setIsAdminView(true);
+    }
   }, []);
 
   const [currentUser, setCurrentUser] = useState(() => {

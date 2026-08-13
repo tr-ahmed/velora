@@ -285,6 +285,18 @@ export default function AdminDashboard({
       }
       if (settingsRes) setStoreSettings(settingsRes);
       if (statsRes?.totalOrders) setLastOrdersCount(statsRes.totalOrders);
+
+      // Handle ?admin_order parameter
+      const params = new URLSearchParams(window.location.search);
+      const adminOrder = params.get('admin_order');
+      if (adminOrder) {
+        setActiveTab('orders');
+        setOrderSearchQuery(adminOrder);
+        const targetOrder = (Array.isArray(ordersRes) ? ordersRes : []).find(o => o.orderNumber === adminOrder);
+        if (targetOrder) setSelectedOrderDetails(targetOrder);
+        
+        window.history.replaceState({}, '', window.location.pathname);
+      }
     } catch (err) {
       console.error('Error loading admin data:', err);
     } finally {
@@ -2908,12 +2920,26 @@ export default function AdminDashboard({
               </div>
             </div>
 
-            <button
-              onClick={() => setSelectedOrderDetails(null)}
-              className="btn-primary w-full py-2.5 text-xs"
-            >
-              إغلاق
-            </button>
+            <div className="flex flex-col gap-2 mt-2">
+              <button
+                onClick={() => {
+                  handleUpdateOrderStatus(selectedOrderDetails.id, 'Processing');
+                  const message = `عميلنا العزيز،\nتم تأكيد استلام الدفع لطلبك رقم #${selectedOrderDetails.orderNumber} بنجاح، وجاري تجهيزه الآن للشحن.\nشكراً لثقتك في VELORA CARE!`;
+                  window.open(`https://wa.me/${selectedOrderDetails.phone}?text=${encodeURIComponent(message)}`, '_blank');
+                  setSelectedOrderDetails(null);
+                }}
+                className="w-full py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 transition-colors shadow-md"
+              >
+                💬 تأكيد الدفع وإشعار العميل (واتساب)
+              </button>
+
+              <button
+                onClick={() => setSelectedOrderDetails(null)}
+                className="btn-primary w-full py-2.5 text-xs bg-gray-200 text-gray-700 border-none hover:bg-gray-300 shadow-none"
+              >
+                إغلاق
+              </button>
+            </div>
           </div>
         </div>
       )}
