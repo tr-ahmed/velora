@@ -368,7 +368,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
 
                 <div className="pt-4 border-t border-gray-200">
                   <label className="block text-xs font-bold text-gray-700 mb-3">{isEn ? 'Available Payment Methods in Egypt 💳' : 'طريقة الدفع المتاحة في مصر 💳'}</label>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 gap-3">
                     
                     <button
                       type="button"
@@ -382,20 +382,6 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                       <Sparkles className="w-5 h-5 text-[#C5A059]" />
                       <span className="text-xs font-bold">{isEn ? 'Vodafone Cash' : 'فودافون كاش'}</span>
                       <span className="text-[10px] text-gray-400 font-light">Vodafone Cash</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setFormData({ ...formData, paymentMethod: 'instapay' })}
-                      className={`p-3.5 rounded-2xl border text-center flex flex-col items-center justify-center gap-1.5 transition-all ${
-                        formData.paymentMethod === 'instapay'
-                          ? 'bg-[#0D221A] text-[#EAD096] border-[#C5A059] font-bold shadow-md ring-2 ring-[#C5A059]/40'
-                          : 'bg-[#DFE6DB] text-gray-700 border-gray-200 hover:bg-gray-100'
-                      }`}
-                    >
-                      <CreditCard className="w-5 h-5 text-[#C5A059]" />
-                      <span className="text-xs font-bold">{isEn ? 'InstaPay' : 'انستا باي'}</span>
-                      <span className="text-[10px] text-gray-400 font-light">InstaPay</span>
                     </button>
 
                   </div>
@@ -423,8 +409,12 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                       {isEn ? 'This is required to verify your payment and process your order quickly.' : 'مطلوب لتأكيد الدفع الخاص بك ومعالجة الطلب في أسرع وقت.'}
                     </p>
                     <div className="mt-3 p-3 bg-amber-900/30 border border-amber-500/30 rounded-xl">
-                      <p className="text-xs text-amber-200 font-bold">
-                        {isEn ? `Please transfer exactly ${discountedSubtotal} EGP (Products value).` : `يرجى تحويل مبلغ ${discountedSubtotal} ج.م فقط (قيمة المنتجات).`}
+                      <p className="text-xs text-amber-200 font-bold leading-relaxed">
+                        {isEn ? (
+                          <>Please transfer exactly <strong>{discountedSubtotal} EGP</strong> to our Vodafone Cash number: <strong className="text-white text-sm bg-amber-900/50 px-2 py-0.5 rounded ml-1">01038035240</strong></>
+                        ) : (
+                          <>يرجى تحويل مبلغ <strong>{discountedSubtotal} ج.م</strong> إلى رقم فودافون كاش الخاص بنا: <strong className="text-white text-sm tracking-widest bg-amber-900/50 px-2 py-0.5 rounded mr-1">01038035240</strong></>
+                        )}
                       </p>
                       <p className="text-[10px] text-amber-300/80 mt-1">
                         {isEn ? 'Shipping fees are collected in cash by the shipping courier upon delivery.' : 'مصاريف الشحن يتم تحصيلها نقداً عن طريق مندوب الشحن عند الاستلام.'}
@@ -461,13 +451,22 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
             </div>
 
             <div>
-              <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold">{isEn ? 'Order Confirmed Successfully' : 'تم تأكيد طلبك بنجاح'}</span>
+              <span className="text-xs uppercase tracking-widest text-[#C5A059] font-bold">{isEn ? 'Order Placed Successfully' : 'تم تسجيل طلبك بنجاح'}</span>
               <h2 className="text-2xl sm:text-3xl font-bold font-serif text-[#EAD096] mt-1">
                 {isEn ? 'Thank you for choosing VELORA CARE!' : 'شكراً لاختيارك VELORA CARE!'}
               </h2>
               <p className="text-sm text-gray-300 mt-2">
                 {isEn ? 'Your order number is:' : 'رقم الطلب الخاص بك هو:'} <strong className="text-[#C5A059] text-base font-mono">{completedOrder.orderNumber}</strong>
               </p>
+            </div>
+            
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 text-amber-200 text-xs leading-relaxed max-w-lg mx-auto shadow-lg animate-pulse">
+              <span className="block text-sm font-bold text-amber-400 mb-2">⚠️ {isEn ? 'Important Notice' : 'تنبيه هام'} ⚠️</span>
+              {isEn ? (
+                'Your order will not be confirmed until payment is successfully made. The transferred amount via Vodafone Cash will be reviewed, and the order will be confirmed directly by the administration after review.'
+              ) : (
+                'لن يتم تأكيد الطلب إلا بعد إتمام الدفع بنجاح. سيتم مراجعة المبلغ المرسل عن طريق فودافون كاش، وسيتم تأكيد الطلب مباشرة من قِبل الإدارة بعد المراجعة.'
+              )}
             </div>
 
             <div className={`max-w-lg mx-auto p-5 bg-[#143529] rounded-2xl border border-[#C5A059]/40 text-xs space-y-4 ${isEn ? 'text-left' : 'text-right'}`}>
