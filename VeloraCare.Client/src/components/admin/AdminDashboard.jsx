@@ -2925,7 +2925,11 @@ export default function AdminDashboard({
                 onClick={() => {
                   handleUpdateOrderStatus(selectedOrderDetails.id, 'تم الدفع وجاري التجهيز');
                   const message = `عميلنا العزيز،\nتم تأكيد استلام الدفع لطلبك رقم #${selectedOrderDetails.orderNumber} بنجاح، وجاري تجهيزه الآن للشحن.\nشكراً لثقتك في VELORA CARE!`;
-                  window.open(`https://wa.me/${selectedOrderDetails.phone}?text=${encodeURIComponent(message)}`, '_blank');
+                  let phoneFormatted = selectedOrderDetails.phone.trim();
+                  if (phoneFormatted.startsWith('+')) phoneFormatted = phoneFormatted.substring(1);
+                  if (phoneFormatted.startsWith('01') && phoneFormatted.length === 11) phoneFormatted = '20' + phoneFormatted.substring(1);
+                  
+                  window.open(`https://wa.me/${phoneFormatted}?text=${encodeURIComponent(message)}`, '_blank');
                   setSelectedOrderDetails(null);
                 }}
                 className="w-full py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 transition-colors shadow-md"
