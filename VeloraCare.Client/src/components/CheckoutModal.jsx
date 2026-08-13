@@ -350,43 +350,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                   </div>
                 </div>
 
-                {/* Payment Card */}
-                <div className="bg-[#0D221A] p-4 sm:p-5 rounded-2xl border border-[#C5A059]/40 shadow-md">
-                  <h3 className="font-bold text-[#EAD096] text-sm mb-3">{isEn ? 'Payment Method' : 'طريقة الدفع وتأكيد الطلب'}</h3>
-                  <div className="grid grid-cols-1 gap-3">
-                    
-                    <button
-                      type="button"
-                      onClick={() => setFormData({ ...formData, paymentMethod: 'vodafone' })}
-                      className={`p-3.5 rounded-xl border text-center flex flex-col items-center justify-center gap-1.5 transition-all ${
-                        formData.paymentMethod === 'vodafone'
-                          ? 'bg-[#143529] text-[#EAD096] border-[#C5A059] font-bold shadow-inner'
-                          : 'bg-white/10 text-gray-300 border-white/20 hover:bg-white/20'
-                      }`}
-                    >
-                      <Sparkles className="w-5 h-5 text-[#C5A059]" />
-                      <span className="text-xs font-bold">{isEn ? 'Vodafone Cash' : 'فودافون كاش'}</span>
-                      <span className="text-[10px] text-gray-400 font-light">Vodafone Cash</span>
-                    </button>
 
-                  </div>
-
-                  {/* Payment Instructions Only */}
-                  {formData.paymentMethod !== 'cod' && (
-                    <div className="mt-4 p-3 bg-amber-900/30 border border-amber-500/30 rounded-xl text-center">
-                      <p className="text-sm text-amber-200 font-bold leading-relaxed mb-2">
-                        {isEn ? (
-                          <>Please transfer exactly <strong className="text-white text-lg bg-[#C5A059]/20 px-2 py-0.5 rounded mx-1">{discountedSubtotal} EGP</strong> to our Vodafone Cash number: <strong className="text-white text-lg bg-[#143529] border border-[#C5A059]/30 px-2 py-0.5 rounded block mt-2">01038035240</strong></>
-                        ) : (
-                          <>يرجى تحويل مبلغ <strong className="text-white text-lg bg-[#C5A059]/20 px-2 py-0.5 rounded mx-1">{discountedSubtotal} ج.م</strong> إلى رقم فودافون كاش الخاص بنا: <strong className="text-white text-lg tracking-widest bg-[#143529] border border-[#C5A059]/30 px-3 py-1 rounded block mt-2">01038035240</strong></>
-                        )}
-                      </p>
-                      <p className="text-[11px] text-amber-300/80 mt-2">
-                        {isEn ? 'Shipping fees are collected in cash by the courier upon delivery.' : 'مصاريف الشحن يتم تحصيلها نقداً عن طريق مندوب الشحن عند الاستلام.'}
-                      </p>
-                    </div>
-                  )}
-                </div>
 
                 {orderError && (
                   <div className="text-rose-600 bg-rose-50 border border-rose-200 text-xs font-bold p-3 rounded-xl text-center mt-4">
@@ -437,7 +401,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                 className="w-full py-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-2xl text-base flex items-center justify-center gap-2 transition-colors shadow-xl shadow-[#25D366]/30 animate-popIn"
               >
                 <Phone className="w-6 h-6" />
-                {isEn ? 'Confirm Payment via WhatsApp' : 'إرسال الإيصال وتأكيد الدفع 💬'}
+                {isEn ? 'Contact to Confirm Payment' : 'تواصل لتأكيد الدفع'}
               </a>
             </div>
 
