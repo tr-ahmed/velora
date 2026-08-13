@@ -119,6 +119,7 @@ public class OrdersController : ControllerBase
 
         // Send WhatsApp Notification via CallMeBot
         var waSettings = await _db.StoreSettings.FirstOrDefaultAsync();
+        /* TEMPORARILY DISABLED CallMeBot Notification
         string waApiKey = !string.IsNullOrEmpty(waSettings?.CallMeBotApiKey) ? waSettings.CallMeBotApiKey : "6802963";
         string waPhone = "201038035240"; // Dedicated admin notification number
 
@@ -164,6 +165,7 @@ public class OrdersController : ControllerBase
                 }
             });
         }
+        */
 
         var settings = waSettings;
         var notificationEmail = settings?.NotificationEmails;
