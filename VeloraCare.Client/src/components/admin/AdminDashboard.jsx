@@ -504,7 +504,7 @@ export default function AdminDashboard({
   // Status badge color mapping
   const statusColors = {
     'قيد الانتظار': 'bg-amber-50 text-amber-900 border-amber-300 shadow-xs hover:bg-amber-100',
-    'جاري التجهيز': 'bg-sky-50 text-sky-900 border-sky-300 shadow-xs hover:bg-sky-100',
+    'تم الدفع وجاري التجهيز': 'bg-sky-50 text-sky-900 border-sky-300 shadow-xs hover:bg-sky-100',
     'تم الشحن': 'bg-purple-50 text-purple-900 border-purple-300 shadow-xs hover:bg-purple-100',
     'تم التوصيل': 'bg-emerald-50 text-emerald-950 border-emerald-300 shadow-xs hover:bg-emerald-100',
     'ملغي': 'bg-rose-50 text-rose-900 border-rose-300 shadow-xs hover:bg-rose-100'
@@ -1706,7 +1706,7 @@ export default function AdminDashboard({
                 >
                   <option value="all">جميع الحالات ({orders.length})</option>
                   <option value="قيد الانتظار">قيد الانتظار</option>
-                  <option value="جاري التجهيز">جاري التجهيز</option>
+                  <option value="تم الدفع وجاري التجهيز">تم الدفع وجاري التجهيز</option>
                   <option value="تم الشحن">تم الشحن</option>
                   <option value="تم التوصيل">تم التوصيل</option>
                   <option value="ملغي">ملغي</option>
@@ -1797,7 +1797,7 @@ export default function AdminDashboard({
                       className={`px-3 py-1 rounded-full text-xs font-bold border focus:outline-none cursor-pointer ${statusColors[order.status]}`}
                     >
                       <option value="قيد الانتظار">قيد الانتظار</option>
-                      <option value="جاري التجهيز">جاري التجهيز</option>
+                      <option value="تم الدفع وجاري التجهيز">تم الدفع وجاري التجهيز</option>
                       <option value="تم الشحن">تم الشحن</option>
                       <option value="تم التوصيل">تم التوصيل</option>
                       <option value="ملغي">ملغي</option>
@@ -1864,7 +1864,7 @@ export default function AdminDashboard({
                           className={`px-3 py-1 rounded-full text-xs font-bold border focus:outline-none cursor-pointer ${statusColors[order.status]}`}
                         >
                           <option value="قيد الانتظار">قيد الانتظار</option>
-                          <option value="جاري التجهيز">جاري التجهيز</option>
+                          <option value="تم الدفع وجاري التجهيز">تم الدفع وجاري التجهيز</option>
                           <option value="تم الشحن">تم الشحن</option>
                           <option value="تم التوصيل">تم التوصيل</option>
                           <option value="ملغي">ملغي</option>
@@ -2923,7 +2923,7 @@ export default function AdminDashboard({
             <div className="flex flex-col gap-2 mt-2">
               <button
                 onClick={() => {
-                  handleUpdateOrderStatus(selectedOrderDetails.id, 'Processing');
+                  handleUpdateOrderStatus(selectedOrderDetails.id, 'تم الدفع وجاري التجهيز');
                   const message = `عميلنا العزيز،\nتم تأكيد استلام الدفع لطلبك رقم #${selectedOrderDetails.orderNumber} بنجاح، وجاري تجهيزه الآن للشحن.\nشكراً لثقتك في VELORA CARE!`;
                   window.open(`https://wa.me/${selectedOrderDetails.phone}?text=${encodeURIComponent(message)}`, '_blank');
                   setSelectedOrderDetails(null);

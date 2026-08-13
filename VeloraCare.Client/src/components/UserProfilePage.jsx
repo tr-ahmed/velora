@@ -395,7 +395,7 @@ function OrderCard({ order, isEn }) {
 
   const statusColors = {
     'قيد الانتظار': 'bg-amber-100 text-amber-800 border-amber-300',
-    'جاري التجهيز': 'bg-blue-100 text-blue-800 border-blue-300',
+    'تم الدفع وجاري التجهيز': 'bg-blue-100 text-blue-800 border-blue-300',
     'تم الشحن': 'bg-purple-100 text-purple-800 border-purple-300',
     'تم التوصيل': 'bg-emerald-100 text-emerald-800 border-emerald-300',
     'ملغي': 'bg-rose-100 text-rose-800 border-rose-300',
@@ -417,7 +417,7 @@ function OrderCard({ order, isEn }) {
         </div>
 
         <span className={`px-3 py-1 rounded-full text-xs font-bold border ${statusColor}`}>
-          {isEn ? (order.status === 'مكتمل' ? 'Completed' : order.status === 'ملغي' ? 'Cancelled' : order.status === 'تم الشحن' ? 'Shipped' : order.status === 'جاري التجهيز' ? 'Processing' : 'Pending') : (order.status || 'قيد الانتظار')}
+          {isEn ? (order.status === 'مكتمل' ? 'Completed' : order.status === 'ملغي' ? 'Cancelled' : order.status === 'تم الشحن' ? 'Shipped' : order.status === 'تم الدفع وجاري التجهيز' ? 'Processing' : 'Pending') : (order.status || 'قيد الانتظار')}
         </span>
       </div>
 

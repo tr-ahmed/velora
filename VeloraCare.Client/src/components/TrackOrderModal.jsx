@@ -49,7 +49,7 @@ export default function TrackOrderModal({ onClose, initialOrderNumber, initialPh
 
   const steps = [
     { label: isEn ? 'Pending' : 'قيد الانتظار', icon: Clock },
-    { label: isEn ? 'Processing' : 'جاري التجهيز', icon: Package },
+    { label: isEn ? 'Processing' : 'تم الدفع وجاري التجهيز', icon: Package },
     { label: isEn ? 'Shipped' : 'تم الشحن', icon: Truck },
     { label: isEn ? 'Completed' : 'مكتمل', icon: CheckCircle }
   ];
@@ -57,7 +57,7 @@ export default function TrackOrderModal({ onClose, initialOrderNumber, initialPh
   const getStepIndex = (status) => {
     switch (status) {
       case 'قيد الانتظار': return 0;
-      case 'جاري التجهيز': return 1;
+      case 'تم الدفع وجاري التجهيز': return 1;
       case 'تم الشحن': return 2;
       case 'مكتمل': return 3;
       case 'ملغي': return -1;
@@ -164,7 +164,7 @@ export default function TrackOrderModal({ onClose, initialOrderNumber, initialPh
                       ord.status === 'ملغي' ? 'bg-red-500/20 text-red-400' :
                       'bg-[#C5A059]/20 text-[#EAD096]'
                     }`}>
-                      {isEn ? (ord.status === 'مكتمل' ? 'Completed' : ord.status === 'ملغي' ? 'Cancelled' : ord.status === 'تم الشحن' ? 'Shipped' : ord.status === 'جاري التجهيز' ? 'Processing' : 'Pending') : ord.status}
+                      {isEn ? (ord.status === 'مكتمل' ? 'Completed' : ord.status === 'ملغي' ? 'Cancelled' : ord.status === 'تم الشحن' ? 'Shipped' : ord.status === 'تم الدفع وجاري التجهيز' ? 'Processing' : 'Pending') : ord.status}
                     </span>
                   </div>
                   <div className="flex justify-between text-xs text-gray-400">
@@ -190,7 +190,7 @@ export default function TrackOrderModal({ onClose, initialOrderNumber, initialPh
                   order.status === 'ملغي' ? 'bg-red-500/20 text-red-400' :
                   'bg-[#C5A059]/20 text-[#EAD096]'
                 }`}>
-                  {isEn ? (order.status === 'مكتمل' ? 'Completed' : order.status === 'ملغي' ? 'Cancelled' : order.status === 'تم الشحن' ? 'Shipped' : order.status === 'جاري التجهيز' ? 'Processing' : 'Pending') : order.status}
+                  {isEn ? (order.status === 'مكتمل' ? 'Completed' : order.status === 'ملغي' ? 'Cancelled' : order.status === 'تم الشحن' ? 'Shipped' : order.status === 'تم الدفع وجاري التجهيز' ? 'Processing' : 'Pending') : order.status}
                 </span>
               </div>
               <p className="text-xs text-gray-400 mb-1">{isEn ? 'Date:' : 'تاريخ الطلب:'} {new Date(order.createdAt).toLocaleDateString(isEn ? 'en-US' : 'ar-EG')}</p>
