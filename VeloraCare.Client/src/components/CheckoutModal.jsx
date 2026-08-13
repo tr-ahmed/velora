@@ -399,7 +399,7 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                   disabled={isSubmitting}
                   className="btn-primary w-full py-4 text-base mt-4 shadow-xl disabled:opacity-50"
                 >
-                  <span>{isSubmitting ? (isEn ? 'Confirming order...' : 'جاري تأكيد الطلب...') : (isEn ? 'Confirm Order & Deliver' : 'تأكيد الطلب والتوصيل')}</span>
+                  <span>{isSubmitting ? (isEn ? 'Processing...' : 'جاري المعالجة...') : (isEn ? 'Continue to Payment' : 'استكمال الدفع')}</span>
                   {!isSubmitting && <ArrowLeft className={`w-5 h-5 ${isEn ? 'rotate-180' : ''}`} />}
                 </button>
 
@@ -409,18 +409,25 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
 
           </div>
         ) : completedOrder && (
-          <div className="p-6 md:p-10 text-center bg-[#0D221A] text-white space-y-5 overflow-y-auto max-h-[90vh]">
+          <div className="p-6 md:p-10 text-center bg-[#0D221A] text-white space-y-6 overflow-y-auto max-h-[90vh] flex flex-col items-center justify-center">
             
-            <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 text-amber-200 text-sm leading-relaxed max-w-lg mx-auto shadow-lg animate-pulse mb-6">
-              <span className="block text-base font-bold text-amber-400 mb-2">⚠️ {isEn ? 'Important Notice: Order Not Confirmed Yet' : 'تنبيه هام: الطلب غير مؤكد حتى يتم الدفع'} ⚠️</span>
-              {isEn ? (
-                'Your order has been recorded with number ' + completedOrder.orderNumber + ' but will not be confirmed until payment is successfully made.'
-              ) : (
-                'تم تسجيل طلبك مبدئياً برقم ' + completedOrder.orderNumber + '، ولكنه لن يتم تأكيده إلا بعد إتمام الدفع بنجاح وإرسال الإيصال.'
-              )}
+            <div className="w-20 h-20 rounded-full bg-amber-500/20 border-2 border-amber-500 text-amber-400 flex items-center justify-center mx-auto mb-2">
+              <Phone className="w-10 h-10 animate-pulse" />
             </div>
 
-            <div className="max-w-sm mx-auto w-full">
+            <h2 className="text-2xl sm:text-3xl font-bold font-serif text-[#EAD096]">
+              {isEn ? 'Complete Your Payment' : 'خطوة أخيرة: استكمال الدفع'}
+            </h2>
+
+            <p className="text-sm text-gray-300 max-w-md mx-auto leading-relaxed">
+              {isEn ? (
+                <>Your order <strong className="text-white">#{completedOrder.orderNumber}</strong> has been saved. To confirm it, please transfer exactly <strong className="text-amber-400">{completedOrder.total - completedOrder.shippingFee} EGP</strong> to Vodafone Cash number <strong className="text-white tracking-widest bg-black/40 px-2 py-0.5 rounded">01038035240</strong>, then send us the receipt via WhatsApp.</>
+              ) : (
+                <>تم حفظ طلبك مبدئياً برقم <strong className="text-white">#{completedOrder.orderNumber}</strong>. لتأكيده، يرجى تحويل مبلغ <strong className="text-amber-400">{completedOrder.total - completedOrder.shippingFee} ج.م</strong> إلى رقم فودافون كاش <strong className="text-white tracking-widest bg-black/40 px-2 py-1 rounded mx-1">01038035240</strong>، ثم إرسال الإيصال لنا عبر واتساب.</>
+              )}
+            </p>
+
+            <div className="max-w-sm mx-auto w-full mt-4">
               <a
                 href={`https://wa.me/201038035240?text=${encodeURIComponent(isEn 
                   ? `Hello, I placed order #${completedOrder.orderNumber} for ${completedOrder.total - completedOrder.shippingFee} EGP, and here is my Vodafone Cash transfer receipt.`
@@ -430,131 +437,17 @@ export default function CheckoutModal({ isOpen, onClose, cartItems, onOrderCompl
                 className="w-full py-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-2xl text-base flex items-center justify-center gap-2 transition-colors shadow-xl shadow-[#25D366]/30 animate-popIn"
               >
                 <Phone className="w-6 h-6" />
-                {isEn ? 'Confirm Payment via WhatsApp' : 'تأكيد الدفع وإرسال الإيصال عبر واتساب'}
+                {isEn ? 'Confirm Payment via WhatsApp' : 'إرسال الإيصال وتأكيد الدفع 💬'}
               </a>
             </div>
 
-            <div className={`max-w-lg mx-auto p-5 bg-[#143529] rounded-2xl border border-[#C5A059]/40 text-xs space-y-4 ${isEn ? 'text-left' : 'text-right'}`}>
-              
-              <div className="border-b border-[#C5A059]/20 pb-3">
-                <h4 className="text-[#C5A059] font-bold mb-2 flex items-center gap-1.5">
-                  <User className="w-3.5 h-3.5" />
-                  {isEn ? 'Customer Details' : 'بيانات العميل'}
-                </h4>
-                <div className="space-y-1.5">
-                  <div className="flex justify-between text-gray-300">
-                    <span>{isEn ? 'Name:' : 'الاسم:'}</span>
-                    <span className="font-bold text-white">{completedOrder.fullName}</span>
-                  </div>
-                  <div className="flex justify-between text-gray-300">
-                    <span>{isEn ? 'Mobile:' : 'الموبايل:'}</span>
-                    <span className="font-bold text-white" dir="ltr">{completedOrder.phone}</span>
-                  </div>
-                </div>
-              </div>
+            <button
+              onClick={onClose}
+              className="mt-4 py-3 px-6 text-sm text-gray-400 hover:text-white transition-colors"
+            >
+              {isEn ? 'Close & Return to Store' : 'إغلاق والعودة للمتجر'}
+            </button>
 
-              <div className="border-b border-[#C5A059]/20 pb-3">
-                <h4 className="text-[#C5A059] font-bold mb-2 flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5" />
-                  {isEn ? 'Delivery Address' : 'عنوان التوصيل'}
-                </h4>
-                <div className="space-y-1.5">
-                  <div className="flex justify-between text-gray-300">
-                    <span>{isEn ? 'Governorate:' : 'المحافظة:'}</span>
-                    <span className="font-bold text-white">{completedOrder.city}</span>
-                  </div>
-                  <div className="text-gray-300">
-                    <span className="font-bold text-white text-[11px]">{completedOrder.address}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-b border-[#C5A059]/20 pb-3">
-                <h4 className="text-[#C5A059] font-bold mb-2 flex items-center gap-1.5">
-                  <Package className="w-3.5 h-3.5" />
-                  {isEn ? `Products (${completedOrder.items.length})` : `المنتجات (${completedOrder.items.length})`}
-                </h4>
-                <div className="space-y-2">
-                  {completedOrder.items.map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-gray-300">
-                      <img src={item.image} alt={item.name} className="w-8 h-8 rounded border border-[#C5A059]/30 object-cover" />
-                      <div className="flex-1">
-                        <p className="text-white font-bold text-[11px] line-clamp-1">{isEn ? (item.nameEn || item.name) : item.name}</p>
-                        <p className="text-[10px] text-gray-400">{item.quantity} × {item.price} {isEn ? 'EGP' : 'ج.م'}</p>
-                      </div>
-                      <span className="font-bold text-[#EAD096]">{item.price * item.quantity}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-1.5 pt-1">
-                <div className="flex justify-between text-gray-300 text-[11px]">
-                  <span>{isEn ? 'Subtotal:' : 'المجموع الفرعي:'}</span>
-                  <span>{completedOrder.subtotal} {isEn ? 'EGP' : 'ج.م'}</span>
-                </div>
-                <div className="flex justify-between text-gray-400 text-[11px]">
-                  <span>{isEn ? 'Shipping Fee (Paid upon delivery):' : 'تكلفة الشحن (يتم تحصيله من خلال شركة الشحن):'}</span>
-                  <span className="font-bold">{completedOrder.shippingFee > 0 ? `${completedOrder.shippingFee} ج.م` : shippingFee === -1 ? (isEn ? 'Paid to Courier' : 'يُدفع لشركة الشحن') : (isEn ? 'Free' : 'مجانًا')}</span>
-                </div>
-                {completedOrder.extraWeightFee > 0 && (
-                   <div className="text-[9px] text-amber-500/80 mt-0.5 mb-1 text-right" dir={isEn ? 'ltr' : 'rtl'}>
-                     {isEn ? `Includes +${completedOrder.extraWeightFee} EGP for extra weight (${completedOrder.totalWeight.toFixed(1)} kg)` : `شامل +${completedOrder.extraWeightFee} ج.م للوزن الزائد (${completedOrder.totalWeight.toFixed(1)} كجم)`}
-                   </div>
-                )}
-                <div className="flex justify-between text-[#EAD096] font-extrabold text-base pt-2 border-t border-[#C5A059]/20 font-serif">
-                  <span>{isEn ? 'Paid Amount (Products only):' : 'المبلغ المدفوع (مبلغ المنتجات فقط):'}</span>
-                  <span>{completedOrder.total - completedOrder.shippingFee} {isEn ? 'EGP' : 'ج.م'}</span>
-                </div>
-                <div className="text-[10px] text-gray-400 mt-2 text-center bg-[#0D221A] p-2 rounded-lg border border-[#C5A059]/20">
-                  {isEn ? `* You transferred ${completedOrder.total - completedOrder.shippingFee} EGP online. Shipping (${completedOrder.shippingFee} EGP) will be collected by courier.` : `* تم تحويل ${completedOrder.total - completedOrder.shippingFee} ج.م إلكترونياً. وسيتم تحصيل مصاريف الشحن (${completedOrder.shippingFee} ج.م) بواسطة المندوب.`}
-                </div>
-              </div>
-
-              <div className="pt-3 border-t border-[#C5A059]/20">
-                <div className="flex justify-between text-gray-300">
-                  <span>{isEn ? 'Payment Method:' : 'طريقة الدفع:'}</span>
-                  <span className="font-bold text-[#EAD096]">{paymentLabels[completedOrder.paymentMethod] || completedOrder.paymentMethod}</span>
-                </div>
-                <div className="flex justify-between text-gray-300 mt-1">
-                  <span>{isEn ? 'Order Status:' : 'حالة الطلب:'}</span>
-                  <span className="px-2 py-0.5 bg-amber-500/20 text-amber-400 rounded-full text-[10px] font-bold">{isEn ? 'Pending' : 'قيد الانتظار'}</span>
-                </div>
-              </div>
-
-            </div>
-
-            <p className="text-xs text-gray-400 max-w-sm mx-auto">
-              {isEn ? 'You can track your order at any time using this link:' : 'يمكنك تتبع حالة طلبك في أي وقت عبر الرابط التالي:'}
-            </p>
-            
-            <div className="flex items-center gap-2 max-w-sm mx-auto w-full bg-[#0a1812] border border-[#C5A059]/30 rounded-lg p-2 mt-2 mb-4">
-               <input 
-                 type="text" 
-                 readOnly 
-                 value={`${window.location.origin}/?track=${completedOrder.orderNumber}&phone=${completedOrder.phone}`}
-                 className="flex-1 bg-transparent text-gray-300 text-[10px] outline-none"
-                 dir="ltr"
-               />
-               <button 
-                 onClick={() => {
-                   navigator.clipboard.writeText(`${window.location.origin}/?track=${completedOrder.orderNumber}&phone=${completedOrder.phone}`);
-                   alert(isEn ? 'Tracking link copied to clipboard!' : 'تم نسخ رابط التتبع بنجاح!');
-                 }}
-                 className="bg-[#1A3C2F] text-[#EAD096] px-3 py-1.5 rounded text-[10px] font-bold hover:bg-[#23503f] transition-colors whitespace-nowrap"
-               >
-                 {isEn ? 'Copy' : 'نسخ الرابط'}
-               </button>
-            </div>
-
-            <div className="flex flex-col gap-3 max-w-sm mx-auto mt-6">
-              <button
-                onClick={onClose}
-                className="w-full py-3 text-sm text-gray-400 hover:text-white transition-colors border border-gray-600 rounded-xl"
-              >
-                {isEn ? 'Back to Store' : 'العودة للتسوق في المتجر'}
-              </button>
-            </div>
 
           </div>
         )}
