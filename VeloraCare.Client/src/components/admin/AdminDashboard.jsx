@@ -10,12 +10,13 @@ import ProductFormModal from './ProductFormModal';
 import CouponFormModal from './CouponFormModal';
 import CategoryFormModal from './CategoryFormModal';
 import HeroSlideFormModal from './HeroSlideFormModal';
+import ManualOrderFormModal from './ManualOrderFormModal';
 import VeloraLogo from '../VeloraLogo';
 import Pagination from '../Pagination';
 import TestimonialsTab from './TestimonialsTab';
 import SocialReviewsTab from './SocialReviewsTab';
 import { 
-  fetchDashboardStatsApi, fetchAnalyticsReportsApi, fetchAllOrdersApi, updateOrderStatusApi, 
+  fetchDashboardStatsApi, fetchAnalyticsReportsApi, fetchAllOrdersApi, updateOrderStatusApi, createOrderApi,
   fetchProductsFromApi, saveProductApi, deleteProductApi,
   fetchCouponsApi, createCouponApi, toggleCouponApi, deleteCouponApi,
   fetchCategoriesApi, saveCategoryApi, deleteCategoryApi,
@@ -119,6 +120,7 @@ export default function AdminDashboard({
   const [isCouponModalOpen, setIsCouponModalOpen] = useState(false);
   const [isHeroSlideModalOpen, setIsHeroSlideModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isManualOrderModalOpen, setIsManualOrderModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   
   const [editingHeroSlide, setEditingHeroSlide] = useState(null);
@@ -1676,13 +1678,22 @@ export default function AdminDashboard({
                 <p className="text-xs text-gray-500">بحث، تصفية، تصدير إكسل، وتحديث حالة الطلبات مباشرة</p>
               </div>
 
-              <button
-                onClick={handleExportOrdersExcel}
-                className="btn-primary text-xs py-2.5 px-5 w-full lg:w-auto flex items-center justify-center gap-2 shadow-md print:hidden"
-              >
-                <FileSpreadsheet className="w-4 h-4" />
-                <span>تصدير الطلبات لملف Excel (.csv)</span>
-              </button>
+              <div className="flex flex-col lg:flex-row gap-2 w-full lg:w-auto">
+                <button
+                  onClick={() => setIsManualOrderModalOpen(true)}
+                  className="bg-[#0D221A] text-[#C5A059] text-xs py-2.5 px-5 flex items-center justify-center gap-2 shadow-md rounded-xl hover:bg-[#153327] print:hidden font-bold"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>إضافة طلب خارجي ➕</span>
+                </button>
+                <button
+                  onClick={handleExportOrdersExcel}
+                  className="btn-primary text-xs py-2.5 px-5 flex items-center justify-center gap-2 shadow-md print:hidden"
+                >
+                  <FileSpreadsheet className="w-4 h-4" />
+                  <span>تصدير الطلبات</span>
+                </button>
+              </div>
             </div>
 
             {/* Filter Controls Toolbar */}
@@ -2721,7 +2732,6 @@ export default function AdminDashboard({
           </div>
         )}
 
-        {/* TAB 8: STORE SETTINGS */}
         {/* TAB 8: TESTIMONIALS MANAGEMENT */}
         {activeTab === 'testimonials' && (
           <TestimonialsTab 
@@ -2974,6 +2984,22 @@ export default function AdminDashboard({
         onClose={() => setIsHeroSlideModalOpen(false)}
         slide={editingHeroSlide}
         onSave={handleSaveHeroSlide}
+      />
+
+      <ManualOrderFormModal
+        isOpen={isManualOrderModalOpen}
+        onClose={() => setIsManualOrderModalOpen(false)}
+        products={products}
+        onSave={async (payload) => {
+          try {
+            await createOrderApi(payload);
+            toast.success('تم تسجيل الطلب الخارجي بنجاح');
+            loadData();
+          } catch (err) {
+            toast.error('حدث خطأ أثناء الحفظ');
+            throw err;
+          }
+        }}
       />
 
       {/* Native Android Mobile App Dock for Admin Dashboard */}
